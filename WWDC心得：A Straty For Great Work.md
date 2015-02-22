@@ -1,5 +1,5 @@
 #WWDC 2014 
-###A Straty For Great Work （session 237）
+###A Strategy For Great Work （session 237）
 --
 今年春节抽空看了几个WWDC session.分别简单总结一下。
 

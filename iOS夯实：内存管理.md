@@ -1,7 +1,11 @@
 #iOS夯实：内存管理
 
-###基本信息
-#####Objective-C 提供了两种内存管理方式。
+> 最近的学习计划是将iOS的机制原理好好重新打磨学习一下。顺便记录总结和加入自己的思考。
+> 
+> 有不正确的地方，多多指正。
+
+##基本信息
+###Objective-C 提供了两种内存管理方式。
 
 1. MRR （manual retain-release） 手动内存管理  
 	这是基于reference counting实现的,由NSObject与runtime environment共同工作实现。
@@ -9,7 +13,7 @@
 2. ARC （Automatic Reference Counting）自动引用技术  
  	ARC使用了基于MBR同样的reference counting机制，区别在于系统在编译的时候帮助我们插入了合适的memory management method。
  	
-#####Good Practices能有效的避免内存相关问题
+###Good Practices能有效的避免内存相关问题
 基于内存，主要有两种错误 
  
 1. 清空或覆盖了还在使用的内存  
@@ -23,8 +27,9 @@
 
 ![](memory_management.png)
 
-###内存管理准则
-基本的内存管理准则：为我们提供了这些准则
+#一.旧时代的细节
+##基本内存管理准则
+###基本的内存管理准则：Cocoa为我们提供了这些准则
 
 -  You own any object you create  
 	我们通过名字前缀为“alloc”, “new”, “copy”, or “mutableCopy”的方法创建对象
@@ -40,5 +45,81 @@
 - You must not relinquish ownership of an object you do not own  
   不要释放你没有拥有的对象所有权
   
- 关于dealloc:
+###关于dealloc:
  
+ NSObject为我们提供了一个dealloc方法,当对象被销毁时，系统会自动调用它。这个方法的作用主要是清空对象自身内存与它所持有的资源。例如：
+ 
+ ~~~objective-c
+ @interface Person : NSObject
+@property (retain) NSString *firstName;
+@property (retain) NSString *lastName;
+@property (assign, readonly) NSString *fullName;
+@end
+~~~
+~~~
+@implementation Person
+- (void)dealloc
+    [_firstName release];
+    [_lastName release];
+    [super dealloc];
+}
+@end
+ ~~~
+ 
+***需要强调的是：永远不要自己调用dealloc方法***  
+***在dealloc的最后需要调用super class的dealloc***
+
+##实践中的内存管理准则
+###1. 使用存取方法来简化内存管理。  
+	如果代码中都是一堆retain release，必然不是一个好的情况。在存取方法里面进行retain和release的操作能够简化内存管理。例如：
+	
+~~~objective-c
+- (void)setCount:(NSNumber *)newCount {
+    [newCount retain];
+    [_count release];
+    // Make the new assignment.
+    _count = newCount;
+}
+~~~
+
+###2. 使用存取方法来设置Property value
+
+对比如下代码，第一种使用了存取方法来设置，第二种直接对实例变量操作。显然我们应该采用第一种，使用第二种情况，简单的情况还好，如果情况一旦复杂,就非常容易出错。并且直接对实例变量操作，不会引发KVO通知。
+
+~~~objective-c
+- (void)reset {
+    NSNumber *zero = [[NSNumber alloc] initWithInteger:0];
+    [self setCount:zero];
+    [zero release];
+}
+
+- (void)reset {
+    NSNumber *zero = [[NSNumber alloc] initWithInteger:0];
+    [_count release];
+    _count = zero;
+}
+~~~
+
+###3. 不要在初始化方法和dealloc方法中使用Accessor Methods
+
+  唯一不需要使用Accessor Methods的地方是initializer和dealloc.
+  在苹果官方文档中没有解释为什么。经过一番查阅后,最主要的原因是此时对象的状况不确定，尚未完全初始化完毕，而导致一些问题的发送。
+  
+  例如这个类或者子类重写了setMethod,里面调用了其他一些数据或方法,而这些数据和方法需要一个已经完全初始化好的对象。而在init中,对象的状态是不确定的。
+  
+  举个例子，一个子类重写了set方法，在里面进行了一些子类特有的操作，而此时如果父类在init直接使用Accessor Methods，就会导致问题的发送。
+  
+  其它一些问题还有，像会触发KVO notification等。[^1][^2]
+  
+  ***总之，记住在开发中记住这个principle最重要。***
+  
+[^1]: [stackoverflow](http://stackoverflow.com/questions/8056188/should-i-refer-to-self-property-in-the-init-method-with-arc/8056260#8056260)
+[^2]: [objc-zen-book](https://github.com/objc-zen/objc-zen-book)
+
+###4. 使用弱引用来避免应用环
+
+我们都知道在ARC，弱引用通过声明property的attribute为weak来实现。
+
+而在MRR中则是通过引用对象，但是不retain它来实现（A weak reference is a non-owning relationship where the source object does not retain the object to which it has a reference）
+
+我们需要注意处理好弱引用对象，如果对已经被销毁的对象发送信息，则会导致crash.通常被弱引用的对象负责通知其它对象当它将被销毁时

@@ -1,6 +1,6 @@
 #iOS夯实：内存管理
 
-> 最近的学习计划是将iOS的机制原理好好重新打磨学习一下。顺便记录总结和加入自己的思考。
+> 最近的学习计划是将iOS的机制原理好好重新打磨学习一下,总结和加入自己的思考。
 > 
 > 有不正确的地方，多多指正。
 
@@ -27,8 +27,8 @@
 
 ![](memory_management.png)
 
-#一.旧时代的细节
-##基本内存管理准则
+#旧时代的细节
+##一.基本内存管理准则
 ###基本的内存管理准则：Cocoa为我们提供了这些准则
 
 -  You own any object you create  
@@ -69,7 +69,7 @@
 ***需要强调的是：永远不要自己调用dealloc方法***  
 ***在dealloc的最后需要调用super class的dealloc***
 
-##实践中的内存管理准则
+##二.实践中的内存管理准则
 ###1. 使用存取方法来简化内存管理。  
 	如果代码中都是一堆retain release，必然不是一个好的情况。在存取方法里面进行retain和release的操作能够简化内存管理。例如：
 	
@@ -116,10 +116,84 @@
 [^1]: [stackoverflow](http://stackoverflow.com/questions/8056188/should-i-refer-to-self-property-in-the-init-method-with-arc/8056260#8056260)
 [^2]: [objc-zen-book](https://github.com/objc-zen/objc-zen-book)
 
-###4. 使用弱引用来避免应用环
+###4. 使用弱引用来避免引用环
 
-我们都知道在ARC，弱引用通过声明property的attribute为weak来实现。
+我们都知道在ARC，弱引用通过声明property的attribute为weak来实现。  
 
 而在MRR中则是通过引用对象，但是不retain它来实现（A weak reference is a non-owning relationship where the source object does not retain the object to which it has a reference）
 
-我们需要注意处理好弱引用对象，如果对已经被销毁的对象发送信息，则会导致crash.通常被弱引用的对象负责通知其它对象当它将被销毁时
+在Cocoa中，典型需要使用弱引用的有delegate，data source, notification observer
+
+我们需要注意处理好弱引用对象，如果对已经被销毁的对象发送信息，则会导致crash.通常被弱引用的对象当它将被销毁时，负责通知其它object.
+
+像notification center保存了observer的弱引用，因此当被弱引用observer准备结束生命周期时，observer需要通知notification center,unregister自己。
+
+###4. 不要让你正在使用的对象被移除
+
+观察以下两种代码，第一种因为没有retain,对象可能会被移除，而第二种是正确的写法
+
+~~~objective-c
+heisenObject = [array objectAtIndex:n];
+[array removeObjectAtIndex:n];
+// heisenObject could now be invalid.
+
+heisenObject = [[array objectAtIndex:n] retain];
+[array removeObjectAtIndex:n];
+// Use heisenObject...
+[heisenObject release];
+~~~
+
+###5. Collections类拥有其收集的的对象的所有权
+
+例如NSArray,dictionary等。他们负责其收集的对象的所有权,因此我们不需要retain存进去的对象。
+例如下面的allocedNumber就不需要retain了。
+
+~~~objective-c
+for (i = 0; i < 10; i++) {
+    NSNumber *allocedNumber = [[NSNumber alloc] initWithInteger:i];
+    [array addObject:allocedNumber];
+    [allocedNumber release];
+}
+~~~
+
+###6. 最后,以上这些ownership policy是基于retain count实现的
+
+- 当你创建一个对象，它的retain count为1。
+- 当你对一个对象发送retain信息，它的retain count +1 
+- 当你对一个对象发送release信息，他的retain count -1  
+  当你对一个对象发送autorelease信息，在当前autorelease pool block结束时，retain count -1
+- 当一个对象的retain count 降至0，它就被dealloced了。
+
+
+##三.使用Autorelease Pool block
+
+autorelease pool 为我们提供了一个机制，避免当我们解除一个对象所有权时,对象被立刻销毁（例如从一个方法里返回一个对象）
+
+一个autorelease pool block对象是这样子的：
+
+~~~objective-c
+@autoreleasepool {
+    // Code that creates autoreleased objects.
+}
+~~~
+在block的最后，所有收到过autorelease消息的对象都会接收到release消息。
+
+在ARC的新时代里面，autorelease pool block主要用于处理避免内存峰值，只是我们不需要再手动添加autorelease的代码了
+
+例如以下这个例子（有点生编硬造，主要为了阐明一下）  
+如果我们没有添加autoreleasepool,我们最后可需要释放10000*10000个对象，而不是每次循环都分别释放掉10000个对象
+
+~~~objective-c
+- (void)useALoadOfNumbers {
+    for (int j = 0; j < 10000; ++j) {
+        @autoreleasepool {
+            for (int i = 0; i < 10000; ++i) {
+                NSNumber *number = [NSNumber numberWithInt:(i+j)];
+                NSLog(@"number = %p", number);
+            }
+        }
+    }
+}
+~~~
+
+#新时代

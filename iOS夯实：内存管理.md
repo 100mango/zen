@@ -206,3 +206,6 @@ autorelease pool 为我们提供了一个机制，避免当我们解除一个对
 ~~~
 
 ##新时代
+
+详情亲看：[iOS夯实：ARC时代的内存管理](https://github.com/100mango/zen/blob/master/%23iOS%E5%A4%AF%E5%AE%9E%EF%BC%9AARC%E6%97%B6%E4%BB%A3%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86.md)
+

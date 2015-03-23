@@ -26,7 +26,7 @@ runLoop是一个与线程相关的机制，可以简单理解为一个循环。
 	 所以就会导致一些地方我们需要去注意。
 	 - 一般Timer是运行在RunLoop的default mode上，而ScrollView在用户滑动时，主线程RunLoop会转到UITrackingRunLoopMode。而这个时候，Timer就不会运行,方法得不到fire。
 
-	 用一个真实例子来说明（自身教训）：![注册界面](RunLoop.png)
+	 用一个真实例子来说明（自身教训）：![注册界面](https://github.com/100mango/zen/blob/master/%23iOS%E5%A4%AF%E5%AE%9E%EF%BC%9ARunLoop/RunLoop.png)
 	 
 	 在一次写一个注册界面的时候，用户点击发送验证码后，使用Timer,倒数60秒以允许用户再次申请发送验证码，同时每一秒更新界面秒数信息。而此时Timer运行于主线程的default mode上。若此时用户滑动显示屏，则会出现Timer失效,界面得不到更新的情况。此时就是因为RunLoop的mode原因。
 	 

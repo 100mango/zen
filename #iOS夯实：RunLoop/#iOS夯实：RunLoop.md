@@ -21,12 +21,18 @@ runLoop是一个与线程相关的机制，可以简单理解为一个循环。
 	日常开发中，我们与runLoop接触得最近可能就是通过NSTimer了。一个Timer一次只能加入到一个RunLoop中。我们日常使用的时候，通常就是加入到当前的runLoop的default mode中。  
 	
 	 提到mode,就需要谈谈RunLoop Modes  
-	 简单的说，runLoop有多个Mode,一次只能运行一个Mode,runLoop只会处理它当前Mode的事件。
+	 简单的说，runLoop有多个Mode,RunLoop只能运行一个Mode,runLoop只会处理它当前Mode的事件。
 	 
 	 所以就会导致一些地方我们需要去注意。
 	 - 一般Timer是运行在RunLoop的default mode上，而ScrollView在用户滑动时，主线程RunLoop会转到UITrackingRunLoopMode。而这个时候，Timer就不会运行,方法得不到fire。
 
-	 用一个真实例子来说明（自身经历）：在一次写一个注册界面的时候，用户点击
-	 ![注册界面]()
+	 用一个真实例子来说明（自身教训）：![注册界面](RunLoop.png)
 	 
+	 在一次写一个注册界面的时候，用户点击发送验证码后，使用Timer,倒数60秒以允许用户再次申请发送验证码，同时每一秒更新界面秒数信息。而此时Timer运行于主线程的default mode上。若此时用户滑动显示屏，则会出现Timer失效,界面得不到更新的情况。此时就是因为RunLoop的mode原因。
+	 
+	- NSURLConnection,NSStream也是同样的情况，默认运行于default mode。
+	
+2. 解决方案：
+	- 第一种:设置RunLoop Mode，例如NSTimer,我们指定它运行于NSRunLoopCommonModes,这是一个Mode的集合。注册到这个Mode下后，无论当前runLoop运行哪个mode,事件都能得到执行。
+	- 第二种:另一种解决Timer的方法是，我们在另外一个线程执行和处理Timer事件，然后在主线程更新UI.
 	 

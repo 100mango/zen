@@ -13,5 +13,39 @@ heap和stack是内存管理的两个重要概念。在这里我们指的不是�
 
 	heap与动态内存分配相关,内存可以随时在堆中分配和销毁。我们需要明确请求内存分配与内存销毁。
 	简单来说，就是malloc与free.
+	
+[^1]: (What and where are the stack and heap?)[http://stackoverflow.com/questions/79923/what-and-where-are-the-stack-and-heap]
 
-###Objective-C中的H
+##Objective-C中的Stack和Heap
+
+首先所有的Objective-C对象都是分配在heap的。
+在OC最典型的内存分配与初始化就是这样的。
+
+~~~objective-c
+    NSObject *obj = [[NSObject alloc] init];
+~~~
+一个对象在alloc的时候，就在Heap分配了内存空间。
+
+stack对象通常有速度的优势，而且不会发生内存泄露问题。那么为什么OC的对象都是分配在heap的呢？
+原因在于：
+
+1. stack对象的生命周期所导致的问题。例如一旦函数返回，则所在的stack frame就会被摧毁。那么此时返回的对象也会一并摧毁。这个时候我们去retain这个对象也无补于事。因为整个stack frame都已经被摧毁了。简单而言，就是stack对象的生命周期不适合Objective-C的引用计数内存管理方法。
+2. stack对象不够灵活，不具备足够的扩展性。创建时长度已经是固定的,而stack对象的拥有者也就是所在的stack frame
+
+
+##关于Block
+不过,其实Objective-C是有它的Stack object的。是的,那就是block.
+
+
+
+
+-
+####参考资料:
+
+[What and where are the stack and heap?](http://stackoverflow.com/questions/79923/what-and-where-are-the-stack-and-heap)
+
+[Cocoa blocks as strong pointers vs copy](http://stackoverflow.com/questions/27152580/cocoa-blocks-as-strong-pointers-vs-copy)
+
+[Should I still copy/Block_copy the blocks under ARC?](http://stackoverflow.com/questions/23334863/should-i-still-copy-block-copy-the-blocks-under-arc)
+
+[Stack and Heap Objects in Objective-C](https://www.mikeash.com/pyblog/friday-qa-2010-01-15-stack-and-heap-objects-in-objective-c.html)

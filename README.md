@@ -9,3 +9,5 @@ iOS 禅
 - [WWDC心得：A Straty For Great Work](https://github.com/100mango/zen/blob/master/WWDC%E5%BF%83%E5%BE%97%EF%BC%9AA%20Straty%20For%20Great%20Work.md)
 - [WWDC心得：Core iOS Application Architectural Patterns](https://github.com/100mango/zen/blob/master/WWDC%E5%BF%83%E5%BE%97%EF%BC%9ACore%20iOS%20Application%20Architectural%20Patterns.md)
 - [WWDC心得：Advanced iOS Application Architecture and Patterns](https://github.com/100mango/zen/blob/master/WWDC%E5%BF%83%E5%BE%97%EF%BC%9AAdvanced%20iOS%20Application%20Architecture%20and%20Patterns.md)
+
+欢迎提出任何疑问,有疏漏错误之处还望多多指正。（欢迎随时提Issues~）

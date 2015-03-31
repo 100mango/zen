@@ -56,13 +56,9 @@ AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device
 	    AVCaptureVideoDataOutput *output = [[AVCaptureVideoDataOutput alloc]init];
 	~~~
 	
-5.设置output delegate,将output添加至session,在代理方法中分析视频流
+5. 设置output delegate,将output添加至session,在代理方法中分析视频流
 
 	为了分析视频流,我们需要为output设置delegate,并且指定delegate方法在哪个线程被调用。需要主要的是,线程必须是串行的,确保视频帧按序到达。
-	我们在delegate方法中分析视频流。
-	~~~
-	captureOutput:didOutputSampleBuffer:fromConnection:,
-	~~~
 	
 	~~~objective-c
 	videoDataOutputQueue = dispatch_queue_create("VideoDataOutputQueue", DISPATCH_QUEUE_SERIAL);
@@ -71,6 +67,19 @@ AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device
 	
 	[session addOutput:videoDataOutput];
 	~~~
+	
+	我们可以在delegate方法中分析视频流。
+	
+	~~~objective-c
+	captureOutput:didOutputSampleBuffer:fromConnection:,
+	~~~
+	
+
+
+通过上面的简单例子,我么可以看出使用AVFoundation来捕捉视频流并不是十分复杂。重点是使用的过程需要了解配置的细节,还有性能问题。
+
+
+##实践
 
 
 	

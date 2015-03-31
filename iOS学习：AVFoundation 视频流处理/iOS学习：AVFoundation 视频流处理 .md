@@ -73,6 +73,12 @@ AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device
 	~~~objective-c
 	captureOutput:didOutputSampleBuffer:fromConnection:,
 	~~~
+
+6. 开始捕捉
+
+	~~~objective-c
+	[session startRunning];
+	~~~
 	
 
 

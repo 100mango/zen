@@ -79,7 +79,6 @@ AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device
 	~~~objective-c
 	[session startRunning];
 	~~~
-	
 
 
 通过上面的简单例子,我么可以看出使用AVFoundation来捕捉视频流并不是十分复杂。重点是使用的过程需要了解配置的细节,还有性能问题。

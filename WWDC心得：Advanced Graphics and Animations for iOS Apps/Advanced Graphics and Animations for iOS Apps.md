@@ -1,6 +1,16 @@
 #WWDC2014
 ###Advanced Graphics and Animations for iOS Apps(session 419)
 --
+目录：  
+
+- [Core Animation Pipeline](#CoreAnimationPipeline)
+
+- [UIBlurEffectView](#UIBlurEffectView)
+
+- [图形性能](#图形性能)
+
+- [测试工具](#测试工具)
+
 
 ###一. Core Animation Pipeline
 
@@ -170,7 +180,7 @@ imageViewLayer.shadowPath = CGPathCreateWithRect(imageRect, NULL);
 	![](roundFrameRate.png)
 	
 
-以上举了两个例子阐明了在避免大量的offerScreen渲染后,性能能够得到非常直观有效的提高。
+ 以上举了两个例子阐明了在避免大量的offerScreen渲染后,性能能够得到非常直观有效的提高。
 
 
 ###3. 关于blending
@@ -179,7 +189,28 @@ imageViewLayer.shadowPath = CGPathCreateWithRect(imageRect, NULL);
 
 ：） 笑。如果阅读这篇文章的读者看到这里,是不是觉得已经无眼看下去了。哈哈,我自己学习总结到这里也是感受到了长路慢慢,但是我们仍然还是要不断上下求索的。 ：）
 
-好了 接下来让
+好了 接下来让我们来认识一下Blending.
+
+- 什么是Blending？
+
+在iOS的图形处理中,blending主要指的是混合像素颜色的计算。最直观的例子就是,我们把两个图层叠加在一起,如果第一个图层的透明的,则最终像素的颜色计算需要将第二个图层也考虑进来。这一过程即为Blending。
+
+- 会导致blending的原因:
+
+	- layer(UIView)的Alpha < 1
+	- UIImgaeView的image含有Alpha channel(即使UIImageView的alpha是1,但只要image含透明通道,则仍会导致Blending)
+
+- 为什么Blending会导致性能的损失？
+
+原因是很直观的,如果一个图层是不透明的,则系统直接显示该图层的颜色即可。而如果图层是透明的,则会引入更多的计算,因为需要把下面的图层也包括进来,进行混合后颜色的计算。
+
+
+在了解完Blending之后,我们就知道为什么很多优化准则都需要我们尽量使用不透明图层了。接下来就是在开发中留意和进行优化了。
+
+
+###四. 测试工具
+
+
 
 	
 

@@ -1,5 +1,7 @@
 #WWDC2014
 ###Advanced Graphics and Animations for iOS Apps(session 419)
+
+学习与延伸
 --
 目录：  
 
@@ -210,8 +212,67 @@ imageViewLayer.shadowPath = CGPathCreateWithRect(imageRect, NULL);
 
 ###四. 测试工具
 
+在出现图像性能问题,滑动,动画不够流畅之后,我们首先要做的就是定位出问题的所在。而这个过程并不是只靠经验和穷举法探索,我们应该用有脉络,有顺序的科学的手段进行探索。
+
+首先,我们要有一个定位问题的模式。我们可以按照这样的顺序来逐步定位,发现问题。
+
+1. 定位帧率,为了给用户流畅的感受,我们需要保持帧率在60帧左右。当遇到问题后,我们首先检查一下帧率是否保持在60帧。
+
+2. 定位瓶颈,究竟是CPU还是GPU。我们希望占用率越少越好,一是为了流畅性,二也节省了电力。
+
+3. 检查有没有做无必要的CPU渲染,例如有些地方我们重写了drawRect,而其实是我们不需要也不应该的。我们希望GPU负责更多的工作。
+
+4. 检查有没有过多的offscreen渲染,这会耗费GPU的资源,像前面已经分析的到的。offscreen 渲染会导致GPU需要不断地onScreen和offscreen进行上下文切换。我们希望有更少的offscreen渲染。
+
+5. 检查我们有无过多的Blending,GPU渲染一个不透明的图层更省资源。
+
+6. 检查图片的格式是否为常用格式,大小是否正常。如果一个图片格式不被GPU所支持,则只能通过CPU来渲染。一般我们在iOS开发中都应该用PNG格式,之前阅读过的一些资料也有指出苹果特意为PNG格式做了渲染和压缩算法上的优化。
+
+7. 检查是否有耗费资源多的View或效果。我们需要合理有节制的使用。像之前提到的UIBlurEffect就是一个例子。
+
+8. 最后,我们需要检查在我们View层级中是否有不正确的地方。例如有时我们不断的添加或移除View,有时就会在不经意间导致bug的发生。像我之前就遇到过不断添加View的一个低级错误。我们希望在View层级中只包含了我们想要的东西。
 
 
+OK,当我们有了一套模式之后,就可以使用苹果为我们提供的优秀测试工具来进行测试了。
+
+对于图形性能问题的地位。一般我们有下列测试工具：
+
+Instruments里的：
+
+-  Core Animation instrument
+-  OpenGL ES Driver instrument
+
+模拟器中的:
+Color debug options View debugging
+
+还有Xcode的：
+
+View debugging
+
+然后我们来根据上面定位问题的模式来选择相应测试工具:
+
+1. 定位帧率
+2. 定位瓶颈
+3. 检查有无必要的CPU渲染
+
+
+	以上三个我们可以使用CoreAnimation instrument来测试。
+	
+	![](FPS.png)
+	![](CPU.png)
+	
+	CoreAnimation instrument包含了两个模块。第一幅图展示了检测帧率。第二幅图展示了检测CPU调用。我们能够通过它们来进行上述三个问题的检测。注意到第二幅图左下角,那是CPU 的call stack.我们就是在这里检测我们有没有做无必要的drawRect,有没有在主线程做太多事务导致阻塞了UI更新。
+	
+	关于GPU的瓶颈问题,我们可以通过OpenGL ES Driver instrument来获得更详细的信息。例如GPU的占用率。可以看到下图左下角有显示Device utilization。
+	
+	![](openGL ES driver.png)
+	
+	
+4. 检查有无过多offscreen渲染
+5. 检查有无过多Blending
+6. 检查有无不正确图片格式,图片是否被放缩,像素是否对齐。
+7. 检查有无使用复杂的图形效果。
+	
 	
 
 

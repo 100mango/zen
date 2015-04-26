@@ -5,16 +5,14 @@
 --
 目录：  
 
-- [Core Animation Pipeline](#一. Core Animation Pipeline)
-
-- [UIBlurEffectView](#二. UIBlurEffectView)
-
-- [图形性能](#三. 图形性能)
-
-- [测试工具](#四. 测试工具)
+- [Core Animation Pipeline](#Core Animation Pipeline)
+- [UIBlurEffectView](#UIBlurEffectView)
+- [图形性能](#图形性能)
+- [测试工具](#测试工具)
+- [总结](#总结)
 
 
-###一. Core Animation Pipeline
+##Core Animation Pipeline
 
 第一部分主要讲解了Core Animation的工作流程和渲染过程。
 
@@ -28,7 +26,7 @@ CoreAnimation的渲染流程可以用下图来概括:
 ([GPU 加速下的图像处理](http://objccn.io/issue-21-7/))
 
 
-###二. UIBlurEffectView
+##UIBlurEffectView
 
 第二部分主要讲解了iOS8新引入的UIBlurEffectView,结合第一部分来阐述UIBlurEffectView是如何工作的,以及它们的性能。
 
@@ -67,7 +65,7 @@ Extra light耗费最多资源, Light其次, Dark最多。
 	用在了实时蒙版,即类似微信二维码扫描框外的黑色半透明背景,在这里则是实时模糊,更美观。
 
 
-###三. 图形性能
+##图形性能
 关于图形性能在之前关注的不够多,主要是用前人总结好的比较教条式的优化方式。这次借这个Session的学习,继续往外扩展阅读学习,好好梳理和学习遗漏点,底层细节,原理与性能优化的工具
 
 - ###1. 关于CALayer的shouldRasterize（光栅化）
@@ -185,7 +183,7 @@ imageViewLayer.shadowPath = CGPathCreateWithRect(imageRect, NULL);
  以上举了两个例子阐明了在避免大量的offerScreen渲染后,性能能够得到非常直观有效的提高。
 
 
-###3. 关于blending
+- ###3. 关于blending
 
 前面提到了用透明圆形的图片来进行遮盖,会引起blending。blending也会耗费性能。
 
@@ -210,7 +208,7 @@ imageViewLayer.shadowPath = CGPathCreateWithRect(imageRect, NULL);
 在了解完Blending之后,我们就知道为什么很多优化准则都需要我们尽量使用不透明图层了。接下来就是在开发中留意和进行优化了。
 
 
-###四. 测试工具
+##测试工具
 
 在出现图像性能问题,滑动,动画不够流畅之后,我们首先要做的就是定位出问题的所在。而这个过程并不是只靠经验和穷举法探索,我们应该用有脉络,有顺序的科学的手段进行探索。
 
@@ -273,6 +271,7 @@ View debugging
 6. 检查有无不正确图片格式,图片是否被放缩,像素是否对齐。
 7. 检查有无使用复杂的图形效果。
 	
+	
 	以上这四点我们同样使用CoreAnimation instrument来测试。
 	
 	![](colorDebug.png)
@@ -323,6 +322,7 @@ View debugging
 	我们需要重点注意的是1.Color Blended layers,2.Color Hits Green and Misses Red,3.Color offscreen-rendered yellow这三个选项。因为这三个部分对性能的影响最大。
 	
 	
+	
+##总结
 
-		
 

@@ -167,6 +167,10 @@ imageViewLayer.shadowPath = CGPathCreateWithRect(imageRect, NULL);
 	
 
 2. 裁剪图片为圆:
+	
+	如图为例
+	
+	![](round.png)
 
 	使用CornerRadius：
 	
@@ -182,8 +186,7 @@ imageViewLayer.shadowPath = CGPathCreateWithRect(imageRect, NULL);
 
  以上举了两个例子阐明了在避免大量的offerScreen渲染后,性能能够得到非常直观有效的提高。
 
-
-- ###3. 关于blending
+###3. 关于blending
 
 前面提到了用透明圆形的图片来进行遮盖,会引起blending。blending也会耗费性能。
 
@@ -319,10 +322,24 @@ View debugging
 	
 	好啦,终于完整介绍完这些调试选项了,我们总结一下。
 	
-	我们需要重点注意的是1.Color Blended layers,2.Color Hits Green and Misses Red,3.Color offscreen-rendered yellow这三个选项。因为这三个部分对性能的影响最大。
+	我们需要重点注意的是  
+	1.Color Blended layers  
+	2.Color Hits Green and Misses Red  
+	3.Color offscreen-rendered yellow这三个选项。  
+	因为这三个部分对性能的影响最大。
+
+8. 检查View层级是否正确。
+
+	![](viewDebug.png)
 	
+	我们可以在上图清楚地看到View的层级关系。可以检查View的层级是否正确。
+	
+	小提示（应用运行后,在这里打开）:从左往右第七个图标
+	
+	![](openViewDebug.png)
 	
 	
 ##总结
+
 
 

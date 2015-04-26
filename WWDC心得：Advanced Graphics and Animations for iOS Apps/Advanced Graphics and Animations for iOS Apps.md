@@ -1,4 +1,3 @@
-#WWDC2014
 ###Advanced Graphics and Animations for iOS Apps(session 419)
 
 学习与延伸

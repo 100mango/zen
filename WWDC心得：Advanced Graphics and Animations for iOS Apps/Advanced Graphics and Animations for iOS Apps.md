@@ -256,7 +256,7 @@ View debugging
 3. 检查有无必要的CPU渲染
 
 
-	以上三个我们可以使用CoreAnimation instrument来测试。
+	以上三三点我们可以使用CoreAnimation instrument来测试。
 	
 	![](FPS.png)
 	![](CPU.png)
@@ -273,8 +273,56 @@ View debugging
 6. 检查有无不正确图片格式,图片是否被放缩,像素是否对齐。
 7. 检查有无使用复杂的图形效果。
 	
+	以上这四点我们同样使用CoreAnimation instrument来测试。
+	
+	![](colorDebug.png)
+	
+	我们可以看到上图右下角的Debug options有多个选项。我们通过勾选这些选项来触发Color Debug。下面逐个对这些选项进行分析。
+	
+	- Color Blended layers
+
+		![](blendedLayer.png)
+		
+		如图,勾选这个选项后,blended layer 就会被显示为红色,而不透明的layer则是绿色。我们希望越少红色区域越好。
+		
+	-  Color Hits Green and Misses Red
+
+		这个选项主要是检测我们有无滥用或正确使用layer的shouldRasterize属性.成功被缓存的layer会标注为绿色,没有成功缓存的会标注为红色。
+		
+		在测试的过程中,第一次加载时,开启光栅化的layer会显示为红色,这是很正常的,因为还没有缓存成功。但是如果在接下来的测试,例如我们来回滚动TableView时,我们仍然发现有许多红色区域,那就需要谨慎对待了。因为像我们前面讨论过的,这会引起offscreen rendering。
+		
+		检查一下是否有滥用该属性,因为系统规定的缓存大小是屏幕大小的2.5倍,如果使用过度,超出了缓存大小,会引起offscreen rendering。检测layer是否内容不断更新,内容的更新会导致缓存失效和大量的offscreen rendering.
+
+	- Color copied images
+
+		这个选项主要检查我们有无使用不正确图片格式,若是GPU不支持的色彩格式的图片则会标记为青色,则只能由CPU来进行处理。我们不希望在滚动视图的时候,CPU实时来进行处理,因为有可能会阻塞主线程。
+		
+	- Color misaligned images
+
+		这个选项检查了图片是否被放缩,像素是否对齐。被放缩的图片会被标记为黄色,像素不对齐则会标注为紫色。
+		
+	- Color offscreen-rendered yellow
+
+		这个选项将需要offscreen渲染的的layer标记为黄色。
+		
+		![](offscreenRendered.png)
+		
+		以上图为例子,NavigationBar和ToolBar被标记为黄色。因为它们需要模糊背后的内容,这需要offscreen渲染。但是这是我们需要的。而图片也是被标记为黄色,那是因为阴影的缘故。我前面已经提到了这一点,如果此时我们用shadowPath来替代的话,就能够避免offscreen渲染带来的巨大开销。
+		
+	- Color OpenGL fast path blue
+
+		这个选项勾选后,由OpenGL compositor进行绘制的图层会标记为蓝色。这是一个好的结果。
+	
+	- Flash updated regions
+
+		会标记屏幕上被快速更新的部分为黄色,我们希望只是更新的部分被标记完黄色。
+		
+	
+	好啦,终于完整介绍完这些调试选项了,我们总结一下。
+	
+	我们需要重点注意的是1.Color Blended layers,2.Color Hits Green and Misses Red,3.Color offscreen-rendered yellow这三个选项。因为这三个部分对性能的影响最大。
+	
 	
 
-
-
+		
 

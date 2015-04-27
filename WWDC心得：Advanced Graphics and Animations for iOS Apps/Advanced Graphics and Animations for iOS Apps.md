@@ -2,6 +2,8 @@
 
 学习与延伸
 --
+这篇文章主要是学习完Advanced Graphics and Animations for iOS Apps这个session后的总结和相应细节的延伸和细化。主要内容为图形性能与测试工具这两个章节。
+
 目录：  
 
 - [Core Animation Pipeline](#Core Animation Pipeline)
@@ -29,7 +31,7 @@ CoreAnimation的渲染流程可以用下图来概括:
 
 第二部分主要讲解了iOS8新引入的UIBlurEffectView,结合第一部分来阐述UIBlurEffectView是如何工作的,以及它们的性能。
 
-事实上,个人觉得有一点很有趣。就是UIBlurEffect为了优化图像处理效率,并不是用普通的模糊算法过程。虽然Session中没提到模糊算法,我在这里简单地介绍一下简单的模糊算法。
+事实上,个人觉得有一点很有趣。就是UIBlurEffectView为了优化图像处理效率,并不是用普通的模糊算法。虽然Session中没提到模糊算法,我在这里简单地介绍一下简单的模糊算法。
 
 最简单模糊的过程即是用中心像素与其周围像素的颜色算术平均值来代表模糊后的颜色值。我们可以在下面两幅图看到中心像素值的变化。
 
@@ -53,7 +55,7 @@ CoreAnimation的渲染流程可以用下图来概括:
 Extra light耗费最多资源, Light其次, Dark最多。
 ![](UIVisualEffectView_cost.png)
 
-我在自己的个人项目里也有用到UIBlurEffectView来美好,优化用户体验。两个项目都已经上架,并完整开源。欢迎去看看。
+我在自己的个人项目里也有用到UIBlurEffectView来美化界面,优化用户体验。两个项目都已经上架,并完整开源。欢迎去看看。
 
 - [TouchColor](https://github.com/100mango/ColorPicker) 
 
@@ -69,11 +71,13 @@ Extra light耗费最多资源, Light其次, Dark最多。
 
 - ###1. 关于CALayer的shouldRasterize（光栅化）
 
+	开启shouldRasterize后,CALayer会被光栅化为bitmap,layer的阴影等效果也会被保存到bitmap中。
+
 	当我们开启光栅化后,需要注意三点问题。
 	
 	- 如果我们更新已光栅化的layer,会造成大量的offscreen渲染。
 	
-		因此CALayer的光栅化选项的开启与否需要我们仔细衡量使用场景。只能用在静态图像的绘制：
+		因此CALayer的光栅化选项的开启与否需要我们仔细衡量使用场景。只能用在图像内容不变的前提下的：
 
 		- 用于避免静态内容的复杂特效的重绘,例如前面讲到的UIBlurEffect
 		- 用于避免多个View嵌套的复杂View的重绘。
@@ -104,7 +108,7 @@ Extra light耗费最多资源, Light其次, Dark最多。
 	
 	那么为什么offscreen渲染会耗费大量资源呢？
 	
-	原因是显卡需要另外alloc一块内存来进行渲染,而且对于显卡来说,onscreen到offscreen的上下文环境切换是非常昂贵的(涉及到OpenGL的pipelines和barrier等),
+	原因是显卡需要另外alloc一块内存来进行渲染,渲染完毕后在绘制到当前屏幕,而且对于显卡来说,onscreen到offscreen的上下文环境切换是非常昂贵的(涉及到OpenGL的pipelines和barrier等),
 	
 > 备注：
 > 
@@ -256,7 +260,7 @@ View debugging
 3. 检查有无必要的CPU渲染
 
 
-	以上三三点我们可以使用CoreAnimation instrument来测试。
+	以上三点我们可以使用CoreAnimation instrument来测试。
 	
 	![](FPS.png)
 	![](CPU.png)

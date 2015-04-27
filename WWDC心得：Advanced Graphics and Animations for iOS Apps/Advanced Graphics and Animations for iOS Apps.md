@@ -333,7 +333,7 @@ View debugging
 
 8. 检查View层级是否正确。
 
-	![](viewDebug.png)
+	![](ViewDebug.png)
 	
 	我们可以在上图清楚地看到View的层级关系。可以检查View的层级是否正确。
 	

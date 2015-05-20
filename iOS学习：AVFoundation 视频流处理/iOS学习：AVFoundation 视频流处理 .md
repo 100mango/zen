@@ -84,10 +84,16 @@ AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device
 通过上面的简单例子,我么可以看出使用AVFoundation来捕捉视频流并不是十分复杂。重点是使用的过程需要了解配置的细节,还有性能问题。
 
 
-##实践
+##实战
 
+学习基础知识过后,让我们用个具体例子来进行阐明。
+
+我们来做一个基于AVFoundation二维码识别应用：QRCatcher
+
+应用已经上架[AppStore](https://itunes.apple.com/cn/app/qrcatcher/id993170818?mt=8) 并且完整[开源](https://github.com/100mango/QRCatcher)
 
 	
+
 
 
 	

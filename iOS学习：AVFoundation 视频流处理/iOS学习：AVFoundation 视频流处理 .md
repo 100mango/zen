@@ -93,7 +93,97 @@ AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device
 应用已经上架[AppStore](https://itunes.apple.com/cn/app/qrcatcher/id993170818?mt=8) 并且完整[开源](https://github.com/100mango/QRCatcher)
 
 	
+项目架构：
 
+~~~
+|- Model
+    |- URLEntity
+|- View
+    |- QRURLTableViewCell
+    |- QRTabBar
+|- Controller
+    |- QRCatchViewController
+    |- QRURLViewController
+|- Tools
+    |- NSString+Tools
+    |- NSObject+Macro
+~~~
+
+
+项目并不复杂。典型的MVC架构.
+
+- Model层只有一个URLEntity用于存储捕捉到的URL信息。
+这次项目也顺便学习了一下CoreData。感觉良好,配合NSFetchedResultsController工作很幸福。
+
+- View层则是一个TableViewCell和tabbar,继承tabbar主要用于改变tabbar高度。
+
+- Controller层中QRCatchViewController负责捕捉与存储二维码信息, QRURLViewController负责展示与管理收集到的URL信息。
+
+- Tools则是一些辅助方便开发的类。出自我自己平时使用收集编写维护的一个工具库 （[开源链接](https://github.com/100mango/MyTools_iOS)）在这个项目中主要用以检查URL是否合法,判断设备类型。
+
+
+介绍完基本的架构后,我们把精力放回AVFoundation模块上来。在这个项目中, AVFoundation主要负责二维码的扫描与解析。
+
+我们直接来看QRCatchViewController中涉及的代码。
+
+对于我们这个应用来说,只需两步核心步骤即可。
+
+1. 设置AVFoundation
+
+~~~objective-c
+- (void)setupAVFoundation
+{
+    //session
+    self.session = [[AVCaptureSession alloc] init];
+    //device
+    AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    NSError *error = nil;
+    //input
+    AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device error:&error];
+    if(input) {
+        [self.session addInput:input];
+    } else {
+        NSLog(@"%@", error);
+        return;
+    }
+    //output
+    AVCaptureMetadataOutput *output = [[AVCaptureMetadataOutput alloc] init];
+    [self.session addOutput:output];
+    [output setMetadataObjectTypes:@[AVMetadataObjectTypeQRCode]];
+    [output setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
+    
+    //add preview layer
+    self.previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:self.session];
+    [self.preview.layer addSublayer:self.previewLayer];
+    
+    //start
+    [self.session startRunning];
+}
+~~~
+
+2.实现代理方法：
+
+~~~objective-c
+- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection
+{
+    for (AVMetadataMachineReadableCodeObject *metadata in metadataObjects) {
+        if ([metadata.type isEqualToString:AVMetadataObjectTypeQRCode]) {
+            
+            self.borderView.hidden = NO;
+            if ([metadata.stringValue isURL])
+            {
+                [[UIApplication sharedApplication] openURL:[NSString HTTPURLFromString:metadata.stringValue]];
+                [self insertURLEntityWithURL:metadata.stringValue];
+                self.stringLabel.text = metadata.stringValue;
+            }
+            else
+            {
+                self.stringLabel.text = metadata.stringValue;
+            }
+        }
+    }
+}
+~~~
 
 
 	

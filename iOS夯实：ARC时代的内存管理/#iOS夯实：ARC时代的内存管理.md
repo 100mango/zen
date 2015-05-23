@@ -30,7 +30,7 @@ ARC提供是一个编译器的特性，帮助我们在编译的时候自动插�
         // The original self doesn't exist anymore.
         // Ignore, notify or otherwise handle this case.
     	}
-    	[self someMethod];
+    	[strongSelf someMethod];
 	};
 	~~~
 [^2]: [How does Python deal with retain cycles?](http://www.quora.com/How-does-Python-deal-with-retain-cycles)

@@ -2,7 +2,11 @@
 
 ##框架
 
-首先我们从整体对所需框架做个了解。
+首先我们从整体对所需框架做个初步了解。
+
+AVFoundation在相关框架栈中的的位置：
+
+![](AVFoundation.png)
 
 为了捕捉视频,我们需要这样几种类（与其它的子类）。
 
@@ -90,6 +94,8 @@ AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device
 
 我们来做一个基于AVFoundation二维码识别应用：QRCatcher
 
+![](icon.png)
+
 应用已经上架[AppStore](https://itunes.apple.com/cn/app/qrcatcher/id993170818?mt=8) 并且完整[开源](https://github.com/100mango/QRCatcher)
 
 	
@@ -115,11 +121,11 @@ AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device
 - Model层只有一个URLEntity用于存储捕捉到的URL信息。
 这次项目也顺便学习了一下CoreData。感觉良好,配合NSFetchedResultsController工作很幸福。
 
-- View层则是一个TableViewCell和tabbar,继承tabbar主要用于改变tabbar高度。
+- View层则是一个TableViewCell和Tabbar,继承Tabbar主要用于改变tabbar高度。
 
 - Controller层中QRCatchViewController负责捕捉与存储二维码信息, QRURLViewController负责展示与管理收集到的URL信息。
 
-- Tools则是一些辅助方便开发的类。出自我自己平时使用收集编写维护的一个工具库 （[开源链接](https://github.com/100mango/MyTools_iOS)）在这个项目中主要用以检查URL是否合法,判断设备类型。
+- Tools则是一些辅助方便开发的类。出自我自己平时使用收集编写维护的一个工具库 （[开源链接](https://github.com/100mango/MyTools_iOS)）在这个项目中主要用以检查URL是否合法,判断设备类型等。
 
 
 介绍完基本的架构后,我们把精力放回AVFoundation模块上来。在这个项目中, AVFoundation主要负责二维码的扫描与解析。
@@ -161,6 +167,23 @@ AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device
 }
 ~~~
 
+在这里我们可以看到和上面创建捕捉视频流的步骤基本是一致的。
+
+也就是
+
+1. 创建session
+2. 创建device
+3. 创建input
+4. 创建output。
+
+	这里是与捕捉视频流所不一致的地方。我们捕捉视频流需要的是AVCaptureVideoDataOutput,而在这里我们需要捕捉的是二维码信息。因此我们需要AVCaptureMetadataOutput。并且我们需要指定捕捉的metadataObject类型。在这里我们指定的是AVMetadataObjectTypeQRCode,我们还可以指定其他类型,例如PDF417条码类型。  
+	完整的可指定列表可以在[这里](https://developer.apple.com/library/prerelease/ios/documentation/AVFoundation/Reference/AVMetadataMachineReadableCodeObject_Class/index.html#//apple_ref/doc/constant_group/Machine_Readable_Object_Types)找到。
+	
+	然后我们还要指定处理这些信息的delegate与队列。
+	
+5. 开始录制
+	
+	
 2.实现代理方法：
 
 ~~~objective-c
@@ -184,6 +207,25 @@ AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device
     }
 }
 ~~~
+
+我们需要在代理方法里面接收数据,并根据自己的需求进行处理。在这里我简单地进行了URL的测试,如果是的话则打开safari进行浏览。
+
+
+##总结
+
+在这里仅仅是通过一个二维码的应用来展示AVFoundation处理视频流能力。事实上，AVFoundation能够做得更多。能够进行剪辑,处理音轨等功能。如果我们需要对视频与音频相关的事务进行处理,不妨在着手处理,寻找第三方解决方案前,看看这个苹果公司为我们带来的强大模块。
+
+
+PS:最后来点好玩的东西：
+
+大家可以用手机上的微信扫一扫这张二维码（莫慌,虽然稍微有点密集）：
+
+![](二维码.png)
+
+自己用iOS上微信的最新版本进行扫描(版本6.3 完成这篇文章的时间是2015.5.27)
+
+是无法完成扫描解析的,而用QRCatcher是可以准确扫描成功的 :）。欢迎下载试用。
+
 
 
 	

@@ -33,6 +33,24 @@ ARC提供是一个编译器的特性，帮助我们在编译的时候自动插�
     	[strongSelf someMethod];
 	};
 	~~~
+	
+	我们还有一种更简便的方法来进行处理,实际原理与上面是一样的,但简化后的指令更易用。
+	
+	~~~objective-c
+@weakify(self)
+[self.context performBlock:^{
+    // Analog to strongSelf in previous code snippet.
+    @strongify(self)
+
+    // You can just reference self as you normally would. Hurray.
+    NSError *error;
+    [self.context save:&error];
+
+    // Do something
+}];
+~~~
+	你可以在这里找到@weakify,@strongify工具：[MyTools_iOS](https://github.com/100mango/MyTools_iOS)
+	
 [^2]: [How does Python deal with retain cycles?](http://www.quora.com/How-does-Python-deal-with-retain-cycles)
 
 2. NSTimer

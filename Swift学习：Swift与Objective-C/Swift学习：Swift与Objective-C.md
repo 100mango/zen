@@ -61,3 +61,6 @@ class Shape {
 而在Swift中,我们不能直接与instance variable打交道。也就是我们声明的方式简化为简单的一种,简单来说在Swift中,我们只与property打交道。
 
 > A Swift property does not have a corresponding instance variable, and the backing store for a property is not accessed directly
+
+因此之前使用OC导致的一些[开发争议](http://blog.devtang.com/blog/2015/03/15/ios-dev-controversy-1/)就不再需要争执了,在Swift的世界里,我们只与property打交道。个人觉得这看似小小一点变动使Swift开发变得更加安全以及在代码的风格更为统一与稳定。
+

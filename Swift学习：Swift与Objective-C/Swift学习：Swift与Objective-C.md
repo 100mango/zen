@@ -3,10 +3,10 @@
 
 近来初学Swift。对于编程语言,我只是一个门外汉。编程语言的设计对我来说太遥远,编译器设计对我来说则太困难晦涩。那么本来静静地学习就好了,安心写代码即可。不过还是觉得学习这一新的语言,还是得更用心,因此决定写下这篇文章来总结与拓展学习Swift。
 
-自己因为已经使用Objective-C有一些经验,因此在学习的过程作个对比,加深印象,也希望能够帮助已经有Objective-C经验的同仁们更快地了解Swift,尽一点绵薄之力。
+自己因为已经使用Objective-C有一些经验,因此在学习的过程作个对比,加深印象。尽可能地突出重点。也希望能够帮助已经有Objective-C经验的同仁们更快地了解Swift,尽一点绵薄之力。
 
 
-###1.变量,常量,属性(property)和实例变量(instance variable)
+##1.变量,常量,属性(property)和实例变量(instance variable)
 
 在Cocoa世界开发的过程中,我们最常打交道的是property.
 
@@ -64,3 +64,65 @@ class Shape {
 
 因此之前使用OC导致的一些[开发争议](http://blog.devtang.com/blog/2015/03/15/ios-dev-controversy-1/)就不再需要争执了,在Swift的世界里,我们只与property打交道。个人觉得这看似小小一点变动使Swift开发变得更加安全以及在代码的风格更为统一与稳定。
 
+
+##2.控制流
+
+Swift与Objective-C在控制流的语法上关键词基本是一致的,除此之外新增了少许新内容,强化了功能和增加了安全性。
+
+主要有三种类型的语句
+
+1. if,switch和新增的guard
+2. for,while
+3. break,continue
+
+主要差异有：
+
+###关于if
+
+**语句里的条件不再需要使用`()`包裹了。**
+
+~~~swift
+let number = 23
+if number < 10 {
+    print("The number is small")
+} 
+~~~
+
+**但是后面判断执行的的代码必须使用`{}`包裹住。**
+ 
+为什么呢,在C,C++等语言中,如果后面执行的语句只有语句,我们可以写成:
+ 
+~~~objective-c
+  int number = 23
+	if (number < 10)
+	 	NSLog("The number is small")
+~~~
+
+但是如果有时要在后面添加新的语句,忘记添加`{}`,灾难就很可能发送。
+
+：） 像苹果公司自己就犯过这样的错误。下面这段代码就是著名的goto fail错误,导致了严重的安全性问题。
+
+~~~C
+  if ((err = SSLHashSHA1.update(&hashCtx, &signedParams)) != 0)
+    goto fail;
+    goto fail;
+  ... other checks ...
+  fail:
+    ... buffer frees (cleanups) ...
+    return err;
+~~~
+
+：）    
+最终在Swift,苹果终于在根源上消除了可能导致这种错误的可能性。
+
+**if 后面的条件必须为Boolean表达式**
+
+也就是不会隐式地与0进行比较,下面这种写法是错误的,因为number并不是一个boolean表达式,number != 0才是。
+
+~~~objective-c
+int number = 0
+if number{
+} 
+~~~
+
+### 关于

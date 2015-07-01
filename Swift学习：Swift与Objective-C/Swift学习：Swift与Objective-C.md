@@ -3,7 +3,7 @@
 
 近来初学Swift。对于编程语言,我只是一个门外汉。编程语言的设计对我来说太遥远,编译器设计对我来说则太困难晦涩。那么本来静静地学习就好了,安心写代码即可。不过还是觉得学习这一新的语言,还是得更用心,因此决定写下这篇文章来总结与拓展学习Swift。
 
-自己因为已经使用Objective-C有一些经验,因此在学习的过程作个对比,加深印象。尽可能地突出重点。也希望能够帮助已经有Objective-C经验的同仁们更快地了解Swift,尽一点绵薄之力。
+自己因为已经使用Objective-C有一些经验,因此决定在学习的过程将常用的语法作个对比,加深印象,尽可能地突出重点。也希望能够帮助已经有Objective-C经验的同仁们更快地了解Swift,尽一点绵薄之力。
 
 
 ##1.变量,常量,属性(property)和实例变量(instance variable)
@@ -40,7 +40,7 @@ class Shape {
 - readonly,readwrie  直接通过声明变量var,声明常量let的方式来指明
 - copy 通过@NSCopying指令声明。 
 
-	*值得注意的是string,array和Dictionary在Swift是以值类型(value type)而不是引用类型(reference type)出现,因此它们在赋值,初始化,参数传递中都是以拷贝的方式进行* 
+	**值得注意的是string,array和Dictionary在Swift是以值类型(value type)而不是引用类型(reference type)出现,因此它们在赋值,初始化,参数传递中都是以拷贝的方式进行** 
 	
 	[延伸阅读：Value and Reference Types](https://developer.apple.com/swift/blog/?id=10)
 	
@@ -105,7 +105,7 @@ if number < 10 {
 ~~~C
   if ((err = SSLHashSHA1.update(&hashCtx, &signedParams)) != 0)
     goto fail;
-    goto fail;
+    goto fail;  // :)注意 这不是Python的缩减
   ... other checks ...
   fail:
     ... buffer frees (cleanups) ...
@@ -125,4 +125,64 @@ if number{
 } 
 ~~~
 
-### 关于
+### 关于for
+
+for循环在Swift中变得更方便,更强大。
+
+得益于Swift新添加的范围操作符`...`与`...<`
+
+我们能够将之前繁琐的for循环：
+
+~~~
+for (int i = 1; i <= 5; i++)
+{
+    NSLog(@"%d", i);
+}
+~~~
+
+改写为：
+
+~~~swift
+for index in 1...5 {
+    print(index)
+}
+~~~
+
+当然,熟悉Python的亲们知道Python的range函数很方便,我们还能自由选择步长。
+像这样：
+
+~~~python
+
+>>> range(1,5) #代表从1到5(不包含5)
+[1, 2, 3, 4]
+>>> range(1,5,2) #代表从1到5，间隔2(不包含5)
+[1, 3]
+~~~
+
+虽然在《The Swift Programming Language》里面没有提到类似的用法,但是在Swift中我们也有优雅的方法办到。
+
+~~~swift
+for index in stride(from: 1, through: 5, by: 2) {
+    print(index)
+}// through是包括5
+~~~
+
+然后对字典的遍历也增强了.在Objective-c的快速枚举中我们只能对字典的键进行枚举。
+
+~~~objective-c
+NSString *key;
+for (key in someDictionary){
+     NSLog(@"Key: %@, Value %@", key, [someDictionary objectForKey: key]);
+}
+~~~
+
+而在Swift中,通过tuple我们可以同时枚举key与value:
+
+~~~swift
+let dictionary = ["firstName":"Mango","lastName":"Fang"]
+for (key,value) in dictionary{
+    print(key+" "+value)
+}
+~~~
+
+### 关于Switch

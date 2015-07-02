@@ -62,7 +62,7 @@ class Shape {
 
 > A Swift property does not have a corresponding instance variable, and the backing store for a property is not accessed directly
 
-因此之前使用OC导致的一些[开发争议](http://blog.devtang.com/blog/2015/03/15/ios-dev-controversy-1/)就不再需要争执了,在Swift的世界里,我们只与property打交道。个人觉得这看似小小一点变动使Swift开发变得更加安全以及在代码的风格更为统一与稳定。
+因此之前使用OC导致的像巧哥指出的[开发争议](http://blog.devtang.com/blog/2015/03/15/ios-dev-controversy-1/)就不再需要争执了,在Swift的世界里,我们只与property打交道。个人觉得这看似小小一点变动使Swift开发变得更加安全以及在代码的风格更为统一与稳定。
 
 
 ##2.控制流
@@ -77,6 +77,7 @@ Swift与Objective-C在控制流的语法上关键词基本是一致的,除此之
 
 主要差异有：
 
+***
 ###关于if
 
 **语句里的条件不再需要使用`()`包裹了。**
@@ -125,6 +126,7 @@ if number{
 } 
 ~~~
 
+***
 ### 关于for
 
 for循环在Swift中变得更方便,更强大。
@@ -185,4 +187,84 @@ for (key,value) in dictionary{
 }
 ~~~
 
+***
 ### 关于Switch
+
+Swich在Swift中也得到了功能的增强与安全性的提高。
+
+**不需要Break来终止往下一个Case执行**
+
+也就是下面这两种写法是等价的。
+
+~~~swift
+let character = "a"
+
+switch character{
+    case "a":
+        print("A")
+    break
+    case "b":
+        print("B")
+    break
+default: print("character")
+~~~
+
+
+~~~swift
+let character = "a"
+
+switch character{
+    case "a":
+        print("A")
+    case "b":
+        print("B")
+default: print("character")
+~~~
+
+这种改进避免了忘记写break造成的错误,自己深有体会,曾经就是因为漏写了break而花了一段时间去debug。
+
+如果我们想不同值统一处理,使用逗号将值隔开即可。
+
+~~~swift
+switch some value to consider {
+case value 1,value 2:
+    statements
+}
+~~~
+
+**Switch支持的类型**
+
+在OC中,Swtich只支持int类型,char类型作为匹配。
+
+而在Swift中,Switch支持的类型大大的拓宽了。实际上,苹果是这么说的。
+>  A switch statement supports any kind of data 
+
+这意味在开发中我们能够能够对字符串,浮点数等进行匹配了。
+
+之前在OC繁琐的写法就可以进行改进了:
+
+~~~objective-c
+if ([cardName isEqualToString:@"Six"]) {
+    [self setValue:6];
+} else if ([cardName isEqualToString:@"Seven"]) {
+    [self setValue:7];
+} else if ([cardName isEqualToString:@"Eight"]) {
+    [self setValue:8];
+} else if ([cardName isEqualToString:@"Nine"]) {
+    [self setValue:9];
+} 
+~~~
+
+~~~swift
+switch carName{
+    case "Six":
+        self.vaule = 6
+    case "Seven":
+        self.vaule = 7
+    case "Eight":
+        self.vaule = 8
+    case "Night":
+        self.vaule = 9   
+}
+~~~
+

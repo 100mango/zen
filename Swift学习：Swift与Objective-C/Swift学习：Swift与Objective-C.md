@@ -268,3 +268,20 @@ switch carName{
 }
 ~~~
 
+##3.方法
+
+在Objective-C中我们的类方法与实例方法是这样定义的。
+
+~~~objevtive-c
++ (UIColor*)blackColor
+- (void)addSubview:(UIView *)view
+~~~
+
+对应的swift版本
+
+~~~swift
+    class func blackColor() -> UIColor //类
+
+	func addSubview(view: UIView) //实例方法
+~~~
+

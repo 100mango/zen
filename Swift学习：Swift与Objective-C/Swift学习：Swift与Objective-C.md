@@ -270,7 +270,17 @@ switch carName{
 
 ##3.方法
 
-在Objective-C中我们的类方法与实例方法是这样定义的。
+对于在OC中,方法有两种类型,类方法与实例方法。方法的组成由方法名,参数,返回值组成。
+
+在Swift中函数的组成基本一样。
+
+主要区别为：
+
+1. 通过`func`关键词定义函数
+2. 返回值在`->`关键词后标注
+3. 
+
+各举一个类方法与实例方法例子。
 
 ~~~objevtive-c
 + (UIColor*)blackColor
@@ -280,8 +290,7 @@ switch carName{
 对应的swift版本
 
 ~~~swift
-    class func blackColor() -> UIColor //类
-
+   	class func blackColor() -> UIColor //类方法, 通过 class func 关键词声明
 	func addSubview(view: UIView) //实例方法
 ~~~
 

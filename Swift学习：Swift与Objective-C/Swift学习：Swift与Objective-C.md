@@ -6,6 +6,14 @@
 自己因为已经使用Objective-C有一些经验,因此决定在学习的过程将常用的语法作个对比,加深印象,尽可能地突出重点。也希望能够帮助已经有Objective-C经验的同仁们更快地了解Swift,尽一点绵薄之力。
 
 
+
+目录：  
+
+- [1.变量,常量,属性(property)和实例变量(instance variable)](#1.变量,常量,属性(property)和实例变量(instance variable))
+- [2.控制流](#2.控制流)
+- [3.函数](###3.函数)
+
+
 ##1.变量,常量,属性(property)和实例变量(instance variable)
 
 在Cocoa世界开发的过程中,我们最常打交道的是property.
@@ -320,4 +328,4 @@ let oldArray = [1,2,3,4,5,6,7,8,9,10]
 let newArray = oldArray.filter({$0 > 4})
 ~~~
 
-进一步了解Swift的函数式编程可以通过这篇优秀的博客[Functional Reactive Programming in Swift](http://blog.callmewhy.com/2015/05/11/functional-reactive-programming-1/#)进行拓展。
+进一步了解Swift的函数式编程可以通过这篇优秀的博客[Functional Reactive Programming in Swift](http://blog.callmewhy.com/2015/05/11/functional-reactive-programming-1/#)

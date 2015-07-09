@@ -9,12 +9,12 @@
 
 目录：  
 
-- [1.变量,常量,属性(property)和实例变量(instance variable)](#1.变量,常量,属性(property)和实例变量(instance variable))
-- [2.控制流](#2.控制流)
-- [3.函数](###3.函数)
+- [1.变量,常量,属性(property)和实例变量(instance variable)](#1)
+- [2.控制流](#2)
+- [3.函数](#3)
 
 
-##1.变量,常量,属性(property)和实例变量(instance variable)
+<h2 id="1">1.变量,常量,属性(property)和实例变量(instance variable)</h2>
 
 在Cocoa世界开发的过程中,我们最常打交道的是property.
 
@@ -73,7 +73,9 @@ class Shape {
 因此之前使用OC导致的像巧哥指出的[开发争议](http://blog.devtang.com/blog/2015/03/15/ios-dev-controversy-1/)就不再需要争执了,在Swift的世界里,我们只与property打交道。个人觉得这看似小小一点变动使Swift开发变得更加安全以及在代码的风格更为统一与稳定。
 
 
-##2.控制流
+
+
+<h2 id="2">2.控制流</h2>
 
 Swift与Objective-C在控制流的语法上关键词基本是一致的,除此之外新增了少许新内容,强化了功能和增加了安全性。
 
@@ -276,7 +278,7 @@ switch carName{
 }
 ~~~
 
-##3.函数
+<h2 id="3">3.函数</h2>
 
 对于在OC中,方法有两种类型,类方法与实例方法。方法的组成由方法名,参数,返回值组成。
 

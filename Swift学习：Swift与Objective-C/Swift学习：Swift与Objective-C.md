@@ -268,7 +268,7 @@ switch carName{
 }
 ~~~
 
-##3.方法
+##3.函数
 
 对于在OC中,方法有两种类型,类方法与实例方法。方法的组成由方法名,参数,返回值组成。
 
@@ -278,7 +278,6 @@ switch carName{
 
 1. 通过`func`关键词定义函数
 2. 返回值在`->`关键词后标注
-3. 
 
 各举一个类方法与实例方法例子。
 
@@ -294,3 +293,31 @@ switch carName{
 	func addSubview(view: UIView) //实例方法
 ~~~
 
+在Swift中,函数的最重要的改进就是函数作为一等公民,和对象一样可以作为参数进行传递,可以作为返回值,函数式编程也成为了Swift支持的编程范式。
+
+> In computer science, a programming language is said to have first-class functions if it treats functions as first-class citizens. Specifically, this means the language supports passing functions as arguments to other functions, returning them as the values from other functions, and assigning them to variables or storing them in data structures
+
+让我们初略感受一下函数式编程的魅力:
+
+举一个例子,我们要筛选出一个数组里大于4的数字。
+
+在OC中我们可能会用快速枚举来进行筛选。
+
+~~~objective-c
+   NSArray *oldArray = @[@1,@2,@3,@4,@5,@6,@7,@8,@9,@10];
+    NSMutableArray *newArray;
+    for (NSNumber* number in oldArray) {
+        if ([number compare:@4] == NSOrderedDescending ) {
+            [newArray addObject:number];
+        }
+    }
+~~~
+
+而在Swift中,我们用两行代码解决这个问题：
+
+~~~swift
+let oldArray = [1,2,3,4,5,6,7,8,9,10]
+let newArray = oldArray.filter({$0 > 4})
+~~~
+
+进一步了解Swift的函数式编程可以通过这篇优秀的博客[Functional Reactive Programming in Swift](http://blog.callmewhy.com/2015/05/11/functional-reactive-programming-1/#)进行拓展。

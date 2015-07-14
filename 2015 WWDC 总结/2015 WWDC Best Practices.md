@@ -18,7 +18,11 @@
 	例如：
 	
 	~~~swift
-	func application(application: UIApplication, didFinishLaunchingWithOptionslaunchOptions: [NSObject: AnyObject]?) -> Bool {    globalDataStructure = MyCoolDataStructure()    let globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)    dispatch_async(globalQueue) { // defer work until later        globalDataStructure.fetchDataFromDatabase()    }return true 
+	func application(application: UIApplication, didFinishLaunchingWithOptions    launchOptions: [NSObject: AnyObject]?) -> Bool {
+    globalDataStructure = MyCoolDataStructure()
+    let globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+    dispatch_async(globalQueue) {
+        globalDataStructure.fetchDataFromDatabase()    }    return true
 }
 	~~~
 	
@@ -30,11 +34,11 @@
 	
 	但是有时会遇到一种情况,那就是我们在`viewWillAppear`里面做了一些工作。而一旦用户在手势滑动的过程中如果中途取消了。那么我们`viewWillAppear`里面的工作已经被触发了,但是下一次用户再滑动返回,仍然会触发一次。
 	
-	这个时候,你可能会说,那我们把工作放在`viewDidAppear`里面做不久行了吗。先抛开一些我们只能在`viewWillAppear`里面进行作业的情况，即使我们把代码移到`viewDidAppear`,问题仍然会出现,因为viewDidAppear有时不会被调用。
+	举一个例子,直到我写下这篇总结的当前iOS最新版本iOS8.4仍然有的问题。
 	
-	这是为什么呢,顺藤摸瓜我找到了WWDC 2013 的Session *《Custom Transitions Using View Controllers》* 里面提到
-	> you cannot assume a viewDidDisappear will be followed by viewWillDisappear. The same goes to viewWillAppear and viewDidAppear
+	那就是打开iOS设置界面,随便点一个比如蓝牙一栏进去,然后我们滑动返回,能看到有个美妙的cell从selected到deselected的过渡动画。但是注意,如果我们中途取消返回,第二次返回的时候,就没有这个效果了。
 	
-	= =听起来的确有点蛋疼,这位UIKit的工程师也被同事无情的取笑 ：） 说viewWill Appear 应该被叫做 view might appear或view will probably appear, 或是I really wish this view would appear. 笑。
+	原因就在于第一次viewWillAppear的时候已经取消了选择。
+	
 	
 	

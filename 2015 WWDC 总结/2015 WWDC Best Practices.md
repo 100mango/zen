@@ -38,7 +38,16 @@
 	
 	那就是打开iOS设置界面,随便点一个比如蓝牙一栏进去,然后我们滑动返回,能看到有个美妙的cell从selected到deselected的过渡动画。但是注意,如果我们中途取消返回,第二次返回的时候,就没有这个效果了。
 	
-	原因就在于第一次viewWillAppear的时候已经取消了选择。
+	![](swipe.png)
+	
+	原因就在于第一次`viewWillAppear`的时候已经取消了选择。
+	
+	这个问题我们就能通过`UIViewControllerTransitionCoordinator`来进行精确协调。
+	
+	> An object that adopts the UIViewControllerTransitionCoordinator protocol provides support for animations associated with a view controller transition. Typically, you do not adopt this protocol in your own classes. When you present or dismiss a view controller, UIKit creates a transition coordinator object automatically and assigns it to the view controller’s transitionCoordinator property. That transition coordinator object is ephemeral and lasts for the duration of the transition animation.
+
+
+	
 	
 	
 	

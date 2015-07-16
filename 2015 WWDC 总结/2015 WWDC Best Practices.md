@@ -51,7 +51,7 @@
 	
 	上面的问题我们能够这样解决。重点在于检测到transition如果被取消的话,我们就恢复到原来的状态。除此之外我们还能够检测到过场的其他状态与属性。可以查阅[官方文档](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIViewControllerTransitionCoordinator_Protocol/)
 	
-~~~swift
+	~~~swift
   override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -65,17 +65,16 @@
             })
         }
     }
-~~~
+	~~~
 
+3. Table and Collection Views
 
-3.Table and Collection Views
+	一个Cell高度变化动画的技巧。如果我们采用了AutoLayout只需四步即可。
 
-一个Cell高度变化动画的技巧。如果我们采用了AutoLayout只需四步即可。
-
-   1. tableView.beginUpdates 
-   2. Update model
-   3. Update cell contents
-   4. tableView.endUpdates
+   	1. tableView.beginUpdates 
+   	2. Update model
+   	3. Update cell contents
+   	4. tableView.endUpdates
 
 
 

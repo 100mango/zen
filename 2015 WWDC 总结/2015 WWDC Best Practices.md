@@ -49,7 +49,7 @@
 
 	也就是ViewController本身会提供一个这样的Coordinator来帮助我们精确定位转场动画的状态。
 	
-	上面的问题我们能够这样解决。
+	上面的问题我们能够这样解决。重点在于检测到transition如果被取消的话,我们就恢复到原来的状态。除此之外我们还能够检测到过场的其他状态与属性。可以查阅[官方文档](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIViewControllerTransitionCoordinator_Protocol/)
 	
 ~~~swift
   override func viewWillAppear(animated: Bool) {
@@ -58,7 +58,7 @@
         if let indexPath = tableView.indexPathForSelectedRow{
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
             
-            transitionCoordinator()?.notifyWhenInteractionEndsUsingBlock({ (context:UIViewControllerTransitionCoordinatorContext) -> Void in
+            transitionCoordinator()?.notifyWhenInteractionEndsUsingBlock({ context in
                 if context.isCancelled(){
                     self.tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: UITableViewScrollPosition.None)
                 }
@@ -66,6 +66,18 @@
         }
     }
 ~~~
+
+
+3.Table and Collection Views
+
+一个Cell高度变化动画的技巧。如果我们采用了AutoLayout只需四步即可。
+
+   1. tableView.beginUpdates 
+   2. Update model
+   3. Update cell contents
+   4. tableView.endUpdates
+
+
 
 	
 	

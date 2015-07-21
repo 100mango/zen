@@ -331,3 +331,29 @@ let newArray = oldArray.filter({$0 > 4})
 ~~~
 
 进一步了解Swift的函数式编程可以通过这篇优秀的博客[Functional Reactive Programming in Swift](http://blog.callmewhy.com/2015/05/11/functional-reactive-programming-1/#)
+
+
+<h2 id="4">4.类与初始化（Initializers）</h2>
+
+在swift中,一个类不再分为`interface`（.h）与`implementation`(.m)两个文件实现,直接在一个.swift文件里进行处理。好处就是我们只需管理一份文件,以往两头奔波修改的情况就得到解放了,也减少了头文件与实现文件不同步导致的错误。
+
+这时我们会想到,那么我们如何来定义私有方法与属性呢,在OC中我们通过在`class extension`中定义私有属性,在.m文件定义私有方法。
+
+而在Swift中,我们通过`Access Control`来进行控制。
+
+>properties, types, functions等能够进行版本控制的统称为实体。
+
+>- Public：可以访问自己模块或应用中源文件里的任何实体，别人也可以访问引入该模块中源文件里的所有实体。通常情况下，某个接口或Framework是可以被任何人使用时，你可以将其设置为public级别。
+- Internal：可以访问自己模块或应用中源文件里的任何实体，但是别人不能访问该模块中源文件里的实体。通常情况下，某个接口或Framework作为内部结构使用时，你可以将其设置为internal级别。
+- Private：只能在当前源文件中使用的实体，称为私有实体。使用private级别，可以用作隐藏某些功能的实现细节
+
+
+一个小技巧,如果我们有一系列的私有方法,我们可以把它们组织起来,放进一个extension里,这样就不需要每个方法都标记private,同时也便于管理组织代码：
+
+~~~swift
+// MARK: Private
+private extension ViewController {
+    func privateFunction() {
+    }
+}
+~~~

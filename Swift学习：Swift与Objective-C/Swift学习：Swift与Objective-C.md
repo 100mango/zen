@@ -84,6 +84,21 @@ class Shape {
 
 - `Type Properties`
 
+//更正： 目前Swift支持的type propertis不是传统意义上的类变量(class variable)，而是类似java的类变量,是无法被继承的,父类与子类指向的都是同一个变量。
+
+延伸 [Class variables not yet supported](http://stackoverflow.com/questions/24015207/class-variables-not-yet-supported)
+
+~~~
+class SomeStructure {
+    class var storedTypeProperty = "Some value."
+}
+
+Error: Class stored properties not yet supported in classes
+~~~
+
+> In C and Objective-C, you define static constants and variables associated with a type as global static variables.In Swift, however, type properties are written as part of the type’s definition, within the type’s outer curly braces, and each type property is explicitly scoped to the type it supports.
+> 
+
 在Swift中,我们终于可以有明确的语法定义类变量了！
 
 在Objective-C中,我们只能通过单例,或者static变量来自己构造类变量：

@@ -16,6 +16,8 @@
 
 <h2 id="1">1.变量,常量,属性(property)和实例变量(instance variable)</h2>
 
+###Objective-C property in Swift world
+
 在Cocoa世界开发的过程中,我们最常打交道的是property.
 
 典型的声明为:
@@ -45,7 +47,7 @@ class Shape {
 	weak var delegate: UITextFieldDelegate? 
 	~~~
 	
-- readonly,readwrie  直接通过声明变量var,声明常量let的方式来指明
+- readonly,readwrie  直接通过声明变量`var`,声明常量`let`的方式来指明
 - copy 通过@NSCopying指令声明。 
 
 	**值得注意的是string,array和Dictionary在Swift是以值类型(value type)而不是引用类型(reference type)出现,因此它们在赋值,初始化,参数传递中都是以拷贝的方式进行** 
@@ -72,7 +74,60 @@ class Shape {
 
 因此之前使用OC导致的像巧哥指出的[开发争议](http://blog.devtang.com/blog/2015/03/15/ios-dev-controversy-1/)就不再需要争执了,在Swift的世界里,我们只与property打交道。个人觉得这看似小小一点变动使Swift开发变得更加安全以及在代码的风格更为统一与稳定。
 
+###Swift property延伸：
+- `Stored Properties`和`Computed properties`
 
+在Swift中,property被分为两类：`Stored Properties`和`Computed properties`
+简单来说,就是stored properties 能够保存值,而conmuted properties只提供getter与setter,利用stored properties来生成自己的值。个人感觉Computed properties更像方法,而不是传统意义的属性。但是这样一个特性存在,使得我们更容易组织我们的代码。
+
+[computed property vs function](http://stackoverflow.com/questions/24035276/computed-read-only-property-vs-function-in-swift)
+
+- `Type Properties`
+
+在Swift中,我们终于可以有明确的语法定义类变量了！
+
+在Objective-C中,我们只能通过单例,或者static变量来自己构造类变量：
+
+~~~objective-c
+@interface Model
++ (int) value;
++ (void) setValue:(int)val;
+@end
+
+@implementation Model
+static int value;
++ (int) value
+{ @synchronized(self) { return value; } }
++ (void) setValue:(int)val
+{ @synchronized(self) { value = val; } }
+@end
+~~~
+
+~~~objective-c
+// Foo.h
+@interface Foo {
+}
+
++(NSDictionary*) dictionary;
+
+// Foo.m
++(NSDictionary*) dictionary
+{
+  static NSDictionary* fooDict = nil;
+
+  static dispatch_once_t oncePredicate;
+
+  dispatch_once(&oncePredicate, ^{
+        // create dict
+    });
+
+  return fooDict;
+}
+~~~
+
+TO BE Continued:
+
+而且上面的实现方式也是有缺陷的,第一种实现。通过static定义了全局静态变量,我们在子类中如果想要重写是不可以的,子类
 
 
 <h2 id="2">2.控制流</h2>
@@ -357,3 +412,16 @@ private extension ViewController {
     }
 }
 ~~~
+
+关于初始化,在Swift中创建一个对象的语法很简洁：只需在类名后加一对圆括号即可。
+
+~~~swift
+var shape = Shape()
+~~~
+
+而在Swift中,`initializer`也与OC有所区别,Swift的初始化方法不返回数据。而在OC中我们通常返回一个self指针。
+
+> Unlike Objective-C initializers, Swift initializers do not return a value. Their primary role is to ensure that new instances of a type are correctly initialized before they are used for the first time.
+
+Swift的初始化方法让我们只关注对象的初始化。之前在OC世界中[为什么要self = [super init]？](http://www.zhihu.com/question/22295642)。这种问题得以避免。Swift帮助我们处理了alloc的过程。也让我们的代码更简洁明确。
+

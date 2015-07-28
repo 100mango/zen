@@ -68,6 +68,11 @@ ARC提供是一个编译器的特性，帮助我们在编译的时候自动插�
 	> target	
 	The object to which to send the message specified by aSelector when the timer fires. The timer maintains a strong reference to this object until it (the timer) is invalidated.
 	
+	Timer Programming Topics :
+	> A timer maintains a strong reference to its target. This means that as long as a timer remains valid, its target will not be deallocated. As a corollary, this means that it does not make sense for a timer’s target to try to invalidate the timer in its dealloc method—the dealloc method will not be invoked as long as the timer is valid.
+
+
+	
 	举一个例子，一个Timer的Target是ViewController.
 	
 	这个时候，如果我们是在dealloc方法里让timer invalidate，就会造成内存泄露.

@@ -436,6 +436,8 @@ let newArray = oldArray.filter({$0 > 4})
 
 <h2 id="4">4.类与初始化（Initializers）</h2>
 
+- 文件结构与访问控制
+
 在swift中,一个类不再分为`interface`（.h）与`implementation`(.m)两个文件实现,直接在一个.swift文件里进行处理。好处就是我们只需管理一份文件,以往两头奔波修改的情况就得到解放了,也减少了头文件与实现文件不同步导致的错误。
 
 这时我们会想到,那么我们如何来定义私有方法与属性呢,在OC中我们通过在`class extension`中定义私有属性,在.m文件定义私有方法。
@@ -459,6 +461,8 @@ private extension ViewController {
 }
 ~~~
 
+- 语法与alloc和init
+
 关于初始化,在Swift中创建一个对象的语法很简洁：只需在类名后加一对圆括号即可。
 
 ~~~swift
@@ -470,4 +474,5 @@ var shape = Shape()
 > Unlike Objective-C initializers, Swift initializers do not return a value. Their primary role is to ensure that new instances of a type are correctly initialized before they are used for the first time.
 
 Swift的初始化方法让我们只关注对象的初始化。之前在OC世界中[为什么要self = [super init]？](http://www.zhihu.com/question/22295642)。这种问题得以避免。Swift帮助我们处理了alloc的过程。也让我们的代码更简洁明确。
+
 

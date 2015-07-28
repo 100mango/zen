@@ -80,28 +80,17 @@ class Shape {
 在Swift中,property被分为两类：`Stored Properties`和`Computed properties`
 简单来说,就是stored properties 能够保存值,而conmuted properties只提供getter与setter,利用stored properties来生成自己的值。个人感觉Computed properties更像方法,而不是传统意义的属性。但是这样一个特性存在,使得我们更容易组织我们的代码。
 
-[computed property vs function](http://stackoverflow.com/questions/24035276/computed-read-only-property-vs-function-in-swift)
+延伸阅读：[computed property vs function](http://stackoverflow.com/questions/24035276/computed-read-only-property-vs-function-in-swift)
 
 - `Type Properties`
 
-//更正： 目前Swift支持的type propertis不是传统意义上的类变量(class variable)，而是类似java的类变量,是无法被继承的,父类与子类指向的都是同一个变量。
 
-延伸 [Class variables not yet supported](http://stackoverflow.com/questions/24015207/class-variables-not-yet-supported)
-
-~~~
-class SomeStructure {
-    class var storedTypeProperty = "Some value."
-}
-
-Error: Class stored properties not yet supported in classes
-~~~
+Swift提供了语言级别定义类变量的方法。
 
 > In C and Objective-C, you define static constants and variables associated with a type as global static variables.In Swift, however, type properties are written as part of the type’s definition, within the type’s outer curly braces, and each type property is explicitly scoped to the type it supports.
 > 
 
-在Swift中,我们终于可以有明确的语法定义类变量了！
-
-在Objective-C中,我们只能通过单例,或者static变量来自己构造类变量：
+在Objective-C中,我们只能通过单例,或者static变量加类方法来自己构造类变量：
 
 ~~~objective-c
 @interface Model
@@ -140,9 +129,51 @@ static int value;
 }
 ~~~
 
-TO BE Continued:
+而在Swift中我们通过清晰的语法便能定义类变量：
 
-而且上面的实现方式也是有缺陷的,第一种实现。通过static定义了全局静态变量,我们在子类中如果想要重写是不可以的,子类
+通过static定义的类变量无法在子类重写,通过class定义的类变量则可在子类重写。
+
+~~~swift
+struct SomeStructure {
+    static var storedTypeProperty = "Some value."
+    static var computedTypeProperty: Int {
+        return 1
+    }
+    class var overrideableComputedTypeProperty: Int {
+        return 107
+    }
+}
+~~~
+
+同时利用类变量我们也有了更优雅的单例模式实现：
+
+~~~swift
+class singletonClass {
+    static let sharedInstance = singletonClass()
+    private init() {} // 这就阻止其他对象使用这个类的默认的'()'初始化方法
+}
+ 
+~~~
+
+Swift单例模式探索：[The Right Way to Write a Singleton](http://krakendev.io/blog/the-right-way-to-write-a-singleton?utm_campaign=This%2BWeek%2Bin%2BSwift&utm_medium=web&utm_source=This_Week_in_Swift_45)
+
+
+- 延伸：
+
+目前Swift支持的type propertis中的`Stored Properties`类型不是传统意义上的类变量(class variable)，暂时不能通过class 关键词定义,通过static定义的类变量类似java中的类变量,是无法被继承的,父类与子类的类变量指向的都是同一个静态变量。
+
+延伸阅读： [Class variables not yet supported](http://stackoverflow.com/questions/24015207/class-variables-not-yet-supported)
+
+~~~
+class SomeStructure {
+    class var storedTypeProperty = "Some value."
+}
+
+//Swift 2.0 
+Error: Class stored properties not yet supported in classes
+~~~
+
+通过编译器抛出的错误信息,相信在未来的版本中会完善`Type properties`。
 
 
 <h2 id="2">2.控制流</h2>

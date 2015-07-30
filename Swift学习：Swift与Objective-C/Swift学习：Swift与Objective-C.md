@@ -12,6 +12,7 @@
 - [1.变量,常量,属性(property)和实例变量(instance variable)](#1)
 - [2.控制流](#2)
 - [3.函数](#3)
+- [4.类与初始化(Initializers)](#4)
 
 
 <h2 id="1">1.变量,常量,属性(property)和实例变量(instance variable)</h2>
@@ -461,7 +462,7 @@ private extension ViewController {
 }
 ~~~
 
-- 语法与alloc和init
+- 创建对象与`alloc`和`init`
 
 关于初始化,在Swift中创建一个对象的语法很简洁：只需在类名后加一对圆括号即可。
 
@@ -469,16 +470,17 @@ private extension ViewController {
 var shape = Shape()
 ~~~
 
-而在Swift中,`initializer`也与OC有所区别,Swift的初始化方法不返回数据。而在OC中我们通常返回一个self指针。
+而在Swift中,initializer也与OC有所区别,Swift的初始化方法不返回数据。而在OC中我们通常返回一个self指针。
 
 > Unlike Objective-C initializers, Swift initializers do not return a value. Their primary role is to ensure that new instances of a type are correctly initialized before they are used for the first time.
 
 Swift的初始化方法让我们只关注对象的初始化。之前在OC世界中[为什么要self = [super init]？](http://www.zhihu.com/question/22295642)。这种问题得以避免。Swift帮助我们处理了alloc的过程。也让我们的代码更简洁明确。
 
-而在Swift中,initializer也有了更严格的规则。
+而在Swift中,`init`也有了更严格的规则。
 
 - 对于所有`Stored Properties`,都**必须**在对象被创建出来前设置好。也就是我们必须在init方法中赋好值,或是直接给属性提供一个默认值。
 
 	如果有property可以被允许在初始出来时没有值,也就是需要在创建出来后再赋值,或是在程序运行过程都可能不会被赋值。那么这个property必须被声明为`optional`类型。该类型的属性会在init的时候初始化为nil.
+
 
 

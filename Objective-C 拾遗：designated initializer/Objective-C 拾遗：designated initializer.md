@@ -42,6 +42,8 @@
 而且更加严格地定义了designated initializer和它的使用规则。
 详情可以查阅《The Swift Programming Language》。目前由于Swift还没有足够稳定,还没有花时间在上面。但是可以想象得到Swift有着非常好的前景。
 
+**后续：** 开始学习Swift后,越发感受到它的魅力。欢迎阅读：[Swift学习：Swift与Objective-C](https://github.com/100mango/zen/blob/master/Swift%E5%AD%A6%E4%B9%A0%EF%BC%9ASwift%E4%B8%8EObjective-C/Swift%E5%AD%A6%E4%B9%A0%EF%BC%9ASwift%E4%B8%8EObjective-C.md)
+
 使用的规则是基本一致的，我们在OC也是遵循这样的规则的。
 >Rule 1
 A designated initializer must call a designated initializer from its immediate superclass.

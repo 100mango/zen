@@ -482,5 +482,19 @@ Swift的初始化方法让我们只关注对象的初始化。之前在OC世界�
 
 	如果有property可以被允许在初始出来时没有值,也就是需要在创建出来后再赋值,或是在程序运行过程都可能不会被赋值。那么这个property必须被声明为`optional`类型。该类型的属性会在init的时候初始化为nil.
 
+- initializer严格分为`Designated Initializer`和`Convenience Initializer`
+并且有语法定义。
 
+	而在Objective-C中没有明确语法标记哪个初始化方式是convenience方法。关于`Designated Initializer`可参阅之前的:[Objective-C 拾遗：designated initializer](https://github.com/100mango/zen/blob/master/Objective-C%20%E6%8B%BE%E9%81%97%EF%BC%9Adesignated%20initializer/Objective-C%20%E6%8B%BE%E9%81%97%EF%BC%9Adesignated%20initializer.md)
+
+	~~~swift
+	init(parameters) {
+		statements
+	}
+
+	convenience init(parameters) {
+	 	statements
+	}
+	~~~
+	
 

@@ -111,8 +111,23 @@
 
 ###3. 不要在初始化方法和dealloc方法中使用Accessor Methods
 
+苹果在《Advanced Memory Management Programming Guide》指出：
+
+> Don’t Use Accessor Methods in Initializer Methods and dealloc
+The only places you shouldn’t use accessor methods to set an instance variable are in initializer methods and dealloc. To initialize a counter object with a number object representing zero, you might implement an init method as follows:
+
+> ~~~objevtive-c
+- init {
+    self = [super init];
+    if (self) {
+        _count = [[NSNumber alloc] initWithInteger:0];
+    }
+    return self;
+}
+~~~
+
   唯一不需要使用Accessor Methods的地方是initializer和dealloc.
-  在苹果官方文档中没有解释为什么。经过一番查阅后,最主要的原因是此时对象的状况不确定，尚未完全初始化完毕，而导致一些问题的发送。
+  在苹果官方文档中没有解释为什么。经过一番查阅后,最主要的原因是此时对象的状况不确定，尚未完全初始化完毕，而导致一些问题的发生。
   
   例如这个类或者子类重写了setMethod,里面调用了其他一些数据或方法,而这些数据和方法需要一个已经完全初始化好的对象。而在init中,对象的状态是不确定的。
   
@@ -121,6 +136,8 @@
   其它一些问题还有，像会触发KVO notification等。[^1]       [^2]
   
   ***总之，记住在开发中记住这个principle最重要。***
+  
+在开发中,我发现还是有人因为疏忽或不知道而直接在init方法里面使用self.property = XXX来进行赋值,留下了一些隐患。Swift去除了直接和instance variable打交道的途径。统一使用property进行管理,并对`init`进行严格的规定,提升了安全性,解决了人为因素导致的错误。欢迎对Swift有兴趣的同学继续阅读。[从Objective-C到Swift](https://github.com/100mango/zen/tree/master/Swift%E5%AD%A6%E4%B9%A0%EF%BC%9ASwift%E4%B8%8EObjective-C)
   
 [^1]: [stackoverflow](http://stackoverflow.com/questions/8056188/should-i-refer-to-self-property-in-the-init-method-with-arc/8056260#8056260)
 [^2]: [objc-zen-book](https://github.com/objc-zen/objc-zen-book)

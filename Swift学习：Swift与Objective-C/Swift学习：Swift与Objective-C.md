@@ -77,7 +77,17 @@ class Shape {
 
 > A Swift property does not have a corresponding instance variable, and the backing store for a property is not accessed directly
 
-因此之前使用OC导致的像巧哥指出的[开发争议](http://blog.devtang.com/blog/2015/03/15/ios-dev-controversy-1/)就不再需要争执了,在Swift的世界里,我们只与property打交道。个人觉得这看似小小一点变动使Swift开发变得更加安全以及在代码的风格更为统一与稳定。
+###小结
+
+- 因此之前使用OC导致的像巧哥指出的[开发争议](http://blog.devtang.com/blog/2015/03/15/ios-dev-controversy-1/)就不再需要争执了,在Swift的世界里,我们只与property打交道。
+
+- 并且我们在OC中`init`和`dealloc`不能使用属性`self.property = XXX`来进行设置的情况得以解决和统一。
+
+(不知道这一条规定,在init直接用self.property = value 的同学请自觉阅读[iOS夯实：内存管理](https://github.com/100mango/zen/blob/master/iOS%E5%A4%AF%E5%AE%9E%EF%BC%9A%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/iOS%E5%A4%AF%E5%AE%9E%EF%BC%9A%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86.md)) 
+
+：）
+
+个人觉得这看似小小一点变动使Swift开发变得更加安全以及在代码的风格更为统一与稳定。
 
 ###Swift property延伸：
 - `Stored Properties`和`Computed properties`

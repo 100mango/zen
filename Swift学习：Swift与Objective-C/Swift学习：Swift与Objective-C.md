@@ -39,27 +39,27 @@ class Shape {
 }
 ~~~
 
-注意到这里,我们不再需要@property指令,而在Objective-C中,我们可以指定property的attribute,例如strong,weak,readonly等。
+注意到这里,我们不再需要`@property`指令,而在Objective-C中,我们可以指定property的attribute,例如strong,weak,readonly等。
 
 而在Swift的世界中,我们通过其他方式来声明这些property的性质。
 
 需要注意的几点:
 
-- strong: 在Swift中是默认的
-- weak: 通过weak关键词申明     
+- `strong`: 在Swift中是默认的
+- `weak`: 通过weak关键词申明     
 
 	~~~swift
 	weak var delegate: UITextFieldDelegate? 
 	~~~
 	
-- readonly,readwrie  直接通过声明变量`var`,声明常量`let`的方式来指明
-- copy 通过@NSCopying指令声明。 
+- `readonly`,`readwrie`  直接通过声明变量`var`,声明常量`let`的方式来指明
+- `copy` 通过`@NSCopying`指令声明。 
 
 	**值得注意的是string,array和Dictionary在Swift是以值类型(value type)而不是引用类型(reference type)出现,因此它们在赋值,初始化,参数传递中都是以拷贝的方式进行** 
 	
 	[延伸阅读：Value and Reference Types](https://developer.apple.com/swift/blog/?id=10)
 	
-- nonatomic,atomic 目前Swift没有相关的特性,但是我们在线程安全上已经有许多机制,例如NSLock,GCD相关API等。个人推测原因是苹果想把这一个本来就用的很少的特性去掉,线程安全方面交给平时我们用的更多的机制去处理。
+- `nonatomic`,`atomic` 目前Swift没有相关的特性,但是我们在线程安全上已经有许多机制,例如NSLock,GCD相关API等。个人推测原因是苹果想把这一个本来就用的很少的特性去掉,线程安全方面交给平时我们用的更多的机制去处理。
 
 
 然后值得注意的是,在Objective-C中,我们可以跨过property直接与instance variable打交道,而在Swift是不可以的。
@@ -509,4 +509,24 @@ Swift的初始化方法让我们只关注对象的初始化。之前在OC世界�
 
 	在Swift中,枚举是一等公民。(first-class)。能够拥有方法,computed properties等以往只有类支持的特性。
 	
+	在C中,枚举为每个成员指定一个整型值。而在Swift中,枚举更强大和灵活。我们不必给枚举成员提供一个值。如果我们想要为枚举成员提供一个值(raw value),我们可以用字符串,字符,整型或浮点数类型。
+	
+	~~~swift
+	enum CompassPoint {
+  case North
+  case South
+  case East
+  case West
+	}
+
+	var directionToHead = CompassPoint.West
+
+	~~~
+
+
+--
+参考：
+
+1. [《The Swift Programming Language》](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Enumerations.html#//apple_ref/doc/uid/TP40014097-CH12-ID145)
+2. [Apple Swift Blog](https://developer.apple.com/swift/blog/)
 	

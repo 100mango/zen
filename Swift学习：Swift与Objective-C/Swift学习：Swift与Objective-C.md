@@ -6,6 +6,10 @@
 自己因为已经使用Objective-C有一些经验,因此决定在学习的过程将常用的语法作个对比,加深印象,尽可能地突出重点。也希望能够帮助已经有Objective-C经验的同仁们更快地了解Swift,尽一点绵薄之力。
 
 
+重点：
+
+1. 从Objective-C到Swift的语法差异。我们熟悉Objective-C特性在Swift中如何展现。
+2. 从Objective-C到Swift的进步改进。研究对比Swift在安全性,易用性上的提升,给我们带来的新编程范式。
 
 目录：  
 
@@ -405,7 +409,7 @@ switch carName{
 	func addSubview(view: UIView) //实例方法
 ~~~
 
-在Swift中,函数的最重要的改进就是函数作为一等公民,和对象一样可以作为参数进行传递,可以作为返回值,函数式编程也成为了Swift支持的编程范式。
+在Swift中,函数的最重要的改进就是函数作为一等公民(first-class),和对象一样可以作为参数进行传递,可以作为返回值,函数式编程也成为了Swift支持的编程范式。
 
 > In computer science, a programming language is said to have first-class functions if it treats functions as first-class citizens. Specifically, this means the language supports passing functions as arguments to other functions, returning them as the values from other functions, and assigning them to variables or storing them in data structures
 
@@ -498,3 +502,11 @@ Swift的初始化方法让我们只关注对象的初始化。之前在OC世界�
 	~~~
 	
 
+
+<h2 id="5">5.枚举与结构体</h2>
+
+- 枚举
+
+	在Swift中,枚举是一等公民。(first-class)。能够拥有方法,computed properties等以往只有类支持的特性。
+	
+	

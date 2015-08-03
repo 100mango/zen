@@ -398,7 +398,7 @@ switch carName{
 
 对于在OC中,方法有两种类型,类方法与实例方法。方法的组成由方法名,参数,返回值组成。
 
-在Swift中函数的组成基本一样。
+在Swift中函数的定义基本与OC一样。
 
 主要区别为：
 
@@ -419,7 +419,9 @@ switch carName{
 	func addSubview(view: UIView) //实例方法
 ~~~
 
-在Swift中,函数的最重要的改进就是函数作为一等公民(first-class),和对象一样可以作为参数进行传递,可以作为返回值,函数式编程也成为了Swift支持的编程范式。
+###改进：
+
+- 在Swift中,函数的最重要的改进就是函数作为一等公民(first-class),和对象一样可以作为参数进行传递,可以作为返回值,函数式编程也成为了Swift支持的编程范式。
 
 > In computer science, a programming language is said to have first-class functions if it treats functions as first-class citizens. Specifically, this means the language supports passing functions as arguments to other functions, returning them as the values from other functions, and assigning them to variables or storing them in data structures
 
@@ -447,6 +449,33 @@ let newArray = oldArray.filter({$0 > 4})
 ~~~
 
 进一步了解Swift的函数式编程可以通过这篇优秀的博客[Functional Reactive Programming in Swift](http://blog.callmewhy.com/2015/05/11/functional-reactive-programming-1/#)
+
+- 个人觉得另外一个很棒的改进是：`Default parameter values`
+
+	在我们的项目中,经常会不断进行功能的增添。为了新增特性,许多方法在开发的过程中不断变动。举一个例子：我们开始有一个tableViewCell,它的设置方法一开始简单地需要一个Model参数：
+	
+	~~~swift
+	func configureCellWithModel(Model: model)
+	~~~
+	
+	不久之后,我们想对部分Cell增添一个设置背景颜色的功能。方法需要再接收多一个参数：
+	
+	~~~swift
+	func configureCellWithModel(Model: model,color:UIColor)
+	~~~
+	
+	这个时候方法改变,所以涉及到这些方法的地方都需要修改。给我们造成的困扰  
+	一是：需要做许多重复修改的工作。  
+	二是：无法做得很好的扩展和定制,有些地方的cell需要设置颜色,有些不需要。但是在OC里,我们只能对所有的cell都赋值。你可能觉得我们可以写两个方法,一个接收颜色参数,一个不接受。但是我们知道这不是一个很好的解决方法,会造成冗余的代码,维护起来也不方便。
+	
+	而在Swift中,`default parameter values`的引入让我们能够这样修改我们的代码：
+	
+	~~~
+	func configureCellWithModel(Model: model,color:UIColor = UIColor.whiteColor())
+	~~~
+	
+	这样的改进能让我们写出的代码更具向后兼容性,减少了我们的重复工作量,减少了犯错误的可能性。
+	
 
 
 <h2 id="4">4.类与初始化（Initializers）</h2>

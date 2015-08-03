@@ -19,8 +19,25 @@ ARC提供是一个编译器的特性，帮助我们在编译的时候自动插�
 	基于引用计数的内存管理机制无法绕过的一个问题便是循环引用（retain cycle）  
 	(Python同样也采用了基于引用计数的内存管理,但是它采用了另外的机制来清除引用循环导致的内存泄露，而OC和Swift需要我们自己来处理这样的问题[^2])
 	- 对象之间的循环引用：使用弱引用避免
-	- block与对象之间的循环引用：使用__weak指令
+	- block与对象之间的循环引用：
 
+	会导致Block与对象之间的循环引用的情况有：
+	
+	~~~objective-c
+	self.myBlock = ^{ self.someProperty = XXX; };  
+	~~~
+	
+	对于这种Block与Self直接循环引用的情况,编译器会给出提示。
+	
+	但是对于有多个对象参与的情况,编译器便无能为力了,因此涉及到block内使用到self的情况,我们需要非常谨慎。（推荐涉及到self的情况,如果自己不是非常清楚对象引用关系,统一使用解决方法处理）
+	
+	~~~objective-c
+	someObject.someBlock = ^{ self.someProperty = XXX; }; //还没有循环引用 
+	self.someObjectWithABlock = someObject; // 导致循环引用,且编译器不会提醒
+	~~~
+	
+	解决方案：
+	
 	~~~objevtive-c
 	__weak SomeObjectClass *weakSelf = self;
 

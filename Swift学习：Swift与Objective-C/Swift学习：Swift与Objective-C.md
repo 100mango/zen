@@ -55,7 +55,7 @@ class Shape {
 - `readonly`,`readwrie`  直接通过声明变量`var`,声明常量`let`的方式来指明
 - `copy` 通过`@NSCopying`指令声明。 
 
-	**值得注意的是string,array和Dictionary在Swift是以值类型(value type)而不是引用类型(reference type)出现,因此它们在赋值,初始化,参数传递中都是以拷贝的方式进行** 
+	**值得注意的是String,Array和Dictionary在Swift是以值类型(value type)而不是引用类型(reference type)出现,因此它们在赋值,初始化,参数传递中都是以拷贝的方式进行** 
 	
 	[延伸阅读：Value and Reference Types](https://developer.apple.com/swift/blog/?id=10)
 	
@@ -470,7 +470,7 @@ let newArray = oldArray.filter({$0 > 4})
 	
 	而在Swift中,`default parameter values`的引入让我们能够这样修改我们的代码：
 	
-	~~~
+	~~~swift
 	func configureCellWithModel(Model: model,color:UIColor = UIColor.whiteColor())
 	~~~
 	
@@ -559,8 +559,22 @@ Swift的初始化方法让我们只关注对象的初始化。之前在OC世界�
 	}
 
 	var directionToHead = CompassPoint.West
-
 	~~~
+	
+- 结构体
+
+	Struct在Swift中和类有许多相同的地方,可以定义属性,方法,初始化方法,可通过extension扩展等。
+	
+	不同的地方在于struct是值类型.在传递的过程中都是通过拷贝进行。
+	
+	在这里要提到在前面第一节处提到了String,Array和Dictionary在Swift是以值类型出现的。这背后的原因就是String,Array,Dictionary在Swift中是通过Struct实现的。而之前在Objective-C它们都是通过class实现的。
+	
+	Swift中强大的Struct使得我们能够更多与值类型打交道。Swift的值类型增强了`不可变性(Immutabiliity)`。而不可变性提升了我们代码的稳定性,多线程并发的安全性。
+	在WWDC2014《Advanced iOS Application Architecture and Patterns》中就有一节的标题是*Simplify with immutability*。
+	
+	延伸阅读：[WWDC心得：Advanced iOS Application Architecture and Patterns](https://github.com/100mango/zen/blob/master/WWDC%E5%BF%83%E5%BE%97%EF%BC%9AAdvanced%20iOS%20Application%20Architecture%20and%20Patterns/WWDC%E5%BF%83%E5%BE%97%EF%BC%9AAdvanced%20iOS%20Application%20Architecture%20and%20Patterns.md)
+	
+	
 
 
 --

@@ -6,8 +6,6 @@
 
 实际上内容是非常的不同的，前者的主要是对Cocoa框架里面涉及到的基本模式做一个总结，而后者更多是对整个软件架构的思索，主要设计数据流的设计,划分职责,多使用不变性。
 
-这个Session部分内容对我来说是比较晦涩的。不过也让我学到新的概念与想法。多了组织的思路和方向。
-
 ![](Advanced iOS Application Architecture and Patterns.png)
 
 
@@ -34,7 +32,22 @@
    
 3. simplify with immutability
 
+	用图来举例说明:
+	
+	如果我们使用引用类型的数据来进行传递,每个拥有这个引用类型的对象的修改都会牵一发而动全身。很容易在我们没注意的情况下对其他对象造成破坏。
+
+	
+	![](noImmutablility.png)
+	
+	而如果我们使用值类型的数据进行传递,则每个类都拥有自己的一份数据。自己可以进行修改,并且不会影响其他对象。
+	
+	![](immutablility.png)
+	
+
    利用不变性来简化程序。个人体会，举个最简单的例子，通常NSString的property attribute会设置为copy,这就是为了避免如果引用的是一个NSMutableString,防止NSMutableString被修改导致内容的修改。可能举得例子有点牵强。总而言之就是控制好数据的可变状态，争取更多使用不变性。
+   
+   更新：关于不变性,Swift的语言特性让我们能做得更好。详情参阅：
+   [从Objective-C到Swift](https://github.com/100mango/zen/blob/master/Swift%E5%AD%A6%E4%B9%A0%EF%BC%9ASwift%E4%B8%8EObjective-C/Swift%E5%AD%A6%E4%B9%A0%EF%BC%9ASwift%E4%B8%8EObjective-C.md)
 
    
    

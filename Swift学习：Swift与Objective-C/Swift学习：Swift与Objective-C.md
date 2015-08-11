@@ -570,16 +570,25 @@ Swift的初始化方法让我们只关注对象的初始化。之前在OC世界�
 	在这里要提到在前面第一节处提到了String,Array和Dictionary在Swift是以值类型出现的。这背后的原因就是String,Array,Dictionary在Swift中是通过Struct实现的。而之前在Objective-C它们都是通过class实现的。
 	
 	Swift中强大的Struct使得我们能够更多与值类型打交道。Swift的值类型增强了`不可变性(Immutabiliity)`。而不可变性提升了我们代码的稳定性,多线程并发的安全性。
+	
 	在WWDC2014《Advanced iOS Application Architecture and Patterns》中就有一节的标题是*Simplify with immutability*。
 	
 	延伸阅读：[WWDC心得：Advanced iOS Application Architecture and Patterns](https://github.com/100mango/zen/blob/master/WWDC%E5%BF%83%E5%BE%97%EF%BC%9AAdvanced%20iOS%20Application%20Architecture%20and%20Patterns/WWDC%E5%BF%83%E5%BE%97%EF%BC%9AAdvanced%20iOS%20Application%20Architecture%20and%20Patterns.md)
 	
 	
+<h2 id="6">6.协议（Protocols）</h2>
+
+语法:
+
+~~~swift
+
+~~~
 
 
 --
 参考：
 
-1. [《The Swift Programming Language》](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Enumerations.html#//apple_ref/doc/uid/TP40014097-CH12-ID145)
+1. [《The Swift Programming Language》](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language)
 2. [Apple Swift Blog](https://developer.apple.com/swift/blog/)
+3.  [Using Swift with Cocoa and Objective-C](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/BuildingCocoaApps/)
 	

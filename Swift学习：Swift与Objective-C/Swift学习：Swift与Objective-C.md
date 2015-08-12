@@ -631,6 +631,24 @@ class MyClass {
 
 并且只有遵守了class protocol的delegate才能定义为weak。这是因为在Swift中,除了class能够遵守协议,枚举和结构同样能够遵守协议。而枚举和结构是值类型,不存在内存管理的问题。因此只需要class类型的变量声明为weak即可。
 
+利用Swift的optional chaining,我们能够很方便的检查delegate是否为Nil,是否有实现某个方法:
+
+以前我们要在Objective-C这样检查：
+
+~~~objective-c
+ if (self.dataSource && [self.dataSource respondsToSelector:@selector(titleForSegmentAtIndex:)]) {
+        thisSegmentTitle = [self.dataSource titleForSegmentAtIndex:index];
+    }
+~~~
+
+在Swift中,非常的优雅简洁。
+
+~~~swift
+if let thisSementTitle = dataSource?.titleFroSegmentAtIndex?(index){
+}
+~~~
+
+
 新特性:
 
 在Swift中,protocol变得更加强大,灵活：

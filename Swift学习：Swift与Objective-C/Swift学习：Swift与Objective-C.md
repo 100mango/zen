@@ -580,9 +580,65 @@ Swift的初始化方法让我们只关注对象的初始化。之前在OC世界�
 
 语法:
 
-~~~swift
+在Objective-C中我们这么声明Protocol:
 
+~~~objective-c
+@protocol SampleProtocol <NSObject>
+- (void)someMethod;
+@end
 ~~~
+
+而在Swift中：
+
+~~~swift
+protocol SampleProtocol 
+{
+    func someMethod()
+}
+~~~
+
+在Swift遵循协议:
+
+~~~swift
+class AnotherClass: SomeSuperClass, SampleProtocol
+{
+    func someMethod() {}
+}
+~~~
+
+那么之前Objective-C的protocol中,我们可以标志optional。那在Swift中呢？
+
+遗憾的是,目前纯Swift的protocol还不支持optional。但根据苹果官方论坛的一位员工的回答,未来Swift是会支持的。
+
+> Optional methods in protocols are limited to @objc protocols only because we haven't implemented them in native protocols yet. This is something we plan to support. We've gotten a number of requests for abstract/pure virtual classes and methods too.
+
+>— Joe Groff 
+> 
+> Source: https://devforums.apple.com/message/1051431#1051431
+
+`protocol`和`delegate`是紧密联系的。那么我们在Swift中如何定义Delegate呢？
+
+~~~swift
+protocol MyDelegate : class {
+}
+
+class MyClass {
+    weak var delegate : MyDelegate?
+}
+~~~
+
+注意到上面的protocol定义后面跟着的class。这意味着该protocol只能被class类型所遵守。
+
+并且只有遵守了class protocol的delegate才能定义为weak。这是因为在Swift中,除了class能够遵守协议,枚举和结构同样能够遵守协议。而枚举和结构是值类型,不存在内存管理的问题。因此只需要class类型的变量声明为weak即可。
+
+新特性:
+
+在Swift中,protocol变得更加强大,灵活：
+
+1. `class`,`enum`,`structure`都可以遵守协议。
+
+
+
 
 
 --

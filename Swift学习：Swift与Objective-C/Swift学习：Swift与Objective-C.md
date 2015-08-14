@@ -655,6 +655,30 @@ if let thisSementTitle = dataSource?.titleFroSegmentAtIndex?(index){
 
 1. `class`,`enum`,`structure`都可以遵守协议。
 
+2. `Extension`也能遵守协议。利用它,我们不需要继承,也能够让系统的类也遵循我们的协议。
+
+	例如：
+	
+	~~~swift
+	protocol myProtocol {
+   	 func hello() -> String
+	}
+
+	extension String:myProtocol{
+   	 func hello() -> String {
+   	     return "hello world!"
+   	 }
+	}
+	~~~
+	
+	我们也能够用这个特性来组织我们的代码结构,如下面的代码所示,将UITableViewDataSource的实现移到了Extension。使代码更清晰。
+	
+	~~~swift
+	// MARK: - UITableViewDataSource
+	extension MyViewcontroller: UITableViewDataSource {
+  	// table view data source methods
+	}
+	~~~
 
 
 

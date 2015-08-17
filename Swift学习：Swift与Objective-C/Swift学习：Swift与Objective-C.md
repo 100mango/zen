@@ -17,7 +17,8 @@
 - [2.控制流](#2)
 - [3.函数](#3)
 - [4.类与初始化(Initializers)](#4)
-
+- [5.枚举与结构体](#5)
+- [6.协议(Protocols)](#6)
 
 <h2 id="1">1.变量,常量,属性(property)和实例变量(instance variable)</h2>
 
@@ -671,7 +672,7 @@ if let thisSementTitle = dataSource?.titleFroSegmentAtIndex?(index){
 	}
 	~~~
 	
-	我们也能够用这个特性来组织我们的代码结构,如下面的代码所示,将UITableViewDataSource的实现移到了Extension。使代码更清晰。
+	我们还能够用这个特性来组织我们的代码结构,如下面的代码所示,将UITableViewDataSource的实现移到了Extension。使代码更清晰。
 	
 	~~~swift
 	// MARK: - UITableViewDataSource
@@ -680,7 +681,39 @@ if let thisSementTitle = dataSource?.titleFroSegmentAtIndex?(index){
 	}
 	~~~
 
+3. `Protocol Oriented Programming`
 
+	随着Swift2.0的发布,面向协议编程正式也加入到了Swift的编程范式。Cool.
+	
+	这种编程方式通过怎样的语法特性支撑的呢？
+	
+	那就是我们能够对协议进行扩展,也就是我们能够提供协议的默认实现,能够为协议添加新的方法与实现。
+	
+	用前面的myProtocol为例子,我们在Swift里这样为它提供默认实现。
+	
+	~~~swift
+	extension myProtocol{
+		func hello() -> String {
+   	     return "hello world!"
+   	 	}
+	}
+	~~~
+	
+	我们还能对系统原有的protocol进行扩展,大大增强了我们的想象空间。Swift2.0的实现也有很多地方用extension protocol的形式进行了重构。
+	
+	面向协议编程能够展开说很多,在这里这简单地介绍了语法。有兴趣的朋友可以参考下面的资料：
+	
+	[Session 408: Protocol-Oriented Programming in Swift](https://developer.apple.com/videos/wwdc/2015/?id=408)
+	
+	[IF YOU'RE SUBCLASSING, YOU'RE DOING IT WRONG.](http://krakendev.io/blog/subclassing-can-suck-and-heres-why)
+	
+
+<h2 id="7">7.Swift与Cocoa</h2>
+
+
+
+	
+	
 
 
 --

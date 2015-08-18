@@ -710,7 +710,7 @@ if let thisSementTitle = dataSource?.titleFroSegmentAtIndex?(index){
 
 <h2 id="7">7.Swift与Cocoa</h2>
 
-一门语言的的强大与否,除了自身优秀的特性外,很大一点还得依靠背后的框架。Swift直接采用苹果公司经营了很久的Cocoa框架。现在我们来看看使用Swift和Cocoa交互最需要注意的地方。
+一门语言的的强大与否,除了自身优秀的特性外,很大一点还得依靠背后的框架。Swift直接采用苹果公司经营了很久的Cocoa框架。现在我们来看看使用Swift和Cocoa交互一些需要注意的地方。
 
 1. `id`与`AnyObject`
 
@@ -721,12 +721,59 @@ if let thisSementTitle = dataSource?.titleFroSegmentAtIndex?(index){
 	~~~
 	
 	~~~swift
-	var myObject: AnyObject = UITableViewCell()
+	 var myObject: AnyObject = UITableViewCell()
 	~~~
 
+	我们知道id的类型直到运行时才能被确定,如果我们向一个对象发送一条不能响应的消息,就会导致crash。
 	
+	我们可以利用Swift的语法特性来防止这样的错误:
 	
+	~~~swift
+	myObject.method?()
+	~~~
+	
+	如果myObject没有这个方法,就不会执行,类似检查delegate是否有实现代理方法。
+	
+	在Swift中,在`AnyObject`上获取的property都是`optional`的。
+	
+2. 闭包
 
+	OC中的`block`在Swift中无缝地转换为闭包。函数实际上也是一种特殊的闭包。
+	
+3. 错误处理
+
+	之前OC典型的错误处理步骤:
+	
+	~~~objective-c
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSURL *URL = [NSURL fileURLWithPath:@"/path/to/file"];
+	NSError *error = nil;
+	BOOL success = [fileManager removeItemAtURL:URL error:&error];
+	if (!success) {
+   	 NSLog(@"Error: %@", error.domain);
+	}
+	~~~
+	
+	在Swift中：
+	
+	~~~swift
+	let fileManager = NSFileManager.defaultManager()
+	let URL = NSURL.fileURLWithPath("/path/to/file")
+	do {
+   	 try fileManager.removeItemAtURL(URL)
+	} catch let error as NSError {
+   	 print("Error: \(error.domain)")
+	}
+	~~~
+
+4. KVO。
+
+	Swift支持KVO。但是KVO在Swift,个人觉得是不够优雅的,KVO在Swift只限支持继承NSObject的类,有其局限性,在这里就不介绍如何使用了。
+	
+	网上也出现了一些开源库来解决这样的问题。有兴趣可以参考一下:
+	
+	[Observable-Swift](https://github.com/slazyk/Observable-Swift)
+	
 
 --
 参考：

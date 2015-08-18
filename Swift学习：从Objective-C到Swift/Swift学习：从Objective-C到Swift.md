@@ -1,4 +1,4 @@
-#Swift学习：Swift与Objective-C
+#Swift学习: 从Objective-C到Swift
 
 
 近来初学Swift。对于编程语言,我只是一个门外汉。编程语言的设计对我来说太遥远,编译器设计对我来说则太困难晦涩。那么本来静静地学习就好了,安心写代码即可。不过还是觉得学习这一新的语言,还是得更用心,因此决定写下这篇文章来总结与拓展学习Swift。
@@ -60,7 +60,7 @@ class Shape {
 	
 	[延伸阅读：Value and Reference Types](https://developer.apple.com/swift/blog/?id=10)
 	
-- `nonatomic`,`atomic` 目前Swift没有相关的特性,但是我们在线程安全上已经有许多机制,例如NSLock,GCD相关API等。个人推测原因是苹果想把这一个本来就用的很少的特性去掉,线程安全方面交给平时我们用的更多的机制去处理。
+- `nonatomic`,`atomic` 所有的Swift properties 都是nonatomic。但是我们在线程安全上已经有许多机制,例如NSLock,GCD相关API等。个人推测原因是苹果想把这一个本来就用的很少的特性去掉,线程安全方面交给平时我们用的更多的机制去处理。
 
 
 然后值得注意的是,在Objective-C中,我们可以跨过property直接与instance variable打交道,而在Swift是不可以的。
@@ -710,7 +710,19 @@ if let thisSementTitle = dataSource?.titleFroSegmentAtIndex?(index){
 
 <h2 id="7">7.Swift与Cocoa</h2>
 
+一门语言的的强大与否,除了自身优秀的特性外,很大一点还得依靠背后的框架。Swift直接采用苹果公司经营了很久的Cocoa框架。现在我们来看看使用Swift和Cocoa交互最需要注意的地方。
 
+1. `id`与`AnyObject`
+
+	在Swift中,没有`id`类型,Swift用一个名字叫`AnyObject`的protocol来代表任意类型的对象。
+	
+	~~~objective-c
+	 id myObject = [[UITableViewCell alloc]init];
+	~~~
+	
+	~~~swift
+	var myObject: AnyObject = UITableViewCell()
+	~~~
 
 	
 	

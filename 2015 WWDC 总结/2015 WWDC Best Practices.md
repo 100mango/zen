@@ -66,6 +66,36 @@
         }
     }
 	~~~
+	
+	**Properties,not tags**
+	
+	避免使用`setTag:`和`viewWithTag:`
+	
+	因为可能会导致 
+	- 与系统或是别人的tag冲突
+	- 没有编译警告
+	- 没有runtime errors
+	
+	其实我基本在工程里都没有用tag来标记View。一直都是使用property。所以没有注意到这个问题。看了这个Session之后也没有什么感觉。
+	
+	直到有一天我在一个有几十万行代码的项目中还看到了这样的代码：
+	
+	~~~objective-c
+	 cellSubViewTag++;
+    UILabel* someLabel = (UILabel*)[cell.contentView viewWithTag:cellSubViewTag];
+    if (someLabel == nil) {
+        someLabel = [[UILabel alloc] init];
+        
+        someLabel.tag = cellSubViewTag;
+        [cell.contentView addSubview: someLabel];
+	}
+	cellSubViewTag++
+	//继续add subView.........
+	~~~
+	
+	我整个人都不好了。因为新添加的业务需要我去取出某个Label的值,如果使用property。我只需要cell.someLabel.text去取这个值就好。这个时候。我只能看着这样的代码流泪重构。所以请大家务必在开发中使用property引用SubView。爱人爱己,在这里就应该老老实实地继承TableViewCell,在里面进行布局,暴露出应该暴露的变量供别人使用。
+	
+	简单来说,就是不要因为便利而去牺牲可维护性,可扩展性和可阅读性。	
 
 3. Table and Collection Views
 

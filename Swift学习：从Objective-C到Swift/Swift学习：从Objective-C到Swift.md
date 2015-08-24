@@ -775,6 +775,10 @@ if let thisSementTitle = dataSource?.titleFroSegmentAtIndex?(index){
 	
 	[Observable-Swift](https://github.com/slazyk/Observable-Swift)
 	
+	KVO 在OS X中有Binding的能力,也就是我们能够将两个属性绑定在一起,一个属性变化,另外一个属性也会变化。对与UI和数据的同步更新很有帮助。之前已经眼馋这个特性很久了,虽然Swift没有原生带来支持,Swift支持的泛型编程给开源界带来许多新的想法。下面这个库就是实现binding的效果。
+	
+	[Bond](https://github.com/SwiftBond/Bond)
+	
 
 --
 参考：

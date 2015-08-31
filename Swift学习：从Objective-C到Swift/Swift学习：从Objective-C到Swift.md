@@ -9,19 +9,22 @@
 
 文章组织脉络：
 
-1. 从Objective-C到Swift的语法差异。我们熟悉Objective-C特性在Swift中如何展现。
+1. 从Objective-C到Swift的语法差异。我们熟悉的Objective-C特性在Swift中如何展现。
 2. 从Objective-C到Swift的进步改进。研究对比Swift在安全性,易用性上的提升,给我们带来的新编程范式。
 
 目录：  
 
-- [1.变量,常量,属性(property)和实例变量(instance variable)](#1)
+- [1.属性(property)和实例变量(instance variable)](#1)
 - [2.控制流](#2)
 - [3.函数](#3)
 - [4.类与初始化(Initializers)](#4)
 - [5.枚举与结构体](#5)
 - [6.协议(Protocols)](#6)
+- [7.Swift与Cocoa](#7)
+- [8.总结](#8)
 
-<h2 id="1">1.变量,常量,属性(property)和实例变量(instance variable)</h2>
+
+<h2 id="1">1.属性(property)和实例变量(instance variable)</h2>
 
 ###Objective-C property in Swift world
 
@@ -57,7 +60,7 @@ class Shape {
 - `readonly`,`readwrie`  直接通过声明变量`var`,声明常量`let`的方式来指明
 - `copy` 通过`@NSCopying`指令声明。 
 
-	**值得注意的是String,Array和Dictionary在Swift是以值类型(value type)而不是引用类型(reference type)出现,因此它们在赋值,初始化,参数传递中都是以拷贝的方式进行** 
+	**值得注意的是String,Array和Dictionary在Swift是以值类型(value type)而不是引用类型(reference type)出现,因此它们在赋值,初始化,参数传递中都是以拷贝的方式进行（简单来说,String,Array,Dictionary在Swift中是通过`struct`实现的）** 
 	
 	[延伸阅读：Value and Reference Types](https://developer.apple.com/swift/blog/?id=10)
 	
@@ -195,7 +198,7 @@ Error: Class stored properties not yet supported in classes
 
 <h2 id="2">2.控制流</h2>
 
-Swift与Objective-C在控制流的语法上关键词基本是一致的,除此之外新增了少许新内容,强化了功能和增加了安全性。
+Swift与Objective-C在控制流的语法上关键词基本是一致的,但是扩展性和安全性得到了很大的提升。
 
 主要有三种类型的语句
 
@@ -515,7 +518,7 @@ private extension ViewController {
 var shape = Shape()
 ~~~
 
-而在Swift中,initializer也与OC有所区别,Swift的初始化方法不返回数据。而在OC中我们通常返回一个self指针。
+而在Swift中,`initializer`也与OC有所区别,Swift的初始化方法不返回数据。而在OC中我们通常返回一个self指针。
 
 > Unlike Objective-C initializers, Swift initializers do not return a value. Their primary role is to ensure that new instances of a type are correctly initialized before they are used for the first time.
 
@@ -569,7 +572,7 @@ Swift的初始化方法让我们只关注对象的初始化。之前在OC世界�
 	
 	不同的地方在于struct是值类型.在传递的过程中都是通过拷贝进行。
 	
-	在这里要提到在前面第一节处提到了String,Array和Dictionary在Swift是以值类型出现的。这背后的原因就是String,Array,Dictionary在Swift中是通过Struct实现的。而之前在Objective-C它们都是通过class实现的。
+	在这里要提到在前面第一节处提到了`String`,`Array`和`Dictionary`在Swift是以值类型出现的。这背后的原因就是`String`,`Array`,`Dictionary`在Swift中是通过`Struct`实现的。而之前在Objective-C它们都是通过class实现的。
 	
 	Swift中强大的Struct使得我们能够更多与值类型打交道。Swift的值类型增强了`不可变性(Immutabiliity)`。而不可变性提升了我们代码的稳定性,多线程并发的安全性。
 	
@@ -775,10 +778,20 @@ if let thisSementTitle = dataSource?.titleFroSegmentAtIndex?(index){
 	
 	[Observable-Swift](https://github.com/slazyk/Observable-Swift)
 	
-	KVO 在OS X中有Binding的能力,也就是我们能够将两个属性绑定在一起,一个属性变化,另外一个属性也会变化。对与UI和数据的同步更新很有帮助。之前已经眼馋这个特性很久了,虽然Swift没有原生带来支持,Swift支持的泛型编程给开源界带来许多新的想法。下面这个库就是实现binding的效果。
+	KVO 在OS X中有Binding的能力,也就是我们能够将两个属性绑定在一起,一个属性变化,另外一个属性也会变化。对与UI和数据的同步更新很有帮助,也是MVVM架构的需求之一。之前已经眼馋这个特性很久了,虽然Swift没有原生带来支持,Swift支持的泛型编程给开源界带来许多新的想法。下面这个库就是实现binding的效果。
 	
 	[Bond](https://github.com/SwiftBond/Bond)
 	
+
+<h2 id="8">8.总结</h2>
+
+到这里就基本介绍完Swift当中最基本的语法和与Objective-C的对比和改进。
+
+事实上Swift的世界相比OC的世界还有很多新鲜的东西等待我们去发现和总结,Swift带来的多范式编程也将给我们编程的架构和代码的组织带来更来的思考。而Swift也是一个不断变化,不断革新的语言。相信未来的发展和稳定性会更让我们惊喜。这篇文章也将随着Swift的更新而不断更新,同时限制篇幅,突出重点。
+
+希望这篇文章能够给各位同行的小伙伴们快速了解和学习Swift提供一点帮助。有疏漏错误的地方欢迎直接提出。感谢。
+
+
 
 --
 参考：

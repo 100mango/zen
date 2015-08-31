@@ -3,7 +3,6 @@
 iOS 禅
 
 - [Swift学习: 从Objective-C到Swift](https://github.com/100mango/zen/blob/master/Swift%E5%AD%A6%E4%B9%A0%EF%BC%9A%E4%BB%8EObjective-C%E5%88%B0Swift/Swift%E5%AD%A6%E4%B9%A0%EF%BC%9A%E4%BB%8EObjective-C%E5%88%B0Swift.md)
-
 - [WWDC2015: iOS Best Practices总结](https://github.com/100mango/zen/blob/master/2015%20WWDC%20%E6%80%BB%E7%BB%93/2015%20WWDC%20Best%20Practices.md)
 - [iOS学习：AVFoundation 视频流处理](https://github.com/100mango/zen/blob/master/iOS%E5%AD%A6%E4%B9%A0%EF%BC%9AAVFoundation%20%E8%A7%86%E9%A2%91%E6%B5%81%E5%A4%84%E7%90%86/iOS%E5%AD%A6%E4%B9%A0%EF%BC%9AAVFoundation%20%E8%A7%86%E9%A2%91%E6%B5%81%E5%A4%84%E7%90%86%20.md)
 - [WWDC心得与延伸:iOS图形性能](https://github.com/100mango/zen/blob/master/WWDC%E5%BF%83%E5%BE%97%EF%BC%9AAdvanced%20Graphics%20and%20Animations%20for%20iOS%20Apps/Advanced%20Graphics%20and%20Animations%20for%20iOS%20Apps.md)

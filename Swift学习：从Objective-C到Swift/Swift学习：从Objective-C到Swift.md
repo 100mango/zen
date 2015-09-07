@@ -98,7 +98,7 @@ class Shape {
 - `Stored Properties`和`Computed properties`
 
 在Swift中,property被分为两类：`Stored Properties`和`Computed properties`
-简单来说,就是stored properties 能够保存值,而conmuted properties只提供getter与setter,利用stored properties来生成自己的值。个人感觉Computed properties更像方法,而不是传统意义的属性。但是这样一个特性存在,使得我们更容易组织我们的代码。
+简单来说,就是stored properties 能够保存值,而computed properties只提供getter与setter,利用stored properties来生成自己的值。个人感觉Computed properties更像方法,而不是传统意义的属性。但是这样一个特性存在,使得我们更容易组织我们的代码。
 
 延伸阅读：[computed property vs function](http://stackoverflow.com/questions/24035276/computed-read-only-property-vs-function-in-swift)
 

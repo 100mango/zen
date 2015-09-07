@@ -57,7 +57,7 @@ class Shape {
 	weak var delegate: UITextFieldDelegate? 
 	~~~
 	
-- `readonly`,`readwrie`  直接通过声明变量`var`,声明常量`let`的方式来指明
+- `readonly`,`readwrie`  直接通过声明常量`let`,声明变量`var`的方式来指明
 - `copy` 通过`@NSCopying`指令声明。 
 
 	**值得注意的是String,Array和Dictionary在Swift是以值类型(value type)而不是引用类型(reference type)出现,因此它们在赋值,初始化,参数传递中都是以拷贝的方式进行（简单来说,String,Array,Dictionary在Swift中是通过`struct`实现的）** 

@@ -2,7 +2,14 @@ Crash in Cocoa
 
 Cocoa中会导致Carsh的地方：
 
-##1. 集合类越界：
+参考：
+
+[Understanding and Analyzing iOS Application Crash Reports](https://developer.apple.com/library/ios/technotes/tn2151/_index.html)
+
+[iOS Crash文件的解析](http://www.cnblogs.com/smileEvday/p/Crash1.html)
+
+##Exceptions类型
+##1. 集合类越界或插入Nil：
 
 - 数组类型
  
@@ -93,5 +100,28 @@ Cocoa中会导致Carsh的地方：
 	    self.service.delegate = nil;
 	}
 	~~~
+
+##3. 为不可为空的函数参数赋值nil
+
+例如:
 	
+~~~objective-c
+- (NSString *)stringByAppendingString:(NSString *)aString
+//aString:
+//The string to append to the receiver. This value must not be nil
+
+//NSNotificationCenter
+- (void)postNotification:(NSNotification * _Nonnull)notification
+//notification
+//The notification to post. This value must not be nil.
+
+等等......
+~~~
+	
+这种情况在Swift中已经不会再发生。Swift中Optional机制的引入。让我们不会因为忘记判空而导致Crash。
+	
+~~~swift
+let cool = testStr.stringByAppendingString(nil)
+//error: nil is not compatible with expected argument type 'String'
+~~~
 	

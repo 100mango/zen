@@ -9,8 +9,8 @@
 
 Swift引进了一个新的概念`Optional`,以及相关的一系列语法:
 	
-- `?` 与 `!`
--  `if let`
+- `?` 与 `!`  声明Optional
+-  `if let`   Optional binding
 - `guard`
 - `as?` 与 `as!`
 - `try?`
@@ -49,8 +49,18 @@ Optional的核心在于类型安全,在于和Nil做斗争。在于在运行前�
 从最简单的语法入手：
 
 ~~~swift
-
+var optionalInt:Int?
 ~~~
+
+
+1. 首先,在OC中,nil只针对对象而已,对于结构体,枚举类型,基本的C类型来说,是没有nil的。我们不能直接判断它们是否有值。在OC中,nil是一个指向不存在对象的指针,在Swift中,nil不知指针,它是一个确定的值,用来表示值为空。 (事实上,nil是一个枚举值)
+
+	> [Swift之 ? 和 !](http://joeyio.com/ios/2014/06/04/swift---/)
+
+	而Swift的Optional让我们能明确地标注一个值有没有可能为空。并且值的类型没有限制。
+	
+2. Swift的Optional Binding机制确保我们在使用Optional值时先判断值是否为空。
+
 
 比较绕的一点：
 
@@ -72,15 +82,6 @@ if let unwarp = optionalVar{
 ~~~
 
 参考 [why use optional let](http://stackoverflow.com/questions/29662836/swift-use-of-optional-with-let)
-
-
-1. 首先,在OC中,nil只针对对象而已,对于结构体,枚举类型,基本的C类型来说,是没有nil的。我们不能直接判断它们是否有值。在OC中,nil是一个指向不存在对象的指针,在Swift中,nil不知指针,它是一个确定的值,用来表示值为空。 (事实上,nil是一个枚举值)
-
-	> [Swift之 ? 和 !](http://joeyio.com/ios/2014/06/04/swift---/)
-
-	而Swift的Optional让我们能标注一个值有没有可能为空。并且值的类型没有
-
-
 
 
 ##2.学习泛型。抽象的魅力。

@@ -63,6 +63,10 @@ var optionalInt:Int?
 	
 2. Swift的Optional Binding机制确保我们在使用Optional值时先判断值是否为空。
 
+	在Objective-C中,判空操作不是强制和必须的。判空是一个良好的习惯,但是因为没有约束和规范。很多时候判空操作都被遗漏了,导致了许多潜在的问题。
+	
+	但在Swift中,r
+
 
 比较绕的一点：
 
@@ -87,6 +91,10 @@ if let unwarp = optionalVar{
 
 
 ##2.学习泛型。抽象的魅力。
+
+泛型编程其实简单来说,就是让我们写出不局限于单一类型的代码。
+
+举个最简单的例子：交换。对比以下两种写法,一种是只针对Int类型的交换。而我们用泛型改写后,适用于其它所有类型。
 
 ~~~swift
 func oldSwap(inout a:Int ,inout _ b:Int){

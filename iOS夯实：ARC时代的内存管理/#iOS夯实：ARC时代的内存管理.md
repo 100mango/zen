@@ -38,7 +38,7 @@ ARC提供是一个编译器的特性，帮助我们在编译的时候自动插�
 	
 	解决方案：
 	
-	~~~objevtive-c
+	~~~objective-c
 	__weak SomeObjectClass *weakSelf = self;
 
 	SomeBlockType someBlock = ^{

@@ -52,7 +52,7 @@ CoreAnimation的渲染流程可以用下图来概括:
 最后需要关注和有趣的一点是:苹果为我们提供了三个UIBlurEffect styles,   
 分别为Extra light, Light, Dark.但是三者的耗费的资源各为不同。
 
-Extra light耗费最多资源, Light其次, Dark最多。
+Extra light耗费最多资源, Light其次, Dark最少。
 ![](UIVisualEffectView_cost.png)
 
 我在自己的个人项目里也有用到UIBlurEffectView来美化界面,优化用户体验。两个项目都已经上架,并完整开源。欢迎去看看。
@@ -154,7 +154,11 @@ Extra light耗费最多资源, Light其次, Dark最多。
 	不使用shadowPath
 	
 	~~~objective-c
-	CALayer *imageViewLayer = cell.imageView.layer;imageViewLayer.shadowColor = [UIColor blackColor].CGColor;imageViewLayer.shadowOpacity = 1.0;imageViewLayer.shadowRadius = 2.0;imageViewLayer.shadowOffset = CGSizeMake(1.0, 1.0);
+	CALayer *imageViewLayer = cell.imageView.layer;
+imageViewLayer.shadowColor = [UIColor blackColor].CGColor;
+imageViewLayer.shadowOpacity = 1.0;
+imageViewLayer.shadowRadius = 2.0;
+imageViewLayer.shadowOffset = CGSizeMake(1.0, 1.0);
 	~~~
 
 	使用shadowPath
@@ -178,7 +182,9 @@ imageViewLayer.shadowPath = CGPathCreateWithRect(imageRect, NULL);
 	使用CornerRadius：
 	
 	~~~objective-c
-	CALayer *imageViewLayer = cell.imageView.layer;imageViewLayer.cornerRadius = imageHeight / 2.0;imageViewLayer.masksToBounds = YES;
+	CALayer *imageViewLayer = cell.imageView.layer;
+imageViewLayer.cornerRadius = imageHeight / 2.0;
+imageViewLayer.masksToBounds = YES;
 	~~~
 	
 	利用一张中间为透明圆形的图片来进行遮盖,虽然会引起blending,但性能仍然高于offerScreen。
@@ -247,7 +253,8 @@ Instruments里的：
 -  OpenGL ES Driver instrument
 
 模拟器中的:
-Color debug options View debugging
+
+Color debug options View debugging
 
 还有Xcode的：
 

@@ -11,8 +11,8 @@ Swift引进了一个新的概念`Optional`,以及相关的一系列语法:
 	
 - `?` 与 `!`  声明Optional
 -  `if let`   Optional binding
-- `guard`
-- `as?` 与 `as!`
+- `guard`     Early Exit
+- `as?` 与 `as!` 
 - `try?`
 
 Optional的核心在于类型安全,在于和Nil做斗争。在于在运行前就处理好所有值为空或不为空的情况,如果有错误的话,直接在编译的时候就给出error,不等到运行的时候才crash。
@@ -55,46 +55,56 @@ var optionalInt:Int?
 ~~~
 
 
-1. 首先,在OC中,nil只针对对象而已,对于结构体,枚举类型,基本的C类型来说,是没有nil的。我们不能直接判断它们是否有值。在OC中,nil是一个指向不存在对象的指针,在Swift中,nil不知指针,它是一个确定的值,用来表示值为空。 (事实上,nil是一个枚举值)
+1. 首先,在OC中,nil只针对对象而已,对于结构体,枚举类型,基本的C类型来说,是没有nil的。我们不能直接判断它们是否有值。在OC中,nil是一个指向不存在对象的指针,在Swift中,nil不是指针,它是一个确定的值,用来表示值为空。 (事实上,nil是一个枚举值)
 
 	> [Swift之 ? 和 !](http://joeyio.com/ios/2014/06/04/swift---/)
 
 	而Swift的Optional让我们能明确地标注一个值有没有可能为空。并且值的类型没有限制。
 	
-2. Swift的Optional Binding机制确保我们在使用Optional值时先判断值是否为空。
+2. Swift的`Optional Binding`机制确保我们在使用Optional值时先判断值是否为空。
 
 	在Objective-C中,判空操作不是强制和必须的。判空是一个良好的习惯,但是因为没有约束和规范。很多时候判空操作都被遗漏了,导致了许多潜在的问题。
 	
-	但在Swift中,r
+	但在Swift中,我们在使用一个Optional值之前必须先unwarp它。
+	
+	语法：
+	
+	~~~swift
+	if let constantName = someOptional {
+	  //use constant
+	}
+	~~~
 
 
-比较绕的一点：
-
-~~~swift
-
-let optionalLet:String?
-var optionalVar:String?
-
-//标记为optional的let,一定要在使用前赋值,要么永远为nil,要么永远有值
-//标记为optional的var,不需要要在使用前赋值,因为它可能有时有值,有时没值
-
-if let unwarp = optionalLet{
-//error: variable used before being initalized
-}
-
-if let unwarp = optionalVar{
-    //OK
-}
-~~~
+	比较绕的一点：
+	
+	~~~swift
+	
+	let optionalLet:String?
+	var optionalVar:String?
+	
+	//标记为optional的let,一定要在使用前赋值,要么永远为nil,要么永远有值
+	//标记为optional的var,不需要要在使用前赋值,因为它可能有时有值,有时没值
+	
+	if let unwarp = optionalLet{
+	//error: variable used before being initalized
+	}
+	
+	if let unwarp = optionalVar{
+	    //OK
+	}
+	~~~
 
 参考 [why use optional let](http://stackoverflow.com/questions/29662836/swift-use-of-optional-with-let)
 
 
 ##2.学习泛型。抽象的魅力。
 
-泛型编程其实简单来说,就是让我们写出不局限于单一类型的代码。
+泛型编程,简单地总结。就是让我们在保持type safety的同时写出不局限于单一类型的代码,也即灵活与安全。
 
 举个最简单的例子：交换。对比以下两种写法,一种是只针对Int类型的交换。而我们用泛型改写后,适用于其它所有类型。
+
+泛型函数(`Generic Functions`)：
 
 ~~~swift
 func oldSwap(inout a:Int ,inout _ b:Int){
@@ -109,5 +119,17 @@ func genericSwap<T>(inout a:T,inout _ b:T){
     b = temp
 }
 ~~~
+
+泛型在提供灵活抽象的同时,也保持了类型安全,占位类型`T`代表了一种类型,使得交换限制在同种类型上,比如我们尝试交换数字和字符串swap(1,"2"),那么编译器就会报错。
+
+泛型类型(`Generic Types`)：
+
+~~~swift
+Observable<UIColor>(RGB(0, 0, 0))
+~~~
+
+##3.Protocol Oriented Programming 与value types
+
+下面我们用Protocol Oriented 
 
 	

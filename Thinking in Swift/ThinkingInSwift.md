@@ -102,9 +102,9 @@ var optionalInt:Int?
 
 泛型编程,简单地总结。就是让我们在保持type safety的同时写出不局限于单一类型的代码,也即灵活与安全。
 
-举个最简单的例子：交换。对比以下两种写法,一种是只针对Int类型的交换。而我们用泛型改写后,适用于其它所有类型。
+####泛型函数(`Generic Functions`)：
 
-泛型函数(`Generic Functions`)：
+举个最简单的例子：交换。对比以下两种写法,一种是只针对Int类型的交换。而我们用泛型改写后,适用于其它所有类型。
 
 ~~~swift
 func oldSwap(inout a:Int ,inout _ b:Int){
@@ -122,11 +122,88 @@ func genericSwap<T>(inout a:T,inout _ b:T){
 
 泛型在提供灵活抽象的同时,也保持了类型安全,占位类型`T`代表了一种类型,使得交换限制在同种类型上,比如我们尝试交换数字和字符串swap(1,"2"),那么编译器就会报错。
 
-泛型类型(`Generic Types`)：
+####泛型类型(`Generic Types`)：
+
+Swift也允许我们自定义自己的泛型类型,像Swift标准库提供的Array,Dictionary都是泛型类型。
+
+泛型类型一般是容器类型,利用好它,我们能创造出灵活通用的类型。
+
+这里举一个简单但却强大的例子:
+
+![](mvvm.png)
+
+在MVVM模式里,有个很重要的核心内容就是如何将ViewModel里的变化传递给View进行更新,苹果官方在iOS上没有提供一个绑定机制,我们可以使用delegate,KVO,Notification等系统途径来通知View进行更新,但很多时候都显得非常繁琐。
+
+在这里我们简单地造一个绑定工具。
 
 ~~~swift
-Observable<UIColor>(RGB(0, 0, 0))
+class DynamicString {
+  typealias Listener = String -> Void
+  var listener: Listener?
+
+  func bind(listener: Listener?) {
+    self.listener = listener
+  }
+
+  var value: String {
+    didSet {
+      listener?(value)
+    }
+  }
+
+  init(_ v: String) {
+    value = v
+  }
+}
 ~~~
+
+上面这段代码很简单,利用了Swift的property observer,在每次Model设置的时候,调用闭包,我们可以在闭包里面做视图的更新,用起来像是这样：
+
+~~~swift
+let nameModel = DynamicString("Mango")
+let nameLabel = UILabel()
+
+nameModel.bind{ nameLabel.text = $0 }
+nameModel.value = "100Mango"  //修改model的值
+print(nameLabel.text) // 输出 "100mango" , UI的值得到了更新
+~~~
+
+
+
+我们很快就能够发现问题所在,对于一个String类型,我们要创造一个DynamicString。那么Int,NSdate...等等各种类型呢？
+
+这个时候我们便可以利用Swift的泛型类型进行改造:
+
+~~~swift
+class Dynamic<T> {
+  typealias Listener = T -> Void
+  var listener: Listener?
+
+  func bind(listener: Listener?) {
+    self.listener = listener
+  }
+  
+  var value: T {
+    didSet {
+      listener?(value)
+    }
+  }
+
+  init(_ v: T) {
+    value = v
+  }
+}
+~~~
+
+通过上面我们的改造,我们的简单绑定机制就能对各种类型的数据都起作用。
+
+~~~swift
+let text = Dynamic("Steve")
+let bool = Dynamic(false)
+let Int =  Dynamic(1)
+~~~
+
+参考引用:[bindings-generics-swift-and-mvvm](http://rasic.info/bindings-generics-swift-and-mvvm/)
 
 ##3.Protocol Oriented Programming 与value types
 

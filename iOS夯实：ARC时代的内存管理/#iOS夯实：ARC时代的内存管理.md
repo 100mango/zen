@@ -29,11 +29,11 @@ ARC提供是一个编译器的特性，帮助我们在编译的时候自动插�
 	
 	对于这种Block与Self直接循环引用的情况,编译器会给出提示。
 	
-	但是对于有多个对象参与的情况,编译器便无能为力了,因此涉及到block内使用到self的情况,我们需要非常谨慎。（推荐涉及到self的情况,如果自己不是非常清楚对象引用关系,统一使用解决方法处理）
+	但是对于有多个对象参与的情况,编译器便无能为力了,因此涉及到block内使用到self的情况,我们需要非常谨慎。（推荐涉及到self的情况,如果自己不是非常清楚对象引用关系,统一使用解决方案处理）
 	
 	~~~objective-c
 	someObject.someBlock = ^{ self.someProperty = XXX; }; //还没有循环引用 
-	self.someObjectWithABlock = someObject; // 导致循环引用,且编译器不会提醒
+	self.someObjectWithBlock = someObject; // 导致循环引用,且编译器不会提醒
 	~~~
 	
 	解决方案：
@@ -97,3 +97,56 @@ ARC提供是一个编译器的特性，帮助我们在编译的时候自动插�
 	事实上，timer是永远不会被invalidate.因为此时VC的引用计数永远不会为零。因为Timer强引用了VC。而因为VC的引用计数不为零,dealloc永远也不会被执行，所以Timer永远持有了VC.
 	
 	因此我们需要注意在什么地方invalidate计时器，我们可以在viewWillDisappear里面做这样的工作。
+	
+
+##Swift's ARC
+
+在Swift中,ARC的机制与Objective-C基本是一致的。
+
+相对应的解决方案：
+
+- 对象之间的循环引用：使用弱引用避免
+
+~~~swift
+protocol aProtocol:class{}
+
+class aClass{
+    weak var delegate:aProtocol?
+}
+~~~
+
+注意到这里,`aProtocol`通过在继承列表中添加关键词`class`来限制协议只能被class类型所遵循。这也是为什么我们能够声明delegate为`weak`的原因,`weak`仅适用于引用类型。而在Swift,`enum`与`struct`这些值类型中也是可以遵循协议的。
+
+
+- 闭包引起的循环引用：
+
+Swift提供了一个叫`closure capture list`的解决方案。
+
+语法很简单,就是在闭包的前面用`[]`声明一个捕获列表。
+
+~~~swift
+let closure = { [weak self] in 
+    self?.doSomething() //Remember, all weak variables are Optionals!
+}
+~~~
+
+我们用一个实际的例子来介绍一下,比如我们常用的NotificationCenter：
+
+~~~swift
+class aClass{
+    var name:String
+    init(name:String){
+        self.name = name
+        NSNotificationCenter.defaultCenter().addObserverForName("print", object: self, queue: nil)
+        { [weak self] notification in print("hello \(self?.name)")}
+    }
+    
+    deinit{
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+}
+~~~
+
+
+
+

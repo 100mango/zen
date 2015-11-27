@@ -149,24 +149,38 @@ class aClass{
 
 ###Swift的新东西
 
-swift为我们引入了一个新的关键词`unowned`。这个关键词同样用来管理内存和避免引用循环。
+swift为我们引入了一个新的关键词`unowned`。这个关键词同样用来管理内存和避免引用循环,和`weak`一样,`unowned`不会导致引用计数+1。
 
-那么几时用`weak`,几时用`unowned`呢？
+1. 那么几时用`weak`,几时用`unowned`呢？
 
-举上面Notification的例子来说：
+	举上面Notification的例子来说：
+	
+	- 如果Self在闭包被调用的时候有可能是Nil。则使用`weak`
+	- 如果Self在闭包被调用的时候永远不会是Nil。则使用`unowned`
 
-- 如果Self在闭包被调用的时候有可能是Nil。则使用`weak`
-- 如果Self在闭包被调用的时候永远不会是Nil。则使用`unowned`
+	
 
-那么使用`unowned`有什么坏处呢,如果我们没有确定好Self在闭包里调用的时候不会是Nil就使用了`unowned`。当闭包调用的时候,访问到声明为`unowned`的Self时。程序就会奔溃。这类似于访问了`悬挂指针`（进一步了解，请阅读[Crash in Cocoa](https://github.com/100mango/zen/blob/master/iOS%E5%A4%AF%E5%AE%9E%EF%BC%9ACrash%20in%20Cocoa/Crash%20in%20Cocoa.md)）
+2. 那么使用`unowned`有什么坏处呢？
 
-对于熟悉Objective-C的大家来说,`unowned`在这里就类似于OC的`unsafe_unretained`
+	如果我们没有确定好Self在闭包里调用的时候不会是Nil就使用了`unowned`。当闭包调用的时候,访问到声明为`unowned`的Self时。程序就会奔溃。这类似于访问了`悬挂指针`（进一步了解，请阅读[Crash in Cocoa](https://github.com/100mango/zen/blob/master/iOS%E5%A4%AF%E5%AE%9E%EF%BC%9ACrash%20in%20Cocoa/Crash%20in%20Cocoa.md)）
+	
+	对于熟悉Objective-C的大家来说,`unowned`在这里就类似于OC的`unsafe_unretained`。在对象被清除后,声明为`weak`的对象会置为nil,而声明为`unowned`的对象则不会。
 
-那么既然`unowned`可能会导致崩溃,为什么我们不全部都用`weak`来声明呢？
+3. 那么既然`unowned`可能会导致崩溃,为什么我们不全部都用`weak`来声明呢？
 
-原因是使用`unowned`声明,我们能直接访问。而用`weak`声明的,我们需要unwarp后才能使用。并且直接访问在速度上也更快。（[这位国外的猿说:Unowned is faster and allows for immutability and nonoptionality. If you don't need weak, don't use it.](https://twitter.com/jckarter/status/667364165057515521)）
+	原因是使用`unowned`声明,我们能直接访问。而用`weak`声明的,我们需要unwarp后才能使用。并且直接访问在速度上也更快。（[这位国外的猿说:Unowned is faster and allows for immutability and nonoptionality. If you don't need weak, don't use it.](https://twitter.com/jckarter/status/667364165057515521)）
+	
+	其实说到底,`unowned`的引入是因为Swift的`Optional`机制。
+	
+	因此我们可以根据实际情况来选择使用`weak`还是`unowned`。个人建议,如果无法确定声明对象在闭包调用的时候永远不会是nil,还是使用`weak`来声明。安全更重要。
 
-因此我们可以根据实际情况来选择使用`weak`还是`unowned`。个人建议,如果无法确定声明对象在闭包调用的时候永远不会是nil,还是使用`weak`来声明。安全更重要。
 
-参考链接：[shall-we-always-use-unowned-self-inside-closure-in-swif](http://stackoverflow.com/questions/24320347/shall-we-always-use-unowned-self-inside-closure-in-swift)
+
+延伸阅读：[从Objective-C到Swift](https://github.com/100mango/zen/blob/master/Swift%E5%AD%A6%E4%B9%A0%EF%BC%9A%E4%BB%8EObjective-C%E5%88%B0Swift/Swift%E5%AD%A6%E4%B9%A0%EF%BC%9A%E4%BB%8EObjective-C%E5%88%B0Swift.md)
+
+参考链接：  
+[shall-we-always-use-unowned-self-inside-closure-in-swif](http://stackoverflow.com/questions/24320347/shall-we-always-use-unowned-self-inside-closure-in-swift)
+
+[what-is-the-difference-between-a-weak-reference-and-an-unowned-reference](http://stackoverflow.com/questions/24011575/what-is-the-difference-between-a-weak-reference-and-an-unowned-reference)
+
 

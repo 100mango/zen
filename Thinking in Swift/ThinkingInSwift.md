@@ -76,6 +76,13 @@ var optionalInt:Int?
 	~~~
 
 
+
+
+
+
+
+
+
 	比较绕的一点：
 	
 	~~~swift
@@ -102,7 +109,7 @@ var optionalInt:Int?
 
 泛型编程,简单地总结。就是让我们在保持type safety的同时写出不局限于单一类型的代码,也即灵活与安全。
 
-####泛型函数(`Generic Functions`)：
+###泛型函数(`Generic Functions`)：
 
 举个最简单的例子：交换。对比以下两种写法,一种是只针对Int类型的交换。而我们用泛型改写后,适用于其它所有类型。
 
@@ -122,7 +129,7 @@ func genericSwap<T>(inout a:T,inout _ b:T){
 
 泛型在提供灵活抽象的同时,也保持了类型安全,占位类型`T`代表了一种类型,使得交换限制在同种类型上,比如我们尝试交换数字和字符串swap(1,"2"),那么编译器就会报错。
 
-####泛型类型(`Generic Types`)：
+###泛型类型(`Generic Types`)：
 
 Swift也允许我们自定义自己的泛型类型,像Swift标准库提供的Array,Dictionary都是泛型类型。
 
@@ -205,8 +212,32 @@ let Int =  Dynamic(1)
 
 参考引用:[bindings-generics-swift-and-mvvm](http://rasic.info/bindings-generics-swift-and-mvvm/)
 
+###类型约束（`Type Constraints`）:
+
+我们上面的泛型函数**inout**和泛型类型**Dynamic**能够应用到任何类型中。但是有时候,对泛型函数和泛型方法应用的类型进行约束,会非常的有用。
+
+类型约束可以指定一个类型参数(`Type Parameters`)继承自指定类,或者遵循某个协议或一系列协议。
+
+语法:
+
+~~~swift
+func someFunction<T: SomeClass, U: SomeProtocol>(someT: T, someU: U) {
+}
+~~~
+
+
+比如Swift的字典的定义:
+
+~~~swift
+struct Dictionary<Key : Hashable, Value>
+~~~
+
+我们看到Dictionary的Key被约束为遵循`Hashable`协议。学过数据结构的我们知道,字典实际上是一个哈希表`hash table`。字典的键需要遵循`Hashable`协议,否则我们不能得到哈希表相关的插入,查找等特性。因此`Dictionary`这个泛型类型,需要通过类型约束来限制它的类型参数`Key`遵循`Hashable`协议。
+
+
+
+
+
+
 ##3.Protocol Oriented Programming 与value types
 
-下面我们用Protocol Oriented 
-
-	

@@ -19,7 +19,7 @@
 - [3.函数](#3)
 - [4.类与初始化(Initializers)](#4)
 - [5.枚举与结构体](#5)
-- [6.协议(Protocols)](#6)
+- [6.协议(Protocols)与扩展(Extensions)](#6)
 - [7.Swift与Cocoa](#7)
 - [8.总结](#8)
 
@@ -581,7 +581,9 @@ Swift的初始化方法让我们只关注对象的初始化。之前在OC世界�
 	延伸阅读：[WWDC心得：Advanced iOS Application Architecture and Patterns](https://github.com/100mango/zen/blob/master/WWDC%E5%BF%83%E5%BE%97%EF%BC%9AAdvanced%20iOS%20Application%20Architecture%20and%20Patterns/WWDC%E5%BF%83%E5%BE%97%EF%BC%9AAdvanced%20iOS%20Application%20Architecture%20and%20Patterns.md)
 	
 	
-<h2 id="6">6.协议（Protocols）</h2>
+<h2 id="6">6.协议(Protocols)与扩展(Extensions)</h2>
+
+###协议（Protocol）
 
 语法:
 
@@ -691,7 +693,7 @@ if let thisSementTitle = dataSource?.titleFroSegmentAtIndex?(index){
 	
 	这种编程方式通过怎样的语法特性支撑的呢？
 	
-	那就是我们能够对协议进行扩展,也就是我们能够提供协议的默认实现,能够为协议添加新的方法与实现。
+	那就是我们能够对协议进行扩展(`protocol extensions`),也就是我们能够提供协议的默认实现,能够为协议添加新的方法与实现。
 	
 	用前面的myProtocol为例子,我们在Swift里这样为它提供默认实现。
 	
@@ -711,6 +713,31 @@ if let thisSementTitle = dataSource?.titleFroSegmentAtIndex?(index){
 	
 	[IF YOU'RE SUBCLASSING, YOU'RE DOING IT WRONG.](http://krakendev.io/blog/subclassing-can-suck-and-heres-why)
 	
+###扩展（Extension）
+
+`Extension`在Swift在类似Objective-C的`Category`。在Objective-C中,我们用它来为已有的类添加新的方法实现。在Swift中,我们不仅可以对类进行扩展,而且能对结构体,枚举类型,协议进行扩展。
+
+语法：
+
+Objective-C：
+
+~~~objective-c
+#import "MyClass.h"
+
+@interface MyClass (MyClassAddition)
+- (void)hello;
+@end
+~~~
+
+Swift：
+
+~~~swift
+extension SomeType {
+	func hello(){}
+}
+~~~
+
+与Objective-C的Category不同的是,Swift的`Extension`没有名字。
 
 <h2 id="7">7.Swift与Cocoa</h2>
 

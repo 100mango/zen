@@ -261,3 +261,23 @@ struct Dictionary<Key : Hashable, Value>
 
 参考引用: [swift-generics-pt-2](http://austinzheng.com/2015/09/29/swift-generics-pt-2/)
 
+##3.Protocol Oriented Programming 与value types
+
+protocol-oriented programming 的核心在于
+
+1. 用组合替代继承。
+2. 
+
+protocol extension 能够解决一些继承带来的问题。
+
+**prefer composition over inheritance**
+
+1. 庞大的基类
+
+[mixins-and-traits-in-swift-2](http://matthijshollemans.com/2015/07/22/mixins-and-traits-in-swift-2/)
+
+2. 非常深的继承树
+
+需要思考的问题： protocol oriented programming 与 简单的对类进行Extension有什么区别。类的Extension也可以做到组合化。
+
+自己的一点思考： extension是针对具体某个类的。而protocol oriented则是直接把一个功能加进来。但是protocol也可以限制对象。

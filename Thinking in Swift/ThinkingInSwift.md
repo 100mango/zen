@@ -225,6 +225,30 @@ func someFunction<T: SomeClass, U: SomeProtocol>(someT: T, someU: U) {
 }
 ~~~
 
+- 泛型函数的类型约束：
+
+比如我们要自己写一个方法找出数组中最大的元素 
+> Swift2:已引入了`maxElement`方法 :)
+
+~~~swift
+func findLargestInArray<T : Comparable>(array: Array<T>) -> T? {
+    
+    guard array.count > 0 else{
+        return nil
+    }
+    
+    var largest : T = array[0]
+    for i in 1..<array.count {
+        largest = array[i] > largest ? array[i] : largest
+    }
+    return largest
+}
+~~~
+
+注意到这里我们标注了`T : Comparable`,这是因为只有遵循Comparable协议的类型才能够进行比较,如果我们在这里没有进行类型约束,则直接会编译不通过,因为不是所有类型都能进行大小的比较。类型约束在这里让我们的泛型方法变得更安全和更有针对性。
+
+
+- 泛型类型的类型约束：
 
 比如Swift的字典的定义:
 
@@ -235,9 +259,5 @@ struct Dictionary<Key : Hashable, Value>
 我们看到Dictionary的Key被约束为遵循`Hashable`协议。学过数据结构的我们知道,字典实际上是一个哈希表`hash table`。字典的键需要遵循`Hashable`协议,否则我们不能得到哈希表相关的插入,查找等特性。因此`Dictionary`这个泛型类型,需要通过类型约束来限制它的类型参数`Key`遵循`Hashable`协议。
 
 
-
-
-
-
-##3.Protocol Oriented Programming 与value types
+参考引用: [swift-generics-pt-2](http://austinzheng.com/2015/09/29/swift-generics-pt-2/)
 

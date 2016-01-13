@@ -187,7 +187,7 @@ imageViewLayer.shadowPath = CGPathCreateWithRect(imageRect, NULL);
 	![](roundFrameRate.png)
 	
 
- 以上举了两个例子阐明了在避免大量的offerScreen渲染后,性能能够得到非常直观有效的提高。
+ 以上举了两个例子阐明了在避免大量的offerscreen渲染后,性能能够得到非常直观有效的提高。
 
 ###3. 关于blending
 

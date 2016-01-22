@@ -259,7 +259,45 @@ struct Dictionary<Key : Hashable, Value>
 我们看到Dictionary的Key被约束为遵循`Hashable`协议。学过数据结构的我们知道,字典实际上是一个哈希表`hash table`。字典的键需要遵循`Hashable`协议,否则我们不能得到哈希表相关的插入,查找等特性。因此`Dictionary`这个泛型类型,需要通过类型约束来限制它的类型参数`Key`遵循`Hashable`协议。
 
 
+###关联类型（`Associated Types`）:
+
+我们在上面看到了在函数和类型中的泛型编程,而`Protocol`作为Swift中重要的组成部分,自然也是支持泛型这个编程概念的。
+
+~~~swift
+protocol Container {
+    typealias ItemType
+    mutating func append(item: ItemType)
+}
+~~~
+
+我们直接用官方的一个例子说明,假设我们定义了一个Container协议,我们希望遵循我们协议的类型能够实现一个添加新元素的功能。我们希望这个协议是广泛使用的,不限制元素的类型。这里我们通过`typealias`这个关键词来声明关联类型。等到实现协议的时候再去确定真正的类型。
+
+~~~swift
+class myContainer:Container{
+    typealias ItemType = String
+    func append(item: String) {
+    }
+}
+~~~
+
+我们简单地实现了一个遵循Container协议的类,我们确定了类型是String。在这里
+
+~~~swift
+typealias ItemType = String
+~~~
+
+这一句代码是可以不写的,Swift的类型推导系统能够在`append`方法的参数类型里获得ItemType的具体类型。
+
+
+
+- 强大的`where`语句
+
+	
+
+
 参考引用: [swift-generics-pt-2](http://austinzheng.com/2015/09/29/swift-generics-pt-2/)
+
+
 
 ##3.Protocol Oriented Programming 与value types
 

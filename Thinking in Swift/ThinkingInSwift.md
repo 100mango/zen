@@ -270,7 +270,7 @@ protocol Container {
 }
 ~~~
 
-我们直接用官方的一个例子说明,假设我们定义了一个Container协议,我们希望遵循我们协议的类型能够实现一个添加新元素的功能。我们希望这个协议是广泛使用的,不限制元素的类型。这里我们通过`typealias`这个关键词来声明关联类型。等到实现协议的时候再去确定真正的类型。
+假设我们定义了一个Container协议,我们希望遵循我们协议的类型能够实现一个添加新元素的功能。我们希望这个协议是广泛使用的,不限制元素的类型。这里我们通过`typealias`这个关键词来声明关联类型。等到实现协议的时候再去确定真正的类型。
 
 ~~~swift
 class myContainer:Container{
@@ -288,14 +288,76 @@ typealias ItemType = String
 
 这一句代码是可以不写的,Swift的类型推导系统能够在`append`方法的参数类型里获得ItemType的具体类型。
 
+> [Swift2.2 关联类型的声明语法将改为`associatedtype `](https://github.com/apple/swift-evolution/blob/master/proposals/0011-replace-typealias-associated.md)
+
 
 
 - 强大的`where`语句
 
+	在上面我们可以通过类型约束(Type Constraints)来对泛型函数和泛型类型的类型参数进行约束。那么我们如何对关联类型进行约束呢？
+	
+	语法：
+	
+	~~~swift
+	func allItemsMatch<C1: Container, C2: Container
+    where C1.ItemType == C2.ItemType, C1.ItemType: Equatable>
+    (someContainer: C1, anotherContainer: C2) -> Bool {
+ 		// 检查两个容器含有相同数量的元素
+        if someContainer.count != anotherContainer.count {
+            return false
+        }
+        // 检查每一对元素是否相等
+        for i in 0..<someContainer.count {
+            if someContainer[i] != anotherContainer[i] {
+                return false
+            }
+        }
+        // 所有元素都匹配，返回 true
+        return true
+	}
+	~~~
+	
+	我们通过`where`语句来声明限制,我们在类型参数列表后面加where子句。
+	
+	在上面的例子中,我们实现一个函数来确保两个遵循`Container`协议的类型包含的元素顺序和内容全部相同。
+	
+	~~~swift
+	where C1.ItemType == C2.ItemType, C1.ItemType: Equatable
+	~~~
+	
+	我们通过where子句限制了比较的两者的关联类型`ItemType`必须是相同类型,且是能够比较的。
+	
+	
+	我们用另外一种方式来重写上面的`findLargestInArray`泛型函数方法。
+	
+	~~~swift
+	extension CollectionType where Self.Generator.Element : Comparable {
+	    func largestElement() -> Self.Generator.Element?{
+	        guard self.count > 0 else {
+	            return nil
+	        }
+	        
+	        var largest = self.first
+	        for element in self{
+	            if largest < element {
+	                largest = element
+	            }
+	        }
+	        return largest
+	    }
+	}
+	~~~
+
+	我们扩展`CollectionType`协议,然后对关联类型`Element`进行限制。我们通过`where`字句来对关联类型进行限制。
+	
 	
 
 
-参考引用: [swift-generics-pt-2](http://austinzheng.com/2015/09/29/swift-generics-pt-2/)
+参考引用: 
+
+[swift-generics-pt-2](http://austinzheng.com/2015/09/29/swift-generics-pt-2/)
+
+[The Swift Programming Language](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Generics.html#//apple_ref/doc/uid/TP40014097-CH26-ID179)
 
 
 

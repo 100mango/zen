@@ -317,7 +317,7 @@ typealias ItemType = String
 	}
 	~~~
 	
-	我们通过`where`语句来声明限制,我们在类型参数列表后面加where子句。
+	我们通过`where`语句来声明限制关联类型的语句,我们在类型参数列表后面加where子句。
 	
 	在上面的例子中,我们实现一个函数来确保两个遵循`Container`协议的类型包含的元素顺序和内容全部相同。
 	
@@ -327,30 +327,71 @@ typealias ItemType = String
 	
 	我们通过where子句限制了比较的两者的关联类型`ItemType`必须是相同类型,且是能够比较的。
 	
-	
-	我们用另外一种方式来重写上面的`findLargestInArray`泛型函数方法。
-	
-	~~~swift
-	extension CollectionType where Self.Generator.Element : Comparable {
-	    func largestElement() -> Self.Generator.Element?{
-	        guard self.count > 0 else {
-	            return nil
-	        }
-	        
-	        var largest = self.first
-	        for element in self{
-	            if largest < element {
-	                largest = element
-	            }
-	        }
-	        return largest
-	    }
-	}
-	~~~
+	- Constrained Extensions
 
-	我们扩展`CollectionType`协议,然后对关联类型`Element`进行限制。我们通过`where`字句来对关联类型进行限制。
+		我们还能够使用where子句在编写扩展的时候对泛型进行限制:
+		
+		1. 扩展泛型类型时,对类型参数进行限制。
+		2. 扩展协议时,对关联类型进行限制。
+		
+		灵活地运用这个特性能够编写出很多实用巧妙的扩展。
+		
+		比如我们扩展泛型类型：
+		
+		~~~swift
+		protocol CGPointWrapper {
+		    var point : CGPoint { get }
+		}
+		
+		extension CGPoint : CGPointWrapper {
+		    var point : CGPoint {
+		        return self
+		    }
+		}
+		
+		extension Array where Element : CGPointWrapper {
+		    var path : CGPathRef {
+		        let bezier = UIBezierPath()
+		        
+		        if self.count > 0 {
+		            bezier.moveToPoint(self[0].point)
+		        }
+		        
+		        for point in self{
+		            bezier.addLineToPoint(point.point)
+		        }
+		        
+		        return bezier.CGPath
+		    }
+		}
+		~~~
+		
+		上面这个例子中,我们限制了Array的类型参数`Element`必须遵循`CGPointWrapper`协议。因为类型参数的限制目前只能限制是某个类或是遵循某个协议,而`CGPoint`是值类型,因此我们用`CGPointWrapper`协议替代,用于提供一个`point`属性以供使用。然后我们在扩展中取出`CGPoint`,直接合成`CGPathRef`,非常的优雅方便,并且是类型安全的。
+		
+		又比如我们扩展协议:
+		
+		~~~swift
+		extension CollectionType where Self.Generator.Element : Comparable {
+		    func largestElement() -> Self.Generator.Element?{
+		        guard self.count > 0 else {
+		            return nil
+		        }
+		        
+		        var largest = self.first
+		        for element in self{
+		            if largest < element {
+		                largest = element
+		            }
+		        }
+		        return largest
+		    }
+		}
+		~~~
+		
+		在这里我们扩展了`CollectionType`协议,实现了类似我们上面的泛型方法	`findLargestInArray`的类似功能,但不同的是我们的使用范围更广了,所有遵循	`CollectionType`的类型都能够获得这样的功能,而Array也是遵循`CollectionType`协议的。
 	
-	
+  
+<br>
 
 
 参考引用: 
@@ -358,6 +399,8 @@ typealias ItemType = String
 [swift-generics-pt-2](http://austinzheng.com/2015/09/29/swift-generics-pt-2/)
 
 [The Swift Programming Language](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Generics.html#//apple_ref/doc/uid/TP40014097-CH26-ID179)
+
+[swift-type-constrained-extensions-express-yourself](http://www.cimgf.com/2015/12/14/swift-type-constrained-extensions-express-yourself/)
 
 
 

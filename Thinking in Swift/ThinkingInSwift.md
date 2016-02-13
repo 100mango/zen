@@ -2,18 +2,26 @@
 
 从Objective-C转到Swift,我们往往脑袋里还带着旧的一套编程套路。为了利用Swift写出更优雅,更健壮的代码。让我们用初心者的心态来学习新的编程范式,新的可能。
 
-##1.拥抱`Optional`。哲学: 一个值要么有值,要么就是optional。
+##1.拥抱`Optional`,远离Crash
+
+Swift引进了一个新的概念`Optional`,以及相关的一系列语法:
+	
+- `?` 与 `!` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 声明Optional类型
+- `if let`   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  可选绑定（Optional binding）
+- `guard`    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  提前退出（Early Exit）
+- `as?` 与 `as!` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 向下转型（Downcasting）
+
+#####什么是可选（`Optional`）类型？  
+可选类型就是说要么这里有一个值,要么这里什么都没有。
+
+#####为什么需要有可选类型？
+
 
 > Optionals are an example of the fact that Swift is a type safe language. Swift helps you to be clear about the types of values your code can work with. If part of your code expects a String, type safety prevents you from passing it an Int by mistake. This restriction enables you to catch and fix errors as early as possible in the development process.
 
 
-Swift引进了一个新的概念`Optional`,以及相关的一系列语法:
-	
-- `?` 与 `!`  声明Optional
--  `if let`   Optional binding
-- `guard`     Early Exit
-- `as?` 与 `as!` 
-- `try?`
+哲学: 一个值要么有值,要么就是optional。
+
 
 Optional的核心在于类型安全,在于和Nil做斗争。在于在运行前就处理好所有值为空或不为空的情况,如果有错误的话,直接在编译的时候就给出error,不等到运行的时候才crash。
 	

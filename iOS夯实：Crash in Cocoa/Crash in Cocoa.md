@@ -2,12 +2,6 @@ Crash in Cocoa
 
 Cocoa中会导致Carsh的地方：
 
-参考：
-
-[Understanding and Analyzing iOS Application Crash Reports](https://developer.apple.com/library/ios/technotes/tn2151/_index.html)
-
-[iOS Crash文件的解析](http://www.cnblogs.com/smileEvday/p/Crash1.html)
-
 ##Exceptions类型
 ##1. 集合类越界或插入Nil：
 
@@ -125,3 +119,10 @@ let cool = testStr.stringByAppendingString(nil)
 //error: nil is not compatible with expected argument type 'String'
 ~~~
 	
+  
+<br><br>	
+参考：
+
+[Understanding and Analyzing iOS Application Crash Reports](https://developer.apple.com/library/ios/technotes/tn2151/_index.html)
+
+[iOS Crash文件的解析](http://www.cnblogs.com/smileEvday/p/Crash1.html)

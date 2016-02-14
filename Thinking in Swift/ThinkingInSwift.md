@@ -6,28 +6,59 @@
 
 Swift引进了一个新的概念`Optional`,以及相关的一系列语法:
 	
-- `?` 与 `!` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 声明Optional类型
+- `?` 与 `!` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 声明可选类型
 - `if let`   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  可选绑定（Optional binding）
 - `guard`    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  提前退出（Early Exit）
 - `as?` 与 `as!` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 向下转型（Downcasting）
 
-#####什么是可选（`Optional`）类型？  
-可选类型就是说要么这里有一个值,要么这里什么都没有。
+####什么是可选（`Optional`）类型？  
+可选类型的意思是要么这里有一个值,要么这里什么都没有。
 
-#####为什么需要有可选类型？
+实际上,`Optional`是一个枚举类型。Swift开源后,我们能看到Optional的实现
 
+~~~swift
+public enum Optional<Wrapped> : NilLiteralConvertible {
+  case None
+  case Some(Wrapped)
 
-> Optionals are an example of the fact that Swift is a type safe language. Swift helps you to be clear about the types of values your code can work with. If part of your code expects a String, type safety prevents you from passing it an Int by mistake. This restriction enables you to catch and fix errors as early as possible in the development process.
+  public init() { self = .None }
+  public init(_ some: Wrapped) { self = .Some(some) }
+}
+~~~
 
+声明一个Optional的语法:
 
-哲学: 一个值要么有值,要么就是optional。
+~~~swift
+var strValue: String?   //?相当于下面这种写法的语法糖
+var strValue: Optional<String>
+~~~
 
+因此声明一个Optional类型,实际上是声明一个枚举类型,这个枚举类型包括两种情况,一个是None,另一个是你声明的类型。
+
+正因如此,我们在使用可选类型时,需要先判定这个Optional是属于哪种case。这个时候就需要用到可选绑定（Optional binding）这个语法来unwarp,然后再使用。
+
+~~~swift
+var strValue:String?
+if let str = strValue {
+    print(str)
+}
+~~~
+
+####为什么需要有可选类型？
+
+> Optionals are an example of the fact that Swift is a type safe language.
+
+哲学: 一个值要么有值,要么就是optional类型。而optional类型要么有值,要么没有值,对optional类型操作前一定要判断有值之后才能操作,如果没有判断,则编译器会报错。
+
+在Swift的世界中,无论是值类型（value types）比如`struct`,`enum`,还是引用类型（reference types）`class`,只存在两种可能性,一是它一定有值,要么它就是Optional类型。
 
 Optional的核心在于类型安全,在于和Nil做斗争。在于在运行前就处理好所有值为空或不为空的情况,如果有错误的话,直接在编译的时候就给出error,不等到运行的时候才crash。
 	
 在Swift的世界里,如果我们不声明一个对象为Optional,则它一定是有值的。这一点是非常有价值的,避免了我们对空对象进行操作。虽然在Objective-C中对空对象发送消息不会导致crash。**但是有许多情况下对空对象操作会导致Crash,比如向数组插入空对象等许多操作操作。**（详情查阅:[Crash in Cocoa](https://github.com/100mango/zen/blob/master/iOS%E5%A4%AF%E5%AE%9E%EF%BC%9ACrash%20in%20Cocoa/Crash%20in%20Cocoa.md)）
 
 更重要的是,我们更希望达到一种状态,就是我操作对象和数据的时候,我能够确信它不为空。这种哲学避免了许多冗杂无用的判断Nil操作,同时也大大减少了忘记判断nil导致的crash。
+
+####如何使用可选类型？
 	
 那Swift究竟通过什么途径来保证一个对象如果不是Optional,他就一定有值呢？
 	
@@ -110,7 +141,13 @@ var optionalInt:Int?
 	}
 	~~~
 
-参考 [why use optional let](http://stackoverflow.com/questions/29662836/swift-use-of-optional-with-let)
+
+<br>参考:   
+[why use optional let](http://stackoverflow.com/questions/29662836/swift-use-of-optional-with-let)
+
+[Swift源代码](https://github.com/apple/swift/blob/master/stdlib/public/core/Optional.swift)
+
+[Swift之 ? 和 !](http://joeyio.com/ios/2014/06/04/swift---/)
 
 
 ##2.学习泛型。抽象的魅力。

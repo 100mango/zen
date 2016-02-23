@@ -2,7 +2,14 @@
 
 从Objective-C转到Swift,我们往往脑袋里还带着旧的一套编程套路。为了利用Swift写出更优雅,更健壮的代码。让我们用初心者的心态来学习新的编程范式,新的可能。
 
-##1.拥抱`Optional`,远离Crash
+目录：
+
+- [1.拥抱Optional,远离Crash](#1)
+- [2.学习泛型。抽象的魅力。](#2)
+- [3.Protocol Oriented Programming 与value types](#3)
+
+
+<h2 id="1">1.拥抱Optional,远离Crash</h2>
 
 Swift引进了一个新的概念`Optional`,以及相关的一系列语法:
 	
@@ -150,7 +157,9 @@ var optionalInt:Int?
 [Swift之 ? 和 !](http://joeyio.com/ios/2014/06/04/swift---/)
 
 
-##2.学习泛型。抽象的魅力。
+
+
+<h2 id="2">2.学习泛型。抽象的魅力。</h2>
 
 泛型编程,简单地总结。就是让我们在保持type safety的同时写出不局限于单一类型的代码,也即灵活与安全。
 
@@ -449,7 +458,9 @@ typealias ItemType = String
 
 
 
-##3.Protocol Oriented Programming 与value types
+
+
+<h2 id="3">3.Protocol Oriented Programming 与value types</h2>
 
 protocol-oriented programming 的核心在于
 

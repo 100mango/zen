@@ -1,6 +1,6 @@
 Crash in Cocoa
 
-Cocoa中会导致Carsh的地方：
+Cocoa中会导致Crash的地方：
 
 ##Exceptions类型
 ##1. 集合类越界或插入Nil：

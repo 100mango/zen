@@ -81,20 +81,35 @@ Optional的核心在于类型安全,在于和Nil做斗争。在于在运行前�
 	//error: variable 'testString' used before being initialized
 	~~~
 	
-2. 类和结构体的实例在创建时,一定要为所有存储型属性设置初始值。我们可以在`initializer`或是定义属性的时候为其设置默认值,否则编译器会抛出error.
+2. 类和结构体的实例在创建时,一定要为所有存储型属性设置初始值。我们可以在`initializer`或是声明属性的时候为其设置默认值,否则编译器会抛出error.
 		
 	~~~swift
+	//error:return from initializer without initializing all stored properties
 	class testClass {
     var a:String
-    
 	    init(){ 
 	    }
-	    //	error:return from initializer without initializing all stored properties
-	
 	}
+	
+	//pass
+	class testClass {
+    var a:String = ""
+    init(){}
+	}
+	
+	//pass
+	class testClass {
+    var a:String
+    init(){
+        self.a = ""
+    }}
 	~~~
 
-由此我们也引出了`optional`的概念。Optional表示一个值可能为空。要么有值,要么为空(nil)。
+那我们如何使用Optional呢？
+
+- `?` 与 `!` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 声明可选类型
+
+
 
 那么这时候你可能会问,在Objective-C也是这样,一个对象要么有值,要么为nil。
 
@@ -125,32 +140,6 @@ var optionalInt:Int?
 	}
 	~~~
 
-
-
-
-
-
-
-
-
-	比较绕的一点：
-	
-	~~~swift
-	
-	let optionalLet:String?
-	var optionalVar:String?
-	
-	//标记为optional的let,一定要在使用前赋值,要么永远为nil,要么永远有值
-	//标记为optional的var,不需要要在使用前赋值,因为它可能有时有值,有时没值
-	
-	if let unwarp = optionalLet{
-	//error: variable used before being initalized
-	}
-	
-	if let unwarp = optionalVar{
-	    //OK
-	}
-	~~~
 
 
 <br>参考:   

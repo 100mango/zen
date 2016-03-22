@@ -17,6 +17,7 @@ Swift引进了一个新的概念`Optional`,以及相关的一系列语法:
 - `if let`   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  可选绑定（Optional binding）
 - `guard`    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  提前退出（Early Exit）
 - `as?` 与 `as!` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 向下转型（Downcasting）
+- `??`  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 空合运算符(Nil Coalescing Operator)
 
 ####什么是可选（`Optional`）类型？  
 可选类型代表的概念是要么这里有一个值,要么这里什么都没有。
@@ -313,16 +314,16 @@ struct Dictionary<Key : Hashable, Value>
 
 ~~~swift
 protocol Container {
-    typealias ItemType
+    associatedtype ItemType
     mutating func append(item: ItemType)
 }
 ~~~
 
-假设我们定义了一个Container协议,我们希望遵循我们协议的类型能够实现一个添加新元素的功能。我们希望这个协议是广泛使用的,不限制元素的类型。这里我们通过`typealias`这个关键词来声明关联类型。等到实现协议的时候再去确定真正的类型。
+假设我们定义了一个Container协议,我们希望遵循我们协议的类型能够实现一个添加新元素的功能。我们希望这个协议是广泛使用的,不限制元素的类型。这里我们通过`associatedtype`这个关键词来声明关联类型。等到实现协议的时候再去确定真正的类型。
 
 ~~~swift
 class myContainer:Container{
-    typealias ItemType = String
+    associatedtype ItemType = String
     func append(item: String) {
     }
 }
@@ -331,7 +332,7 @@ class myContainer:Container{
 我们简单地实现了一个遵循Container协议的类,我们确定了类型是String。在这里
 
 ~~~swift
-typealias ItemType = String
+associatedtype ItemType = String
 ~~~
 
 这一句代码是可以不写的,Swift的类型推导系统能够在`append`方法的参数类型里获得ItemType的具体类型。
@@ -474,3 +475,5 @@ protocol extension 能够解决一些继承带来的问题。
 需要思考的问题： protocol oriented programming 与 简单的对类进行Extension有什么区别。类的Extension也可以做到组合化。
 
 自己的一点思考： extension是针对具体某个类的。而protocol oriented则是直接把一个功能加进来。但是protocol也可以限制对象。
+
+

@@ -57,8 +57,19 @@ class Shape {
 	weak var delegate: UITextFieldDelegate? 
 	~~~
 	
-- `readonly`,`readwrie`  直接通过声明常量`let`,声明变量`var`的方式来指明
-- `copy` 通过`@NSCopying`指令声明。 
+- `readonly`：
+
+	在OC分两种情况,第一种是通过getter返回我们自己私有的实例变量（instance variable）。这种情况在Swift中通过只有getter的`Computed property`实现.
+	
+	第二种是在.h声明property为`readonly`，在.m声明property为`readwrite`,这种情况在Swift通过`Access Control`来实现:
+	
+	~~~swift
+	private(set) var readonlyProperty: Int
+	~~~
+	
+	值得注意的是Swift有自己的一套权限控制`Access Control`（本文[类与初始化(Initializers)](#4)会提到）,因此不能够完全地把Objective-C中的Property机制和Swift中的机制划等号。
+	
+- `copy`：通过`@NSCopying`指令声明。 
 
 	**值得注意的是String,Array和Dictionary在Swift是以值类型(value type)而不是引用类型(reference type)出现,因此它们在赋值,初始化,参数传递中都是以拷贝的方式进行（简单来说,String,Array,Dictionary在Swift中是通过`struct`实现的）** 
 	

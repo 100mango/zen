@@ -57,17 +57,17 @@ class Shape {
 	weak var delegate: UITextFieldDelegate? 
 	~~~
 	
-- `readonly`：
+- `readonly`,`readwrite`：
 
-	在OC分两种情况,第一种是通过getter返回我们自己私有的实例变量（instance variable）。这种情况在Swift中通过只有getter的`Computed property`实现.
+	Swift没有这两个attribute,如果是定义一个`stored property`,通过`let`定义它只读,通过`var`定义它可读可写。
 	
-	第二种是在.h声明property为`readonly`，在.m声明property为`readwrite`,这种情况在Swift通过`Access Control`来实现:
+	如果想实现类似Objective-C中,对外在头文件.h 声明property为`readonly`，对内在.m声明property为`readwrite`,这种情况在Swift通过`Access Control`来实现:
 	
 	~~~swift
-	private(set) var readonlyProperty: Int
+	private(set) var property: Int
 	~~~
 	
-	值得注意的是Swift有自己的一套权限控制`Access Control`（本文[类与初始化(Initializers)](#4)会提到）,因此不能够完全地把Objective-C中的Property机制和Swift中的机制划等号。
+	关于`Access Control`（在本文[类与初始化(Initializers)](#4)会提到）
 	
 - `copy`：通过`@NSCopying`指令声明。 
 

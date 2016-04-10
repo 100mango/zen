@@ -553,3 +553,34 @@ protocol extension 能够解决一些继承带来的问题。
 
 自己的一点思考： extension是针对具体某个类的。而protocol oriented则是直接把一个功能加进来。但是protocol也可以限制对象。
 
+<h2 id="4">4.函数式编程（Functional Programming）</h2>
+
+高阶函数
+
+reduce,filter,map,flapmap,forEach
+
+~~~swift
+  var bubbleModels = [BubbleModel]()
+   for bubble in bubbles {
+   		bubbleModels.append(bubble.bubbleModel)
+   }
+   return bubbleModels
+//高阶函数        
+bubbleModels = bubbles.map({ $0.bubbleModel })
+~~~
+
+~~~swift
+  var bubbles = [BubbleView]()
+   for view in self.subviews {
+	   	if let bubbleView = view as? BubbleView {
+	   		bubbles.append(bubbleView)
+	   	}
+   	}
+
+//高阶函数
+bubbles = self.subviews.flatMap({ $0 as? BubbleView })
+~~~
+
+//内部实现
+[map](https://github.com/apple/swift/blob/master/stdlib/public/core/Collection.swift)
+[reduce,flatmap](https://github.com/apple/swift/blob/master/stdlib/public/core/SequenceAlgorithms.swift.gyb)

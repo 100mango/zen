@@ -1,12 +1,12 @@
 #Thinking in Swift
 
-从Objective-C转到Swift,我们往往脑袋里还带着旧的一套编程套路。为了利用Swift写出更优雅,更健壮的代码。让我们用初心者的心态来学习新的编程范式,新的可能。
+从Objective-C到Swift,我们往往脑袋里还带着旧的一套编程套路。为了利用Swift写出更优雅,更健壮的代码。让我们用初心者的心态来学习新的编程范式,新的可能。
 
 目录：
 
 - [1.拥抱Optional,远离Crash](#1)
 - [2.学习泛型。抽象的魅力。](#2)
-- [3.Protocol Oriented Programming 与value types](#3)
+- [3.Protocol Oriented Programming 与Value Types](#3)
 
 
 <h2 id="1">1.拥抱Optional,远离Crash</h2>
@@ -54,7 +54,7 @@ if let str = strValue {
 
 ####为什么需要可选类型？
 
-> Optionals are an example of the fact that Swift is a type safe language.  By:《The Swift Programming Language》
+> Optionals are an example of the fact that Swift is a type safe language.  ———《The Swift Programming Language》
 
 基本上所有语言（C，C++，Objective-C,C#...）的类型系统都包括`Null`这个概念,但都没有相应正确的处理机制。连创建这个概念的Tony Hoare也把这个错误称为[billion dollar mistake](http://www.infoq.com/presentations/Null-References-The-Billion-Dollar-Mistake-Tony-Hoare)。因为它导致的编程错误累计起来造成了极大的损失。
 
@@ -63,8 +63,6 @@ if let str = strValue {
 如果一个用户量巨大的应用出现了相关的Bug,的确会造成不少直接经济损失,而Debug等流程也意味着时间成本的支出。而Swift的`Optional`机制正是要避免`Null`这个概念所导致的错误。
 
 Swift处理空值的理念就是: 一个值要么有值,要么就是optional类型。而optional类型要么有值,要么没有值,对optional类型操作前一定要判断有值之后才能操作,如果没有判断,则编译器会报错。
-
-Optional的核心在于类型安全,在于和Nil做斗争。在于在运行前就处理好所有值为空或不为空的情况,如果有错误的话,直接在编译的时候就给出error,不等到运行的时候才crash。
 	
 在Swift的世界里,如果我们不声明一个对象为Optional,则它一定是有值的。这一点是非常有价值的,避免了我们对空对象进行操作。
 
@@ -106,49 +104,128 @@ Optional的核心在于类型安全,在于和Nil做斗争。在于在运行前�
     }}
 	~~~
 
-那我们如何使用Optional呢？
+那我们如何在Swift中使用Optional呢？
 
 - `?` 与 `!` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 声明可选类型
-
-
-
-那么这时候你可能会问,在Objective-C也是这样,一个对象要么有值,要么为nil。
-
-从最简单的语法入手：
-
-~~~swift
-var optionalInt:Int?
-~~~
-
-
-1. 首先,在OC中,nil只针对对象而已,对于结构体,枚举类型,基本的C类型来说,是没有nil的。我们不能直接判断它们是否有值。在OC中,nil是一个指向不存在对象的指针,在Swift中,nil不是指针,它是一个确定的值,用来表示值为空。 (事实上,nil是一个枚举值)
-
-	> [Swift之 ? 和 !](http://joeyio.com/ios/2014/06/04/swift---/)
-
-	而Swift的Optional让我们能明确地标注一个值有没有可能为空。并且值的类型没有限制。
-	
-2. Swift的`Optional Binding`机制确保我们在使用Optional值时先判断值是否为空。
-
-	在Objective-C中,判空操作不是强制和必须的。判空是一个良好的习惯,但是因为没有约束和规范。很多时候判空操作都被遗漏了,导致了许多潜在的问题。
-	
-	但在Swift中,我们在使用一个Optional值之前必须先unwarp它。
-	
-	语法：
 	
 	~~~swift
-	if let constantName = someOptional {
+	var optionalInt:Int?
+	~~~
+	
+	首先,在Objective-C中,nil仅针对对象,对于结构体,枚举类型等类型来说,是没有nil的。我们不能直接判断它们是否有值。在OC中,nil是一个指向不存在对象的指针,在Swift中,nil不是指针,它是一个确定的值,用来表示值为空。 (正如前面的Optional源代码所示,它是一个枚举值)  
+	
+	Swift的Optional让我们能明确地标注一个值有没有可能为空。并且值的类型没有限制。  
+	<br>
+	
+- `if let`   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  可选绑定（Optional binding）
+
+
+	Swift的`Optional Binding`机制确保我们在使用Optional值时先判断值是否为空。
+	
+	在Objective-C中,判空操作不是强制和必须的。判空是一个良好的习惯,但是因为没有约束和规范。很多时候判空操作都被遗漏了,导致了许多潜在的问题。
+		
+	但在Swift中,我们在使用一个Optional值之前必须先unwarp它。
+		
+	语法：
+		
+	~~~swift
+	if let constant = someOptional {
 	  //use constant
 	}
 	~~~
+	<br>
+	  
+- `guard`    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  提前退出（Early Exit）
+
+	在编程规范中有个名字好听的`黄金大道（Golden Path）`的准则。
+	
+	就是我们在编程的过程中使用条件语句时,代码的左边应该是一条Golden Path。也就是避免过多的`if`嵌套,可以合理地通过return提前退出。
+	
+	也就是:
+	
+	~~~swift
+	//推荐：
+	func someMethod() {
+ 	 if someBoolValue == false {
+ 	 	return
+     }
+    // Do something important
+	}
+	~~~
+	
+	~~~swift
+	//不推荐
+	func someMethod() {
+ 	 if someBoolValue == true {
+   	 	// Do something important
+  	 }
+	}
+	~~~
+	
+	而Swift中,我们可以用Guard来提前退出,且对Optional进行unwarp的操作。
+	
+	~~~swift
+	guard let constant = someOptional else {
+		return
+	}
+	//可以直接操作constant
+	~~~
+	
+	考虑我们用if来操作
+	
+	~~~swift
+	if someOptional == nil {
+		return
+	}
+	//仍然需要unwrap optional
+	~~~
+	
+	在这里用if，首先是语义上面不够清晰，通常我们使用if是想检查我们想要的情况，但在这里变成检查我们不想要的情况，然后提前退出。其次是检查过后，我们仍然需要去unwrap optional。
+	
+	而使用guard,语义更清晰，关键词`gurad`就是专门用于提前退出，并且能够在检查的过程中unwarp optional，并在后面的流程中使用。
+	<br>
+	
+- `as?` 与 `as!` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 向下转型（Downcasting）
+	
+	~~~swift
+	if let subclassObject = superclassObject as? subclass {
+    } 
+	~~~
+	<br>
+	
+- `??`  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 空合运算符(Nil Coalescing Operator)
+	
+	空合运算符是对三目运算符其中一个用例的简化，相当于：
+	
+	~~~swift
+	a != nil ? a! : b
+	~~~
+	
+	空合运算法提供了一种更优雅的语法来表示判空,unwarp和提供新选项三者的结合。
+	
+	~~~swift
+	var optionalName: String?
+	let defaultName = "Mango"
+	var name = optionalName ?? defaultName
+	//相当于
+	var name = optionlName != nil ? optionlName! : defaultName
+	~~~
+	
+
+	
+
+
 
 
 
 <br>参考:   
 [why use optional let](http://stackoverflow.com/questions/29662836/swift-use-of-optional-with-let)
 
-[Swift源代码](https://github.com/apple/swift/blob/master/stdlib/public/core/Optional.swift)
+[Optional源代码](https://github.com/apple/swift/blob/master/stdlib/public/core/Optional.swift)
 
 [Swift之 ? 和 !](http://joeyio.com/ios/2014/06/04/swift---/)
+
+[Swift Guard Statement](http://ericcerney.com/swift-guard-statement/)
 
 [编程的智慧](http://www.yinwang.org/blog-cn/2015/11/21/programming-philosophy)
 
@@ -475,5 +552,4 @@ protocol extension 能够解决一些继承带来的问题。
 需要思考的问题： protocol oriented programming 与 简单的对类进行Extension有什么区别。类的Extension也可以做到组合化。
 
 自己的一点思考： extension是针对具体某个类的。而protocol oriented则是直接把一个功能加进来。但是protocol也可以限制对象。
-
 

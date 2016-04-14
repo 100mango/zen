@@ -545,13 +545,40 @@ protocol extension 能够解决一些继承带来的问题。
 
 1. 庞大的基类
 
-[mixins-and-traits-in-swift-2](http://matthijshollemans.com/2015/07/22/mixins-and-traits-in-swift-2/)
+	[mixins-and-traits-in-swift-2](http://matthijshollemans.com/2015/07/22/mixins-and-traits-in-swift-2/)
 
 2. 非常深的继承树
 
-需要思考的问题： protocol oriented programming 与 简单的对类进行Extension有什么区别。类的Extension也可以做到组合化。
+3. 类只能继承一个父类,多重继承有弊病。
 
-自己的一点思考： extension是针对具体某个类的。而protocol oriented则是直接把一个功能加进来。但是protocol也可以限制对象。
+   [Multiple Inheritance vs. Traits or Protocol Extensions](https://www.dzombak.com/blog/2015/06/Multiple-Inheritance-vs--Traits-or-Protocol-Extensions.html)
+
+4. Protocol Extension 独特的优势：各种Value Type 和 Class 都能使用 Protocol Extension。并且能够对 protocol extension 进行Constraint。
+	
+	[Is there a difference between Swift 2.0 protocol extensions and Java/C# abstract classes?](http://stackoverflow.com/questions/30943209/is-there-a-difference-between-swift-2-0-protocol-extensions-and-java-c-abstract)
+	
+	Swift就使用了Protocol Extension来改进自己的标准库。
+	
+	例如在Swift1.2， `map`这个高阶函数是通过`Extension`实现的。因此每个`CollectionType`都需要自己实现一遍这些方法。
+	
+	~~~swift
+	// Swift 1.2
+	extension Array : _ArrayType {
+	  func map<U>(transform: (T) -> U) -> [U]
+	}
+	~~~
+	
+	而通过在Swift2开始引入的 Protocol Extension， 直接扩展了`CollectionType`Protocol,提供了默认实现。这样子所有遵循`CollectionType`的类型都拥有了`map`，不需要一个个单独实现。
+	
+	~~~swift
+	extension CollectionType {
+    public func map<T>(@noescape transform: (Self.Generator.Element) throws -> T) rethrows -> [T]
+	~~~
+	
+
+参考资料：
+
+[introducing-protocol-oriented-programming-in-swift-2](https://www.raywenderlich.com/109156/introducing-protocol-oriented-programming-in-swift-2)
 
 <h2 id="4">4.函数式编程（Functional Programming）</h2>
 
@@ -579,6 +606,33 @@ bubbleModels = bubbles.map({ $0.bubbleModel })
 
 //高阶函数
 bubbles = self.subviews.flatMap({ $0 as? BubbleView })
+~~~
+
+~~~swift
+let detector = CIDetector(ofType: CIDetectorTypeFace, context: context, options: [CIDetectorAccuracy: CIDetectorAccuracyHigh])
+let faces = detector.featuresInImage(image)
+
+//循环版本
+var maskImage: CIImage?
+for face in faces {
+    let parameters = //...获取脸部位置，构造滤镜参数
+    let radialGradient = CIFilter(name: "CIRadialGradient", withInputParameters: parameters)
+    if let circleImage = radialGradient?.outputImage {
+        if let oldMaskImage = maskImage {
+            maskImage = sourceOver(circleImage)(oldMaskImage)
+        }else{
+            maskImage = circleImage
+        }
+    }
+}
+
+//高阶函数
+let mask = faces.flatMap({ face in
+    let parameters = //...
+    let radialGradient = CIFilter(name: "CIRadialGradient", withInputParameters: parameters)
+    return radialGradient?.outputImage
+}).reduce(CIImage(), combine: { sourceOver($0)($1) })
+
 ~~~
 
 //内部实现

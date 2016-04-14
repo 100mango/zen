@@ -682,7 +682,7 @@ if let thisSementTitle = dataSource?.titleFroSegmentAtIndex?(index){
    	 func hello() -> String
 	}
 
-	extension String:myProtocol{
+	extension String: myProtocol{
    	 func hello() -> String {
    	     return "hello world!"
    	 }
@@ -749,6 +749,14 @@ extension SomeType {
 ~~~
 
 与Objective-C的Category不同的是,Swift的`Extension`没有名字。
+
+我们还可以利用该特性来整理代码: 比如将私有方法集合在一起
+
+~~~swift
+private extension ViewController {
+//...私有方法
+}
+~~~
 
 <h2 id="7">7.Swift与Cocoa</h2>
 

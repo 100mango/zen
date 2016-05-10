@@ -306,9 +306,9 @@ for index in 1...5 {
 虽然在《The Swift Programming Language》里面没有提到类似的用法,但是在Swift中我们也有优雅的方法办到。
 
 ~~~swift
-for index in stride(from: 1, through: 5, by: 2) {
-    print(index)
-}// through是包括5
+for index in  0.stride(through: 10, by: 2) {
+    print(index) // 0 2 4 6 8 10  
+}
 ~~~
 
 然后对字典的遍历也增强了.在Objective-c的快速枚举中我们只能对字典的键进行枚举。

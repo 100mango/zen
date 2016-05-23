@@ -72,7 +72,7 @@ ARC提供是一个编译器的特性，帮助我们在编译的时候自动插�
 
 2. NSTimer
 
-	一般情况下在action/target模式里 target一般都是被weak引用,除了NSTimer。
+	一般情况下在`Action/Target`模式里 target一般都是被weak引用,除了NSTimer。
 	
 	~~~objective-c
 	+ (NSTimer *)timerWithTimeInterval:(NSTimeInterval)seconds
@@ -81,22 +81,46 @@ ARC提供是一个编译器的特性，帮助我们在编译的时候自动插�
                           userInfo:(id)userInfo
                            repeats:(BOOL)repeats
 	~~~
-	在官方文档中：
+	NSTimer Class Reference指出NSTimer会强引用target。
 	> target	
 	The object to which to send the message specified by aSelector when the timer fires. The timer maintains a strong reference to this object until it (the timer) is invalidated.
 	
-	Timer Programming Topics :
+
+	然后官方的Timer Programming Topics指出： 我们不应该在dealloc中invalidate timer。
 	> A timer maintains a strong reference to its target. This means that as long as a timer remains valid, its target will not be deallocated. As a corollary, this means that it does not make sense for a timer’s target to try to invalidate the timer in its dealloc method—the dealloc method will not be invoked as long as the timer is valid.
+		
+	举一个例子，我们让timer在我们的ViewController中不断调用`handleTimer`方法.
+	
+	~~~objective-c
+	- (void)viewDidLoad
+{
+		[super viewDidload];
+	    self.timer = [NSTimer scheduledTimerWithTimeInterval:1  
+	                                             target:self  
+	                                           selector:@selector(handleTimer:)  
+	                                           userInfo:nil  
+	                                            repeats:YES];  
+}
+	~~~
+	
+	这个时候，timer和我们的ViewController就是循环引用的。即使我们在`dealloc`方法中invalidate timer也是没用的。因为timer强引用着VC。而`dealloc`是在对象销毁的时候才会被调用。
+	
+	![](循环引用.png)
+	
+	可能有人会有疑惑，如果VC不强引用timer。会发生什么呢？
+	
+	NSTimer Class Reference指出: Runloop会强引用tiemr。这是理所当然的，因为如果一个timer是循环的，如果没被强引用，那么在函数返回后（比如上面的viewDidLoad函数），则会被销毁。自然就不能不断循环地通知持有的target。
+	
+	> Note in particular that run loops maintain strong references to their timers, so you don’t have to maintain your own strong reference to a timer after you have added it to a run loop.
 
+	这个时候，Runloop, Timer和ViewController的关系是这样的。
+	
+	![](强引用.png)
+	
+	因为main runloop 的生命周期跟应用的生命周期是一致的，所以如果我们不主动invalidate timer,runloop就会一直持有timer,而timer也一直持有ViewController。同样也造成了内存泄露。
 
 	
-	举一个例子，一个Timer的Target是ViewController.
-	
-	这个时候，如果我们是在dealloc方法里让timer invalidate，就会造成内存泄露.
-	
-	事实上，timer是永远不会被invalidate.因为此时VC的引用计数永远不会为零。因为Timer强引用了VC。而因为VC的引用计数不为零,dealloc永远也不会被执行，所以Timer永远持有了VC.
-	
-	因此我们需要注意在什么地方invalidate计时器，我们可以在viewWillDisappear里面做这样的工作。
+	因此在使用NSTimer时，特别是循环的NSTimer时。我们需要注意在什么地方invalidate计时器，在上面这个例子，我们可以在viewWillDisappear里面做这样的工作。
 	
 
 ##Swift's ARC

@@ -160,6 +160,9 @@ static int value;
 }
 ~~~
 
+> 更新：Xcode8 Release Note : Objective-C now supports class properties, which interoperate with Swift type properties. They are
+declared as: @property (class) NSString *someStringProperty;. They are never synthesized.  也就是从Xcode8之后, Objective-C也有了类变量的定义,不过getter和setter都需要我们自己编写。这是一个典型的Swift反推Objective-C发展的例子。
+
 而在Swift中我们通过清晰的语法便能定义类变量：
 
 通过static定义的类变量无法在子类重写,通过class定义的类变量则可在子类重写。

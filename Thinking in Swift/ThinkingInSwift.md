@@ -6,8 +6,8 @@
 
 - [1.拥抱Optional,远离Crash](#1)
 - [2.学习泛型。抽象的魅力。](#2)
-- [3.Protocol Oriented Programming 与Value Types](#3)
-
+- [3.Protocol Oriented Programming](#3)
+- [4.函数式编程（Functional Programming)](#4)
 
 <h2 id="1">1.拥抱Optional,远离Crash</h2>
 
@@ -414,7 +414,6 @@ associatedtype ItemType = String
 
 这一句代码是可以不写的,Swift的类型推导系统能够在`append`方法的参数类型里获得ItemType的具体类型。
 
-> [Swift2.2 关联类型的声明语法将改为`associatedtype `](https://github.com/apple/swift-evolution/blob/master/proposals/0011-replace-typealias-associated.md)
 
 
 
@@ -532,7 +531,7 @@ associatedtype ItemType = String
 
 
 
-<h2 id="3">3.Protocol Oriented Programming 与value types</h2>
+<h2 id="3">3.Protocol Oriented Programming</h2>
 
 protocol-oriented programming 的核心在于
 
@@ -580,23 +579,41 @@ protocol extension 能够解决一些继承带来的问题。
 
 [introducing-protocol-oriented-programming-in-swift-2](https://www.raywenderlich.com/109156/introducing-protocol-oriented-programming-in-swift-2)
 
+[Practical Protocol-Oriented-Programming](https://realm.io/news/appbuilders-natasha-muraschev-practical-protocol-oriented-programming/)
+
 <h2 id="4">4.函数式编程（Functional Programming）</h2>
+
+什么是函数式编程？
+
+纵览网上给出的各种定义。函数式编程指的是具有以下特点的编程范式：
+
+- 
+
+事实上，个人觉得很难给函数式编程下一个明确的定义。
+
+但是我们可以从另外一个角度出发，就是函数式编程通过什么样的语法特性体现出来，怎么样的编程范式和代码是函数式的来体会和学习函数式编程。避免空谈概念, Let's get our hands dirty.
 
 高阶函数
 
-reduce,filter,map,flapmap,forEach
+reduce,filter,map,flapmap,forEach,zip
+
+Map:
 
 ~~~swift
+//循环版本：
   var bubbleModels = [BubbleModel]()
    for bubble in bubbles {
    		bubbleModels.append(bubble.bubbleModel)
    }
    return bubbleModels
-//高阶函数        
+//高阶函数：        
 bubbleModels = bubbles.map({ $0.bubbleModel })
 ~~~
 
+FlatMap:
+
 ~~~swift
+//循环版本：
   var bubbles = [BubbleView]()
    for view in self.subviews {
 	   	if let bubbleView = view as? BubbleView {
@@ -604,9 +621,11 @@ bubbleModels = bubbles.map({ $0.bubbleModel })
 	   	}
    	}
 
-//高阶函数
+//高阶函数：
 bubbles = self.subviews.flatMap({ $0 as? BubbleView })
 ~~~
+
+Reduce与链式用法:
 
 ~~~swift
 let detector = CIDetector(ofType: CIDetectorTypeFace, context: context, options: [CIDetectorAccuracy: CIDetectorAccuracyHigh])
@@ -626,15 +645,28 @@ for face in faces {
     }
 }
 
-//高阶函数
+//高阶函数：
 let mask = faces.flatMap({ face in
     let parameters = //...
     let radialGradient = CIFilter(name: "CIRadialGradient", withInputParameters: parameters)
     return radialGradient?.outputImage
 }).reduce(CIImage(), combine: { sourceOver($0)($1) })
-
 ~~~
 
-//内部实现
+zip: 同时对两个sequnece进行操作
+
+~~~swift
+  for (points, var photoModel) in zip(collageModel.areas, photoModels) {
+            photoModel.points = points
+            let collageContentView = CollageContentView(model: photoModel)
+            self.addSubview(collageContentView)
+            collageContentView.setup()
+        }
+~~~
+
+
+参考：
+
+Swift源代码：
 [map](https://github.com/apple/swift/blob/master/stdlib/public/core/Collection.swift)
 [reduce,flatmap](https://github.com/apple/swift/blob/master/stdlib/public/core/SequenceAlgorithms.swift.gyb)

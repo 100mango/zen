@@ -533,14 +533,34 @@ associatedtype ItemType = String
 
 <h2 id="3">3.Protocol Oriented Programming</h2>
 
-protocol-oriented programming 的核心在于
+protocol-oriented programming 的核心在于`用组合替代继承`(也就是面向对象编程准则：**prefer composition over inheritance**)。
 
-1. 用组合替代继承。
-2. 
+初次学习面向协议编程，不要感到面对得是一个新的庞大的编程概念和体系，我们直接先从语法入手。看看面向协议编程在代码里面究竟是个什么东西。
+
+~~~swift
+
+protocol hello {
+ func hello() -> String
+}
+
+//protocol extension
+extension hello {
+    func hello() -> String {
+     return "hello world!"
+    }
+}
+
+//Make an existing type conform to a protoco
+extension String: hello {
+	func hello() -> String {
+		return "hello world"
+	}
+}
+~~~
+
+其实面向协议编程的语法基础就是我们熟知的protocol语法, Swift2.0引进的protocol extension（为protocol添加默认实现), 还有extension语法，使一个已有类型符合某个协议。
 
 protocol extension 能够解决一些继承带来的问题。
-
-**prefer composition over inheritance**
 
 1. 庞大的基类
 
@@ -552,27 +572,27 @@ protocol extension 能够解决一些继承带来的问题。
 
    [Multiple Inheritance vs. Traits or Protocol Extensions](https://www.dzombak.com/blog/2015/06/Multiple-Inheritance-vs--Traits-or-Protocol-Extensions.html)
 
-4. Protocol Extension 独特的优势：各种Value Type 和 Class 都能使用 Protocol Extension。并且能够对 protocol extension 进行Constraint。
+Protocol Extension 独特的优势：各种Value Type 和 Class 都能使用 Protocol Extension。并且能够对 protocol extension 进行Constraint。
 	
-	[Is there a difference between Swift 2.0 protocol extensions and Java/C# abstract classes?](http://stackoverflow.com/questions/30943209/is-there-a-difference-between-swift-2-0-protocol-extensions-and-java-c-abstract)
+[Is there a difference between Swift 2.0 protocol extensions and Java/C# abstract classes?](http://stackoverflow.com/questions/30943209/is-there-a-difference-between-swift-2-0-protocol-extensions-and-java-c-abstract)
 	
-	Swift就使用了Protocol Extension来改进自己的标准库。
+Swift就使用了Protocol Extension来改进自己的标准库。
 	
-	例如在Swift1.2， `map`这个高阶函数是通过`Extension`实现的。因此每个`CollectionType`都需要自己实现一遍这些方法。
+例如在Swift1.2， `map`这个高阶函数是通过`Extension`实现的。因此每个`CollectionType`都需要自己实现一遍这些方法。
 	
-	~~~swift
-	// Swift 1.2
-	extension Array : _ArrayType {
-	  func map<U>(transform: (T) -> U) -> [U]
-	}
-	~~~
+~~~swift
+// Swift 1.2
+extension Array : _ArrayType {
+  func map<U>(transform: (T) -> U) -> [U]
+}
+~~~
 	
-	而通过在Swift2开始引入的 Protocol Extension， 直接扩展了`CollectionType`Protocol,提供了默认实现。这样子所有遵循`CollectionType`的类型都拥有了`map`，不需要一个个单独实现。
+而通过在Swift2开始引入的 Protocol Extension， 直接扩展了`CollectionType`Protocol,提供了默认实现。这样子所有遵循`CollectionType`的类型都拥有了`map`，不需要一个个单独实现。
 	
-	~~~swift
-	extension CollectionType {
-    public func map<T>(@noescape transform: (Self.Generator.Element) throws -> T) rethrows -> [T]
-	~~~
+~~~swift
+extension CollectionType {
+public func map<T>(@noescape transform: (Self.Generator.Element) throws -> T) rethrows -> [T]
+~~~
 	
 
 参考资料：

@@ -2,6 +2,7 @@
 
 iOS 禅
 
+- [打造一个优雅的Timer](https://github.com/100mango/zen/blob/master/%E6%89%93%E9%80%A0%E4%B8%80%E4%B8%AA%E4%BC%98%E9%9B%85%E7%9A%84Timer/make%20a%20timer.md)
 - [Hello Bonjour!](https://github.com/100mango/zen/blob/master/HelloBonjour/Hello%20Bonjour.md)
 - [Swift学习: 从Objective-C到Swift](https://github.com/100mango/zen/blob/master/Swift%E5%AD%A6%E4%B9%A0%EF%BC%9A%E4%BB%8EObjective-C%E5%88%B0Swift/Swift%E5%AD%A6%E4%B9%A0%EF%BC%9A%E4%BB%8EObjective-C%E5%88%B0Swift.md)
 - [WWDC2015: iOS Best Practices总结](https://github.com/100mango/zen/blob/master/2015%20WWDC%20%E6%80%BB%E7%BB%93/2015%20WWDC%20Best%20Practices.md)
@@ -16,4 +17,4 @@ iOS 禅
 - [WWDC心得：Core iOS Application Architectural Patterns](https://github.com/100mango/zen/blob/master/2014%20WWDC/WWDC%E5%BF%83%E5%BE%97%EF%BC%9ACore%20iOS%20Application%20Architectural%20Patterns/WWDC%E5%BF%83%E5%BE%97%EF%BC%9ACore%20iOS%20Application%20Architectural%20Patterns.md)
 - [WWDC心得：Advanced iOS Application Architecture and Patterns](https://github.com/100mango/zen/blob/master/2014%20WWDC/WWDC%E5%BF%83%E5%BE%97%EF%BC%9AAdvanced%20iOS%20Application%20Architecture%20and%20Patterns/WWDC%E5%BF%83%E5%BE%97%EF%BC%9AAdvanced%20iOS%20Application%20Architecture%20and%20Patterns.md)
 
-欢迎提出任何疑问,有疏漏错误之处还望多多指正。（欢迎随时提Issues~）
+欢迎提出任何疑问,有疏漏错误之处还望多多指正。

@@ -10,7 +10,9 @@
 
 1. 循环引用问题
 
-	NSTimer会强引用targrt,同时RunLoop会强引用未invalidate的NSTimer实例。
+	NSTimer会强引用targrt,同时RunLoop会强引用未invalidate的NSTimer实例。 容易找成内存泄露。
+	 
+	(关于NSTimer引起的内存泄露可阅读[iOS夯实：ARC时代的内存管理](https://github.com/100mango/zen/blob/master/iOS%E5%A4%AF%E5%AE%9E%EF%BC%9AARC%E6%97%B6%E4%BB%A3%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/%23iOS%E5%A4%AF%E5%AE%9E%EF%BC%9AARC%E6%97%B6%E4%BB%A3%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86.md) NSTimer一节）
 	
 2. RunLoop问题
 
@@ -22,17 +24,21 @@
 3. 线程问题
 
 	NSTimer无法在子线程中使用。如果我们想要在子线程中执行定时任务，必须激活和自己管理子线程的RunLoop。否则NSTimer是失效的。
+	
+4. 不支持动态修改时间间隔
 
-4. 不支持闭包。
+	NSTimer无法动态修改时间间隔，如果我们想要增加或减少NSTimer的时间间隔。只能invalidate之前的NSTimer，再重新生成一个NSTimer设定新的时间间隔。
+
+5. 不支持闭包。
 
 	NSTimer只支持调用`selector`,不支持更现代的闭包语法。
 	
 
 关于循环引用问题，网上已经有不少方案和开源项目对其进行了解决。
 
-那么，有没有可能一次性解决上面这四大问题呢？
+那么，有没有可能一次性解决上面这五大问题呢？
 
-答案是可以的。我们可以基于GCD的`DispatchSource`做一个优雅简洁，无循环引用问题，不需要手动管理RunLoop，支持子线程,支持闭包语法的Timer。
+答案是可以的。我们可以基于GCD的`DispatchSource`做一个优雅简洁，无循环引用问题，不需要手动管理RunLoop，支持子线程,支持动态修改时间间隔，支持闭包语法的Timer。
 
 
 ##实现
@@ -57,14 +63,12 @@ Swift3对`libdispatch`进行了[抽象和重命名](https://github.com/apple/swi
 
 对应到我们的timer,我们选择的就是Timer Dispatch Source类型。
 
-下面就是基于`DispatchSource`构建的Timer。
+基于`DispatchSource`构建Timer，代码简洁优雅，核心代码不过数十行。
 
 ~~~swift
 class SwiftTimer {
     
     private let internalTimer: DispatchSourceTimer
-    
-    private var isRunning = false
     
     init(interval: DispatchTimeInterval, repeats: Bool = false, queue: DispatchQueue = .main , handler: () -> Void) {
         
@@ -82,18 +86,8 @@ class SwiftTimer {
     	internalTimer.cancel()
     }
     
-    func start() {
-        if !isRunning {
-            internalTimer.resume()
-            isRunning = true
-        }
-    }
-
-    func stop() {
-        if isRunning {
-            internalTimer.suspend()
-            isRunning = false
-        }
+    func rescheduleRepeating(interval: DispatchTimeInterval) {
+    	internalTimer.scheduleRepeating(deadline: .now() + interval, interval: interval)
     }
     
 }
@@ -114,13 +108,13 @@ let timer = SwiftTimer(interval: .seconds(1), repeats: true) {
 timer.start()
 ~~~
 
-让我们再回过头来审视上面四个问题:
+让我们再回过头来审视上面五个问题:
 
 1. 循环引用问题
 
 	如上面的代码示例，我们只需在闭包中弱引用self即可。
 	
-	同时，timer被释放后。`DispatchSourceTimer`会自动cancel。
+	同时，SwiftTimer被释放后。`DispatchSourceTimer`会自动cancel。
 	
 	因此，再也不需要考虑像NSTimer的循环引用问题。
 	
@@ -138,8 +132,25 @@ timer.start()
 	~~~
 	
 	我们可以指定在后台队列或自定义队列进行定时任务。同样，simple and elegant。
+	
+4. 动态调整间隔问题
 
-4. 不支持闭包
+	如果有些场景需要我们修改时间间隔，比如想提高轮询的速度，直接调用`rescheduleRepeating(interval: DispatchTimeInterval)`修改时间间隔即可。
+
+
+	~~~swift
+	let timer = SwiftTimer.repeaticTimer(interval: .seconds(5)) { timer in
+    	print("doSomething")
+	}
+	timer.start()  // print doSomething every 5 seconds
+	
+	func speedUp(timer: SwiftTimer) {
+	    timer.rescheduleRepeating(interval: .seconds(1))
+	}
+	speedUp(timer) // print doSomething every 1 second 
+	~~~
+
+5. 不支持闭包
 
 	很显然，问题得到了解决。
 
@@ -184,5 +195,5 @@ extension SwiftTimer {
 ~~~
 
 
-最后，附上源代码地址： [SwiftTimer](https://github.com/100mango/SwiftTimer)
+最后，附上项目地址： [SwiftTimer](https://github.com/100mango/SwiftTimer)
 

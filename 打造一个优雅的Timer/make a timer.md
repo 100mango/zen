@@ -1,5 +1,7 @@
 #打造一个优雅的Timer
 
+![](logo.png)
+
 源代码地址： [SwiftTimer](https://github.com/100mango/SwiftTimer)
 
 ##问题

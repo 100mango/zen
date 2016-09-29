@@ -12,7 +12,7 @@
 
 1. 循环引用问题
 
-	NSTimer会强引用targrt,同时RunLoop会强引用未invalidate的NSTimer实例。 容易找成内存泄露。
+	NSTimer会强引用target,同时RunLoop会强引用未invalidate的NSTimer实例。 容易找成内存泄露。
 	 
 	(关于NSTimer引起的内存泄露可阅读[iOS夯实：ARC时代的内存管理](https://github.com/100mango/zen/blob/master/iOS%E5%A4%AF%E5%AE%9E%EF%BC%9AARC%E6%97%B6%E4%BB%A3%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/%23iOS%E5%A4%AF%E5%AE%9E%EF%BC%9AARC%E6%97%B6%E4%BB%A3%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86.md) NSTimer一节）
 	

@@ -415,7 +415,7 @@ associatedtype ItemType = String
 这一句代码是可以不写的,Swift的类型推导系统能够在`append`方法的参数类型里获得ItemType的具体类型。
 
 
-
+#####为Associated Types添加约束
 
 - 强大的`where`语句
 
@@ -491,7 +491,30 @@ associatedtype ItemType = String
 		}
 		~~~
 		
-		上面这个例子中,我们限制了Array的类型参数`Element`必须遵循`CGPointWrapper`协议。因为类型参数的限制目前只能限制是某个类或是遵循某个协议,而`CGPoint`是值类型,因此我们用`CGPointWrapper`协议替代,用于提供一个`point`属性以供使用。然后我们在扩展中取出`CGPoint`,直接合成`CGPathRef`,非常的优雅方便,并且是类型安全的。
+		上面这个例子中,我们限制了Array的类型参数`Element`必须遵循`CGPointWrapper`协议。因为类型参数的约束目前只能限制是继承于某个类或是遵循某个协议,而`CGPoint`是值类型,因此我们用`CGPointWrapper`协议替代,用于提供一个`point`属性以供使用。然后我们在扩展中取出`CGPoint`,直接合成`CGPathRef`,非常的优雅方便,并且是类型安全的。
+		
+		在Swift4，我们有可能可以约束类型参数或关联类型为具体的某个类型。（详情参考[concrete-same-type-requirements](https://github.com/apple/swift/blob/master/docs/GenericsManifesto.md#concrete-same-type-requirements)）
+		这样子上面的扩展就可以简化为：
+		
+		~~~swift
+		extension Array where Element == CGPoint {
+			    var path : CGPathRef {
+		        let bezier = UIBezierPath()
+		        
+		        if self.count > 0 {
+		            bezier.moveToPoint(self[0])
+		        }
+		        
+		        for point in self{
+		            bezier.addLineToPoint(point)
+		        }
+		        
+		        return bezier.CGPath
+		    }
+		}
+		~~~
+		
+		
 		
 		又比如我们扩展协议:
 		

@@ -627,15 +627,6 @@ class AnotherClass: SomeSuperClass, SampleProtocol
 }
 ~~~
 
-那么之前Objective-C的protocol中,我们可以标志optional。那在Swift中呢？
-
-遗憾的是,目前纯Swift的protocol还不支持optional。但根据苹果官方论坛的一位员工的回答,未来Swift是会支持的。
-
-> Optional methods in protocols are limited to @objc protocols only because we haven't implemented them in native protocols yet. This is something we plan to support. We've gotten a number of requests for abstract/pure virtual classes and methods too.
-
->— Joe Groff 
-> 
-> Source: https://devforums.apple.com/message/1051431#1051431
 
 `protocol`和`delegate`是紧密联系的。那么我们在Swift中如何定义Delegate呢？
 

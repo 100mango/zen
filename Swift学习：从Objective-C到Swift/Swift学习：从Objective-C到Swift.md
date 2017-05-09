@@ -1,4 +1,4 @@
-#Swift学习: 从Objective-C到Swift
+# Swift学习: 从Objective-C到Swift
 
 
 这篇文章是自己学习Swift的笔记与深化。希望这篇文章能够帮助已经有Objective-C经验的开发者更快地学习Swift。同时也品味到Swift的精妙之处。
@@ -26,7 +26,7 @@
 
 <h2 id="1">1.属性(property)和实例变量(instance variable)</h2>
 
-###Objective-C property in Swift world
+### Objective-C property in Swift world
 
 在Cocoa世界开发的过程中,我们最常打交道的是property.
 
@@ -93,7 +93,7 @@ class Shape {
 
 > A Swift property does not have a corresponding instance variable, and the backing store for a property is not accessed directly
 
-###小结
+### 小结
 
 - 因此之前使用OC导致的像巧哥指出的[开发争议](http://blog.devtang.com/blog/2015/03/15/ios-dev-controversy-1/)就不再需要争执了,在Swift的世界里,我们只与property打交道。
 
@@ -105,7 +105,7 @@ class Shape {
 
 个人觉得这看似小小一点变动使Swift开发变得更加安全以及在代码的风格更为统一与稳定。
 
-###Swift property延伸：
+### Swift property延伸：
 - `Stored Properties`和`Computed properties`
 
 在Swift中,property被分为两类：`Stored Properties`和`Computed properties`
@@ -223,7 +223,7 @@ Swift与Objective-C在控制流的语法上关键词基本是一致的,但是扩
 主要差异有：
 
 ***
-###关于if
+### 关于if
 
 **语句里的条件不再需要使用`()`包裹了。**
 
@@ -438,7 +438,7 @@ switch carName{
 	func addSubview(view: UIView) //实例方法
 ~~~
 
-###改进：
+### 改进：
 
 - 在Swift中,函数的最重要的改进就是函数作为一等公民(first-class),和对象一样可以作为参数进行传递,可以作为返回值,函数式编程也成为了Swift支持的编程范式。
 
@@ -597,7 +597,7 @@ Swift的初始化方法让我们只关注对象的初始化。之前在OC世界�
 	
 <h2 id="6">6.协议(Protocols)与扩展(Extensions)</h2>
 
-###协议（Protocol）
+### 协议（Protocol）
 
 语法:
 
@@ -718,7 +718,7 @@ if let thisSementTitle = dataSource?.titleFroSegmentAtIndex?(index){
 	
 	[IF YOU'RE SUBCLASSING, YOU'RE DOING IT WRONG.](http://krakendev.io/blog/subclassing-can-suck-and-heres-why)
 	
-###扩展（Extension）
+### 扩展（Extension）
 
 `Extension`在Swift在类似Objective-C的`Category`。在Objective-C中,我们用它来为已有的类添加新的方法实现。在Swift中,我们不仅可以对类进行扩展,而且能对结构体,枚举类型,协议进行扩展。
 

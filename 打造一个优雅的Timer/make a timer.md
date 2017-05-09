@@ -1,10 +1,10 @@
-#打造一个优雅的Timer
+# 打造一个优雅的Timer
 
 ![](logo.png)
 
 源代码地址： [SwiftTimer](https://github.com/100mango/SwiftTimer)
 
-##问题
+## 问题
 
 在iOS和macOS平台上，我们使用的Timer基本上以`NSTimer`为主。
 
@@ -43,7 +43,7 @@
 答案是可以的。我们可以基于GCD的`DispatchSource`做一个优雅简洁，无循环引用问题，不需要手动管理RunLoop，支持子线程,支持动态修改时间间隔，支持闭包语法的Timer。
 
 
-##实现
+## 实现
 
 Swift3对`libdispatch`进行了[抽象和重命名](https://github.com/apple/swift-evolution/blob/master/proposals/0088-libdispatch-for-swift3.md)，将我们以往使用的C API转换成了更现代的语法和面向对象范式。在这里，为了使实现更简洁易懂，基于Swift实现我们的Timer，Objective-C的实现同理可得。
 
@@ -156,7 +156,7 @@ timer.start()
 
 	很显然，问题得到了解决。
 
-##拓展
+## 拓展
 
 同时，我们基于`DispatchSource`开发的SwiftTimer具备很强的扩展性。
 

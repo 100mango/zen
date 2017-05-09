@@ -1,7 +1,7 @@
-#Hello Bonjour!
+# Hello Bonjour!
 
 --
-###一开始用Bonjour,我是拒绝的。
+### 一开始用Bonjour,我是拒绝的。
 
 让我们以一个问题开头：如何能在本地网络找到自己想要的硬件设备及相应服务,并连接？
 
@@ -31,7 +31,7 @@
 	
 	~~~objective-c
 	-(void) broadcast
-{
+	{
     NSString *deviceName = [UIDevice currentDevice].name;
     if ([deviceName rangeOfString:@"Simulator"].location != NSNotFound ) {
         
@@ -40,10 +40,10 @@
     }
     
     [self.m_broadcastSocket sendBroadcast:[deviceName dataUsingEncoding:NSUTF8StringEncoding]];
-}
+	}
 	~~~
 	
-	####局限：
+	#### 局限：
 	
 	设备端的问题:
 	
@@ -70,9 +70,9 @@
 	于是我们想找一种简洁稳定的协议来替代UDP。Yes,最终我们需要的就是Bonjour。
 	
 	
-##拥抱Bonjour
+## 拥抱Bonjour
 
-###什么是Bonjour?
+### 什么是Bonjour?
 
 bonjour来自法语,是你好的意思。一个很有意思的单词。
 
@@ -146,7 +146,7 @@ bonjour是苹果公司发布的一个基于ZEROCONF工作组(IETF下属小组)�
 	
 	![](浏览.png)
 
-###bonjour减少功耗的原理：
+### bonjour减少功耗的原理：
 
 在spider中,为了节能,我们每隔15s发送一次UDP广播,但其实还是严重耗费资源。
 
@@ -188,7 +188,7 @@ bonjour是苹果公司发布的一个基于ZEROCONF工作组(IETF下属小组)�
 	
 
 	
-##使用Bonjour
+## 使用Bonjour
 
 说了这么多来龙去脉,让我们直接开始看看如何使用Bonjour:
 
@@ -319,7 +319,7 @@ Bonjour有三种最重要的操作。我们在这里以`spider`为例子选取�
 	
 	~~~
 	
-##总结
+## 总结
 
 我们从需求入手,逐步探索。最终学习Bonjour的原理和使用。Bonjour作为一个系统级别的解决方案,其思路与方案值得我们学习。以后遇到有类似的应用环境时,我们便可以想到我们可爱的Bonjour协议。
 

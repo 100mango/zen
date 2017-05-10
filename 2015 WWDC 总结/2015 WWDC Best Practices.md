@@ -18,12 +18,14 @@
 	例如：
 	
 	~~~swift
-	func application(application: UIApplication, didFinishLaunchingWithOptions    launchOptions: [NSObject: AnyObject]?) -> Bool {
-    globalDataStructure = MyCoolDataStructure()
-    let globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
-    dispatch_async(globalQueue) {
-        globalDataStructure.fetchDataFromDatabase()    }    return true
-}
+	func application(application: UIApplication, didFinishLaunchingWithOptionslaunchOptions: [NSObject: AnyObject]?) -> Bool {
+    		globalDataStructure = MyCoolDataStructure()
+		let globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+	    dispatch_async(globalQueue) {
+        	globalDataStructure.fetchDataFromDatabase()
+	    }
+	    return true
+	}
 	~~~
 	
 2. Views and View Controllers
@@ -52,19 +54,19 @@
 	上面的问题我们能够这样解决。重点在于检测到transition如果被取消的话,我们就恢复到原来的状态。除此之外我们还能够检测到过场的其他状态与属性。可以查阅[官方文档](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIViewControllerTransitionCoordinator_Protocol/)
 	
 	~~~swift
-  override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        if let indexPath = tableView.indexPathForSelectedRow{
-            tableView.deselectRowAtIndexPath(indexPath, animated: true)
-            
-            transitionCoordinator()?.notifyWhenInteractionEndsUsingBlock({ context in
-                if context.isCancelled(){
-                    self.tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: UITableViewScrollPosition.None)
-                }
-            })
-        }
-    }
+	  override func viewWillAppear(animated: Bool) {
+		super.viewWillAppear(animated)
+
+		if let indexPath = tableView.indexPathForSelectedRow{
+		    tableView.deselectRowAtIndexPath(indexPath, animated: true)
+
+		    transitionCoordinator()?.notifyWhenInteractionEndsUsingBlock({ context in
+			if context.isCancelled(){
+			    self.tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: UITableViewScrollPosition.None)
+			}
+		    })
+		}
+	    }
 	~~~
 	
 	**Properties,not tags**
@@ -81,13 +83,12 @@
 	直到有一天我在一个有几十万行代码的项目中还看到了这样的代码：
 	
 	~~~objective-c
-	 cellSubViewTag++;
-    UILabel* someLabel = (UILabel*)[cell.contentView viewWithTag:cellSubViewTag];
-    if (someLabel == nil) {
-        someLabel = [[UILabel alloc] init];
-        
-        someLabel.tag = cellSubViewTag;
-        [cell.contentView addSubview: someLabel];
+	cellSubViewTag++;
+    	UILabel* someLabel = (UILabel*)[cell.contentView viewWithTag:cellSubViewTag];
+    	if (someLabel == nil) {
+	  someLabel = [[UILabel alloc] init];
+          someLabel.tag = cellSubViewTag;
+          [cell.contentView addSubview: someLabel];
 	}
 	cellSubViewTag++
 	//继续add subView.........

@@ -1,6 +1,6 @@
-#iOS学习：AVFoundation 视频流处理
+# iOS学习：AVFoundation 视频流处理
 
-##框架
+## 框架
 
 首先我们从整体对所需框架做个初步了解。
 
@@ -20,7 +20,7 @@ AVFoundation在相关框架栈中的的位置：
 可以用这样一幅图来概述：
 ![](captureoverview.png)
 
-##例子
+## 例子
 实际应用AVFoundation来捕捉视频流并不复杂。
 
 Talk is Cheap,Show me the Code.  
@@ -88,7 +88,7 @@ AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device
 通过上面的简单例子,我么可以看出使用AVFoundation来捕捉视频流并不是十分复杂。重点是使用的过程需要了解配置的细节,还有性能问题。
 
 
-##实战
+## 实战
 
 学习基础知识过后,让我们用个具体例子来进行阐明。
 
@@ -211,7 +211,7 @@ AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device
 我们需要在代理方法里面接收数据,并根据自己的需求进行处理。在这里我简单地进行了URL的测试,如果是的话则打开safari进行浏览。
 
 
-##总结
+## 总结
 
 在这里仅仅是通过一个二维码的应用来展示AVFoundation处理视频流能力。事实上，AVFoundation能够做得更多。能够进行剪辑,处理音轨等功能。如果我们需要对视频与音频相关的事务进行处理,不妨在着手处理,寻找第三方解决方案前,看看这个苹果公司为我们带来的强大模块。
 

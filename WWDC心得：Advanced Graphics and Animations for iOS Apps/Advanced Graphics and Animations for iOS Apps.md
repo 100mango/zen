@@ -276,7 +276,7 @@ View debugging
 	
 	关于GPU的瓶颈问题,我们可以通过OpenGL ES Driver instrument来获得更详细的信息。例如GPU的占用率。可以看到下图左下角有显示Device utilization。
 	
-	![](openGL ES driver.png)
+	![](openGLESdriver.png)
 	
 	
 4. 检查有无过多offscreen渲染

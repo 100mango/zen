@@ -1,7 +1,7 @@
-#Objective-C 拾遗：从Heap and Stack到Block
+# Objective-C 拾遗：从Heap and Stack到Block
 
 
-##Stack和Heap
+## Stack和Heap
 heap和stack是内存管理的两个重要概念。在这里我们指的不是数据结构上面的堆与栈,在这里指的是内存的分配区域。
 
 1. stack的空间由操作系统进行分配。
@@ -14,7 +14,7 @@ heap和stack是内存管理的两个重要概念。在这里我们指的不是�
 	heap与动态内存分配相关,内存可以随时在堆中分配和销毁。我们需要明确请求内存分配与内存销毁。
 	简单来说，就是malloc与free.
 	
-##Objective-C中的Stack和Heap
+## Objective-C中的Stack和Heap
 
 首先所有的Objective-C对象都是分配在heap的。
 在OC最典型的内存分配与初始化就是这样的。
@@ -32,20 +32,20 @@ stack对象通常有速度的优势，而且不会发生内存泄露问题。那
 2. stack对象不够灵活，不具备足够的扩展性。创建时长度已经是固定的,而stack对象的拥有者也就是所在的stack frame
 
 
-##关于Block
-###问题的由来：
+## 关于Block
+### 问题的由来：
 洋洋洒洒讲了前面这些东西,其实为什么决定写这篇总结呢,简单讲讲最初的问题。  
 
 那就是在之前我在类中声明block属性时,一直用的是strong修饰符。因为我一直把block当成一个普通的OC对象来看待。并且也没有出现过问题。后来阅读一些别人的源代码和博客,发现不少人都是使用copy修饰符,于是引起了这篇探索。可以简单地把这个问题总结为：为什么block需要使用copy修饰符？
 
-###简单的答案：
+### 简单的答案：
 
 首先在官方文档《Programming with Objective-C》里面写到,初学阅读的时候没有注意到这个细节：
 > You should specify copy as the property attribute, because a block needs to be copied to keep track of its captured state outside of the original scope. This isn’t something you need to worry about when using Automatic Reference Counting, as it will happen automatically, but it’s best practice for the property attribute to show the resultant behavior
 
 在这里官方叫我们使用copy修饰符,虽然在ARC时代已经不需要再显式声明了,也就是使用strong是没有问题的,但是仍然建议我们使用copy以显示相关拷贝行为。问题到这里就基本结束了。目前使用strong和copy都是没有问题的。
 
-###深入探索：
+### 深入探索：
 
 但是在这里仍然无法解答我的疑惑,需要使用copy修饰符的根本原因是什么。所以继续探索。
 
@@ -89,11 +89,11 @@ void exampleD() {
 
 	拷贝到堆后,block的生命周期就与一般的OC对象一样了,我们通过引用计数来对其进行内存管理。
 
-###真正的答案：	
+### 真正的答案：	
 
 因此答案便是因为block在创建时是stack对象,如果我们需要在离开当前函数仍能够使用我们创建的block。我们就需要把它拷贝到堆上以便进行以引用计数为基础的内存管理。
 
-###ARC的疑团：
+### ARC的疑团：
 
 解答完最初的问题后,新的问题又出现在我的脑海。那就是ARC是如何进行block的内存管理的呢,对于普通的OC对象之前已经在[内存管理](https://github.com/100mango/zen/blob/master/iOS%E5%A4%AF%E5%AE%9E%EF%BC%9A%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86.md)里面进行总结过。
 
@@ -109,7 +109,7 @@ void exampleD() {
 
 因此在ARC情况下,创建的block仍然是NSConcreteStackBlock类型,只不过当block被引用或返回时,ARC帮助我们完成了copy和内存管理的工作。
 
-###总结和心得：
+### 总结和心得：
 其实用一句话总结便是：  
 在ARC下,我们可以将block看做一个正常的OC对象,与其他对象的内存管理没什么不同。
 
@@ -119,7 +119,7 @@ void exampleD() {
 加油,继续修行~
 
 -
-####参考资料:
+#### 参考资料:
 
 [What and where are the stack and heap?](http://stackoverflow.com/questions/79923/what-and-where-are-the-stack-and-heap)
 

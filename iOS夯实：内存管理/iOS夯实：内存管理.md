@@ -109,7 +109,7 @@
 苹果在《Advanced Memory Management Programming Guide》指出：
 
 > Don’t Use Accessor Methods in Initializer Methods and dealloc
-The only places you shouldn’t use accessor methods to set an instance variable are in initializer methods and dealloc. To initialize a counter object with a number object representing zero, you might implement an init method as follows:
+	The only places you shouldn’t use accessor methods to set an instance variable are in initializer methods and dealloc. To initialize a counter object with a number object representing zero, you might implement an init method as follows:
 
 > ~~~objevtive-c
 	- init {
@@ -117,9 +117,9 @@ The only places you shouldn’t use accessor methods to set an instance variable
 	    if (self) {
 		_count = [[NSNumber alloc] initWithInteger:0];
 	    }
-	    return self;
-	}
-   ~~~
+		return self;
+	  }
+>    ~~~
 
   唯一不需要使用Accessor Methods的地方是initializer和dealloc.
   在苹果官方文档中没有解释为什么。经过一番查阅后,最主要的原因是此时对象的状况不确定，尚未完全初始化完毕，而导致一些问题的发生。

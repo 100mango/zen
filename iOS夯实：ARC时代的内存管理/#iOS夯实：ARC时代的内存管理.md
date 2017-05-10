@@ -1,9 +1,9 @@
-#iOS夯实：ARC时代的内存管理
+# iOS夯实：ARC时代的内存管理
 
 
 
 
-##什么是ARC
+## 什么是ARC
 > Automatic Reference Counting (ARC) is a compiler feature that provides automatic memory management of Objective-C objects. Rather than having to think about retain and release operations [^1]
 
 [^1]: [Transitioning to ARC Release Notes](https://developer.apple.com/library/mac/releasenotes/ObjectiveC/RN-TransitioningToARC/Introduction/Introduction.html)
@@ -12,7 +12,7 @@ ARC提供是一个编译器的特性，帮助我们在编译的时候自动插�
 最重要的是我们要认识到ARC的本质仍然是通过引用计数来管理内存。因此有时候如果我们操作不当,仍然会有内存泄露的危险。下面就总结一下ARC时代可能出现内存泄露的场景。
 
 
-##内存泄露类型
+## 内存泄露类型
 
 1. 循环引用
 
@@ -54,18 +54,18 @@ ARC提供是一个编译器的特性，帮助我们在编译的时候自动插�
 	我们还有一种更简便的方法来进行处理,实际原理与上面是一样的,但简化后的指令更易用。
 	
 	~~~objective-c
-@weakify(self)
-[self.context performBlock:^{
-    // Analog to strongSelf in previous code snippet.
-    @strongify(self)
+	@weakify(self)
+	[self.context performBlock:^{
+	    // Analog to strongSelf in previous code snippet.
+	    @strongify(self)
 
-    // You can just reference self as you normally would. Hurray.
-    NSError *error;
-    [self.context save:&error];
+	    // You can just reference self as you normally would. Hurray.
+	    NSError *error;
+	    [self.context save:&error];
 
-    // Do something
-}];
-~~~
+	    // Do something
+	}];
+	~~~
 	你可以在这里找到@weakify,@strongify工具：[MyTools_iOS](https://github.com/100mango/MyTools_iOS)
 	
 [^2]: [How does Python deal with retain cycles?](http://www.quora.com/How-does-Python-deal-with-retain-cycles)
@@ -93,14 +93,14 @@ ARC提供是一个编译器的特性，帮助我们在编译的时候自动插�
 	
 	~~~objective-c
 	- (void)viewDidLoad
-{
-		[super viewDidload];
-	    self.timer = [NSTimer scheduledTimerWithTimeInterval:1  
-	                                             target:self  
-	                                           selector:@selector(handleTimer:)  
-	                                           userInfo:nil  
-	                                            repeats:YES];  
-}
+	{
+			[super viewDidload];
+		    self.timer = [NSTimer scheduledTimerWithTimeInterval:1  
+							     target:self  
+							   selector:@selector(handleTimer:)  
+							   userInfo:nil  
+							    repeats:YES];  
+	}
 	~~~
 	
 	这个时候，timer和我们的ViewController就是循环引用的。即使我们在`dealloc`方法中invalidate timer也是没用的。因为timer强引用着VC。而`dealloc`是在对象销毁的时候才会被调用。
@@ -123,7 +123,7 @@ ARC提供是一个编译器的特性，帮助我们在编译的时候自动插�
 	因此在使用NSTimer时，特别是循环的NSTimer时。我们需要注意在什么地方invalidate计时器，在上面这个例子，我们可以在viewWillDisappear里面做这样的工作。
 	
 
-##Swift's ARC
+## Swift's ARC
 
 在Swift中,ARC的机制与Objective-C基本是一致的。
 
@@ -171,7 +171,7 @@ class aClass{
 }
 ~~~
 
-###Swift的新东西
+### Swift的新东西
 
 swift为我们引入了一个新的关键词`unowned`。这个关键词同样用来管理内存和避免引用循环,和`weak`一样,`unowned`不会导致引用计数+1。
 

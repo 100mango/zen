@@ -1,4 +1,4 @@
-###Advanced Graphics and Animations for iOS Apps(session 419)
+### Advanced Graphics and Animations for iOS Apps(session 419)
 
 学习与延伸
 --
@@ -6,14 +6,14 @@
 
 目录：  
 
-- [Core Animation Pipeline](#Core Animation Pipeline)
-- [UIBlurEffectView](#UIBlurEffectView)
+- [Core Animation Pipeline](CoreAnimationPipeline)
+- [UIBlurEffectView](UIBlurEffectView)
 - [图形性能](#图形性能)
 - [测试工具](#测试工具)
 - [总结](#总结)
 
 
-##Core Animation Pipeline
+## Core Animation Pipeline
 
 第一部分主要讲解了Core Animation的工作流程和渲染过程。
 
@@ -27,7 +27,7 @@ CoreAnimation的渲染流程可以用下图来概括:
 ([GPU 加速下的图像处理](http://objccn.io/issue-21-7/))
 
 
-##UIBlurEffectView
+## UIBlurEffectView
 
 第二部分主要讲解了iOS8新引入的UIBlurEffectView,结合第一部分来阐述UIBlurEffectView是如何工作的,以及它们的性能。
 
@@ -66,10 +66,10 @@ Extra light耗费最多资源, Light其次, Dark最少。
 	用在了实时蒙版,即类似微信二维码扫描框外的黑色半透明背景,在这里则是实时模糊,更美观。
 
 
-##图形性能
+## 图形性能
 关于图形性能在之前关注的不够多,主要是用前人总结好的比较教条式的优化方式。这次借这个Session的学习,继续往外扩展阅读学习,好好梳理和学习遗漏点,底层细节,原理与性能优化的工具
 
-- ###1. 关于CALayer的shouldRasterize（光栅化）
+- ### 1. 关于CALayer的shouldRasterize（光栅化）
 
 	开启shouldRasterize后,CALayer会被光栅化为bitmap,layer的阴影等效果也会被保存到bitmap中。
 
@@ -96,7 +96,7 @@ Extra light耗费最多资源, Light其次, Dark最少。
 
 		因此我们应该只对连续不断使用的图片进行缓存。对于不常使用的图片缓存是没有意义,且耗费资源的。
 
-- ###2. 关于offscreen rendering
+- ### 2. 关于offscreen rendering
 	注意到上面提到的offscreen rendering。我们需要注意shouldRasterize的地方就是会造成offscreen rendering的地方,那么为什么需要避免呢？
 	
 	[WWDC 2011 Understanding UIKit Rendering](https://developer.apple.com/videos/wwdc/2011/#121)指出一般导致图形性能的问题大部分都出在了offscreen rendering,因此如果我们发现列表滚动不流畅,动画卡顿等问题,就可以想想和找出我们哪部分代码导致了大量的offscreen 渲染。
@@ -153,15 +153,19 @@ Extra light耗费最多资源, Light其次, Dark最少。
 	
 	不使用shadowPath
 	
-	~~~objective-c
-	CALayer *imageViewLayer = cell.imageView.layer;imageViewLayer.shadowColor = [UIColor blackColor].CGColor;imageViewLayer.shadowOpacity = 1.0;imageViewLayer.shadowRadius = 2.0;imageViewLayer.shadowOffset = CGSizeMake(1.0, 1.0);
-	~~~
+	```objective-c
+	CALayer *imageViewLayer = cell.imageView.layer;
+	imageViewLayer.shadowColor = [UIColor blackColor].CGColor;
+	imageViewLayer.shadowOpacity = 1.0;
+	imageViewLayer.shadowRadius = 2.0;
+	imageViewLayer.shadowOffset = CGSizeMake(1.0, 1.0);
+	```
 
 	使用shadowPath
 	
-	~~~objective-c
-imageViewLayer.shadowPath = CGPathCreateWithRect(imageRect, NULL);
-	~~~
+	```objective-c
+	imageViewLayer.shadowPath = CGPathCreateWithRect(imageRect, NULL);
+	```
 	
 	我们可以在下图看到两种方式巨大的性能差别。
 	
@@ -178,7 +182,9 @@ imageViewLayer.shadowPath = CGPathCreateWithRect(imageRect, NULL);
 	使用CornerRadius：
 	
 	~~~objective-c
-	CALayer *imageViewLayer = cell.imageView.layer;imageViewLayer.cornerRadius = imageHeight / 2.0;imageViewLayer.masksToBounds = YES;
+	CALayer *imageViewLayer = cell.imageView.layer;
+	imageViewLayer.cornerRadius = imageHeight / 2.0;
+	imageViewLayer.masksToBounds = YES;
 	~~~
 	
 	利用一张中间为透明圆形的图片来进行遮盖,虽然会引起blending,但性能仍然高于offerScreen。
@@ -189,7 +195,7 @@ imageViewLayer.shadowPath = CGPathCreateWithRect(imageRect, NULL);
 
  以上举了两个例子阐明了在避免大量的offerscreen渲染后,性能能够得到非常直观有效的提高。
 
-###3. 关于blending
+### 3. 关于blending
 
 前面提到了用透明圆形的图片来进行遮盖,会引起blending。blending也会耗费性能。
 
@@ -214,7 +220,7 @@ imageViewLayer.shadowPath = CGPathCreateWithRect(imageRect, NULL);
 在了解完Blending之后,我们就知道为什么很多优化准则都需要我们尽量使用不透明图层了。接下来就是在开发中留意和进行优化了。
 
 
-##测试工具
+## 测试工具
 
 在出现图像性能问题,滑动,动画不够流畅之后,我们首先要做的就是定位出问题的所在。而这个过程并不是只靠经验和穷举法探索,我们应该用有脉络,有顺序的科学的手段进行探索。
 
@@ -247,7 +253,8 @@ Instruments里的：
 -  OpenGL ES Driver instrument
 
 模拟器中的:
-Color debug options View debugging
+
+Color debug options View debugging
 
 还有Xcode的：
 
@@ -342,7 +349,7 @@ View debugging
 	![](openViewDebug.png)
 	
 	
-##总结
+## 总结
 
 关于图形性能还有许多细节和底层可以深入,不过经过这一次总结与学习,基本把握了iOS图形性能的优化细节和工具。希望也能够对你有一点帮助。
 

@@ -1,12 +1,12 @@
-#WWDC 2014 
-###Advanced iOS Application Architecture and Patterns （session 229）
+# WWDC 2014 
+### Advanced iOS Application Architecture and Patterns （session 229）
 --
 
 这一个Session是对之前的Core iOS Application Architectural Patterns Session的延伸。
 
 实际上内容是非常的不同的，前者的主要是对Cocoa框架里面涉及到的基本模式做一个总结，而后者更多是对整个软件架构的思索，主要设计数据流的设计,划分职责,多使用不变性。
 
-![](Advanced iOS Application Architecture and Patterns.png)
+![](https://raw.githubusercontent.com/100mango/zen/master/2014%20WWDC/WWDC%E5%BF%83%E5%BE%97%EF%BC%9AAdvanced%20iOS%20Application%20Architecture%20and%20Patterns/Advanced%20iOS%20Application%20Architecture%20and%20Patterns.png)
 
 
 1. design information flow  
@@ -15,11 +15,11 @@
    
    弄清楚truth,还要设计information flow.一个良好的数据流不应该是这样的：
    
-   ![](bad informtion flow.png)
+   ![](https://raw.githubusercontent.com/100mango/zen/master/2014%20WWDC/WWDC%E5%BF%83%E5%BE%97%EF%BC%9AAdvanced%20iOS%20Application%20Architecture%20and%20Patterns/bad%20informtion%20flow.png)
    
    而应该是这样的：
    
-   ![](good informtion flow.png)
+   ![](https://raw.githubusercontent.com/100mango/zen/master/2014%20WWDC/WWDC%E5%BF%83%E5%BE%97%EF%BC%9AAdvanced%20iOS%20Application%20Architecture%20and%20Patterns/good%20informtion%20flow.png)
    
    说起来比较抽象，不过Session使用了几个例子来阐明。
    > 《Advanced iOS Application Architecture and Patterns》 中，把这个图叫做information flow。我们的直觉会告诉我们，这个信息的传递，应该是自上而下的树或是森林，而且最好是一个层次平衡结构，要清晰，每一个位置都有相对于的职责。那我们就需要制定一个规则。[^1]

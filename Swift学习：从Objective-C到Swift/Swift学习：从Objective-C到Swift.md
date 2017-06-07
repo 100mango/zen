@@ -168,7 +168,7 @@ declared as: @property (class) NSString *someStringProperty;. They are never syn
 通过static定义的类变量无法在子类重写,通过class定义的类变量则可在子类重写。
 
 ~~~swift
-struct SomeStructure {
+class Aclass {
     static var storedTypeProperty = "Some value."
     static var computedTypeProperty: Int {
         return 1

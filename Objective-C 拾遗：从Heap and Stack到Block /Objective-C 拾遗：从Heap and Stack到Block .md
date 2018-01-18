@@ -95,7 +95,7 @@ void exampleD() {
 
 ### ARC的疑团：
 
-解答完最初的问题后,新的问题又出现在我的脑海。那就是ARC是如何进行block的内存管理的呢,对于普通的OC对象之前已经在[内存管理](https://github.com/100mango/zen/blob/master/iOS%E5%A4%AF%E5%AE%9E%EF%BC%9A%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86.md)里面进行总结过。
+解答完最初的问题后,新的问题又出现在我的脑海。那就是ARC是如何进行block的内存管理的呢,对于普通的OC对象之前已经在[内存管理](https://github.com/100mango/zen/blob/master/iOS%E5%A4%AF%E5%AE%9E%EF%BC%9A%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/iOS%E5%A4%AF%E5%AE%9E%EF%BC%9A%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86.md)里面进行总结过。
 
 那么block在ARC下是如何从栈管理正确过渡到堆的管理的呢：
 

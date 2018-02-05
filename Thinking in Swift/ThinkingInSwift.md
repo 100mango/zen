@@ -528,6 +528,8 @@ associatedtype ItemType = String
 
 protocol-oriented programming 的核心在于`用组合替代继承`(也就是面向对象编程准则：**prefer composition over inheritance**)。
 
+个人的理解，protocol-oriented programming 的核心就是使用协议代替了类来组织代码，因为类一般是相对明确的概念，而协议囊括的概念更庞大。几时用POP，几时用类。我觉得可以从你想要组织的概念入手，像`CollectionType`在Swift中便是以协议组织的，因为这样更灵活。如果用类来组织的话，继承链会很长，不够灵活。但是如果你开发的是一个非常明确的概念，比如说一个UI控件，那这个时候，类会是更好的组织方式。我觉得没有非常严格意义能够划分用协议或是类来组织代码，这取决于我们的实际需求。
+
 初次学习面向协议编程，不要感到面对得是一个新的庞大的编程概念和体系，我们直接先从语法入手。看看面向协议编程在代码里面究竟是个什么东西。
 
 ~~~swift

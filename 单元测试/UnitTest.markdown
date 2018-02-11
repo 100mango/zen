@@ -65,7 +65,7 @@
 	- 每个以 test 为开头，无参数，无返回值的方法都是一个测试用例。
 	- 我们通过断言来判断测试结果是否正确。 如上面的`XCTAssertTrue`。
 
-	XCTest框架的详细使用教程，请查看：[单元测试简明指南](xctestcookbook.markdown)
+	XCTest框架的详细使用教程，请查看：[XCTest简明指南](https://github.com/100mango/zen/blob/master/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/XCTestCookBook.markdown)
 
 
 ## Guideline

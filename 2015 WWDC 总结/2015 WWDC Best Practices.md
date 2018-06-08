@@ -1,9 +1,7 @@
-#2015 WWDC Best Practices
-
-这篇文章主要记录观看学习2015 WWDC视频总结的iOS最佳实践。一个个session记录学习过于繁琐。因此决定用简单的篇幅,尽可能总结重点。
+# 2015 WWDC Best Practices
 
 
-##Cocoa Touch Best Practices
+## Cocoa Touch Best Practices
 
 
 1. App Lifecycle

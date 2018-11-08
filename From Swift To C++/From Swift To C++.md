@@ -1,8 +1,8 @@
-#From Swift To C++
+# From Swift To C++
 
-Swift和C++看起来是两种完全不同的语言，但是他们都有一个共同点，那就是多范式编程。
+Swift 和 C++ 初看起来是两种差异比较大的语言，但是随着逐步深入了解。我们会发现他们有一个最大的共同点，那就是多范式编程。
 
-C++语言特性：
+这篇文案就按照编程范式来组织脉络，下面就让我们来品味和对比这两门语言。
 
 ## 面向对象
 
@@ -294,6 +294,9 @@ auto sum(int a, int b) -> int;
 
 ## 内存管理
 
+
+### 智能指针
+
 ~~~c++
 myPerson = NULL;
 myPerson->doSomething(); // crash!
@@ -341,13 +344,15 @@ if (auto unwrap = delegate->lock()) {
 
 - 继承`enable_shared_from_this`来使一个类能获取自身的`shared_ptr`
 
+在自己实际开发的过程中，还总结出：如果一个对象在整个生命周期中会需要被智能指针所管理，那么一开始就要用智能指针管理。
+
 [cpp-dynamic-memory](http://notes.maxwi.com/2016/03/25/cpp-dynamic-memory/)
 
 [shared_ptr 原理及事故](https://heleifz.github.io/14696398760857.html)
 
 
 
-Optional:
+### Optional:
 
 https://www.boost.org/doc/libs/1_66_0/libs/optional/doc/html/index.html
 

@@ -2,9 +2,39 @@
 
 Swift 和 C++ 初看起来是两种差异比较大的语言，但是随着逐步深入了解。我们会发现他们有一个最大的共同点，那就是多范式编程。
 
-这篇文案就按照编程范式来组织脉络，下面就让我们来品味和对比这两门语言。
+这篇文案就按照编程范式（programming paradigm）来组织脉络（非严格划分，事实上不同编程范式都会用到许多相同的语法特性），下面就让我们来品味和对比这两门语言。
 
-## 面向对象
+
+## 面向过程（Procedure Oriented Programming ）
+
+### Control Flow 控制流
+
+#### 定义变量
+
+~~~c++
+int x[10] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };  
+for( auto &y : x ) { 
+	print(y)  
+}  
+~~~
+
+#### 循环
+
+[Range-based for loops](https://docs.microsoft.com/en-us/cpp/cpp/range-based-for-statement-cpp)
+
+~~~c++
+std::map<string, string> testMap;
+
+for (auto& item : testMap)
+{
+    cout << item.first << "-----" << item.second << endl;
+}
+~~~
+
+
+
+
+## 面向对象 (Object Oriented Programming)
 
 - 封装
 
@@ -460,30 +490,10 @@ c++有一个Swift没有的强大特性，那就是`SFINEA`。 同时也引入了
 
 [c++类型推导](https://github.com/racaljk/EffectiveModernCppChinese/blob/master/1.DeducingTypes/item1.md)
 
-### Control Flow 控制流
+[模板类型推导](http://blog.leanote.com/post/gaunthan/C-%E6%A8%A1%E6%9D%BF%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC)
 
-#### 定义变量
 
-~~~c++
-int x[10] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };  
-for( auto &y : x ) { 
-	print(y)  
-}  
-~~~
-
-#### 循环
-
-[Range-based for loops](https://docs.microsoft.com/en-us/cpp/cpp/range-based-for-statement-cpp)
-
-~~~c++
-std::map<string, string> testMap;
-
-for (auto& item : testMap)
-{
-    cout << item.first << "-----" << item.second << endl;
-}
-~~~
-
+## 函数式编程
 
 ### 闭包（Closures）
 
@@ -532,13 +542,16 @@ closure();
 
 [C/C++语言中闭包的探究及比较](https://coolshell.cn/articles/8309.html)
 
-
+[C++函数指针、函数对象与C++11 function对象对比分析](https://blog.csdn.net/skillart/article/details/52336303)
 
 
 ### DSL 
 
 User-defined literals
 
+
+
+## 并发编程
 
 
 

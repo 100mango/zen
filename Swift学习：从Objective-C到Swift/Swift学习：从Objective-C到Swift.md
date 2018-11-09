@@ -1,7 +1,7 @@
-# Swift学习: 从Objective-C到Swift
+# 从Objective-C到Swift
 
 
-这篇文章是自己学习Swift的笔记与深化。希望这篇文章能够帮助已经有Objective-C经验的开发者更快地学习Swift。同时也品味到Swift的精妙之处。
+这篇文章是自己初学Swift时的笔记与深化。希望这篇文章能够帮助已经有Objective-C经验的开发者更快地学习Swift。同时也品味到Swift的精妙之处。
 
 结论放在开头:
 

@@ -1,5 +1,9 @@
 # From Swift To C++
 
+
+[姊妹篇: 从Objective-C到Swift](https://github.com/100mango/zen/blob/master/Swift%E5%AD%A6%E4%B9%A0%EF%BC%9A%E4%BB%8EObjective-C%E5%88%B0Swift/Swift%E5%AD%A6%E4%B9%A0%EF%BC%9A%E4%BB%8EObjective-C%E5%88%B0Swift.md)
+
+
 Swift 和 C++ 初看起来是两种差异比较大的语言，但是随着逐步深入了解。我们会发现他们有一个最大的共同点，那就是多范式编程。
 
 这篇文案就按照编程范式（programming paradigm）来组织脉络（非严格划分，事实上不同编程范式都会用到许多相同的语法特性），下面就让我们来品味和对比这两门语言。

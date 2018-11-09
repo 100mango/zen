@@ -9,27 +9,45 @@ Swift 和 C++ 初看起来是两种差异比较大的语言，但是随着逐步
 
 ### Control Flow 控制流
 
-#### 定义变量
+编程语言的控制流语法大致相同
 
-~~~c++
-int x[10] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };  
-for( auto &y : x ) { 
-	print(y)  
-}  
-~~~
+- selection: C++ 拥有 `if`  `switch` 语法。
 
-#### 循环
+	而Swift除了拥有`if`和`else`, 还有`gurad`用于提前返回。
+	
+
+- Loop: C++ 拥有`do while` `while` `for(::)` `range-based for` 。
+
+	而Swift则拥有`repeat while` `while` 和 `for in`.
+	
+	值得一提的是， [Swift从 3.0 版本已经去掉了 C-Style 的 `for` 循环](https://github.com/apple/swift-evolution/blob/master/proposals/0007-remove-c-style-for-loops.md)，这使得 Swift 更为清晰。
+	
+	而 C++11 加入的`range-based for` 和 Swift 的 `for in` 基本是异曲同工的。 
+	
+	~~~c++
+	std::map<string, int> testMap;
+
+	for (auto& item : testMap)
+	{
+	    cout << item.first << ":" << item.second << endl;
+	}
+	~~~
+	
+	~~~swift
+	vat map: Dictionary<String:Int>;
+	for (key,value) in map {
+	}
+	~~~
+	
+	另外 c++ 的 `switch` 能力也比较弱，只能够对整型，枚举或一个能隐式转换为整型或枚举类型的class进行判断. 而 Swift 的 `switch` 能力强大得多，能够判断字符串，tuple,浮点数等等类型。
+	
+
+
+#### 参考链接
+
+[Swift Control Flow](https://docs.swift.org/swift-book/LanguageGuide/ControlFlow.html)
 
 [Range-based for loops](https://docs.microsoft.com/en-us/cpp/cpp/range-based-for-statement-cpp)
-
-~~~c++
-std::map<string, string> testMap;
-
-for (auto& item : testMap)
-{
-    cout << item.first << "-----" << item.second << endl;
-}
-~~~
 
 
 

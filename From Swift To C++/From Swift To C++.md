@@ -1,50 +1,108 @@
 # From Swift To C++
 
 
-[姊妹篇: 从Objective-C到Swift](https://github.com/100mango/zen/blob/master/Swift%E5%AD%A6%E4%B9%A0%EF%BC%9A%E4%BB%8EObjective-C%E5%88%B0Swift/Swift%E5%AD%A6%E4%B9%A0%EF%BC%9A%E4%BB%8EObjective-C%E5%88%B0Swift.md)
+[姊妹篇: 从 Objective-C 到 Swift](https://github.com/100mango/zen/blob/master/Swift%E5%AD%A6%E4%B9%A0%EF%BC%9A%E4%BB%8EObjective-C%E5%88%B0Swift/Swift%E5%AD%A6%E4%B9%A0%EF%BC%9A%E4%BB%8EObjective-C%E5%88%B0Swift.md)
+
+C++ 除了在操作系统内核，编译器等高性能领域中发挥着关键作用，同时也是跨平台开发中不可或缺的角色。值得对底层优化和跨平台开发有兴趣的同学了解与学习。
+
+Swift 和 C++ 初看起来是两种差异较大的语言。但是随着逐步深入了解，我们会发现他们有一个最大的共同点，那就是多范式编程。
+
+这篇文案就按照编程范式（programming paradigm）来组织脉络（非严格划分，事实上不同编程范式都会用到许多相同的语法特性），下面就让我们从一个客户端工程师的角度来品味和对比这两门语言。
+
+目录：
+
+- [面向过程](#1)
+	- Control Flow 控制流
+	- 函数
+- [面向对象](#2)
+	- 封装
+	- 继承
+	- 多态
+	- 访问控制
+	- 消息传递机制
+- [类型系统](#3)
+	- 强类型，静态类型
+	- 类型推导
+	- 值语义 引用语义
+	- 类型转换 
+- [内存管理](#4)
+	- 智能指针
+	- Optional
+- [泛型编程](#5)
+- [并发编程](#6)
 
 
-Swift 和 C++ 初看起来是两种差异比较大的语言，但是随着逐步深入了解。我们会发现他们有一个最大的共同点，那就是多范式编程。
+<h2 id="1">面向过程（Procedure Oriented Programming）</h2>
 
-这篇文案就按照编程范式（programming paradigm）来组织脉络（非严格划分，事实上不同编程范式都会用到许多相同的语法特性），下面就让我们来品味和对比这两门语言。
-
-
-## 面向过程（Procedure Oriented Programming ）
 
 ### Control Flow 控制流
 
-编程语言的控制流语法大致相同
+#### Selection: 
 
-- selection: C++ 拥有 `if`  `switch` 语法。
+C++ 拥有 `if`  `switch` 语法。
 
-	而Swift除了拥有`if`和`else`, 还有`gurad`用于提前返回。
-	
+而Swift除了拥有`if`和`else`, 还有`gurad`用于提前返回。
 
-- Loop: C++ 拥有`do while` `while` `for(::)` `range-based for` 。
+#### Loop:
 
-	而Swift则拥有`repeat while` `while` 和 `for in`.
-	
-	值得一提的是， [Swift从 3.0 版本已经去掉了 C-Style 的 `for` 循环](https://github.com/apple/swift-evolution/blob/master/proposals/0007-remove-c-style-for-loops.md)，这使得 Swift 更为清晰。
-	
-	而 C++11 加入的`range-based for` 和 Swift 的 `for in` 基本是异曲同工的。 
-	
-	~~~c++
-	std::map<string, int> testMap;
+C++ 拥有`do while` `while` `for(::)` `range-based for` 。
 
-	for (auto& item : testMap)
-	{
-	    cout << item.first << ":" << item.second << endl;
-	}
-	~~~
+而Swift则拥有`repeat while` `while` 和 `for in`.
 	
-	~~~swift
-	vat map: Dictionary<String:Int>;
-	for (key,value) in map {
-	}
-	~~~
+值得一提的是， [Swift从 3.0 版本已经去掉了 C-Style 的 `for` 循环](https://github.com/apple/swift-evolution/blob/master/proposals/0007-remove-c-style-for-loops.md)
 	
-	另外 c++ 的 `switch` 能力也比较弱，只能够对整型，枚举或一个能隐式转换为整型或枚举类型的class进行判断. 而 Swift 的 `switch` 能力强大得多，能够判断字符串，tuple,浮点数等等类型。
+而 C++11 加入的`range-based for` 和 Swift 的 `for in` 基本是异曲同工的。 
 	
+~~~c++
+std::map<string, int> testMap;
+
+for (auto& item : testMap)
+{
+    cout << item.first << ":" << item.second << endl;
+}
+~~~
+	
+~~~swift
+vat map: Dictionary<String:Int>;
+for (key,value) in map {
+}
+~~~
+	
+另外 c++ 的 `switch` 能力也比较弱，只能够对整型，枚举或一个能隐式转换为整型或枚举类型的class进行判断. 而 Swift 的 `switch` 能力强大得多，基本能够判断所有类型，包括字符串，浮点数等等。
+
+### 函数
+
+C++ 的函数定义语法和 C 是一脉相承的。
+
+c++和Swift一样，也支持指定参数的默认值(Default Parameter Values)：
+
+~~~c++
+int sum(int a, int b=20)
+{
+  int result;
+ 
+  result = a + b;
+  
+  return result;
+}
+~~~
+
+不过 c++ 因为缺少像 Swift 的 `Function Argument Labels`, 因此调用方法需要遵循：如果一个函数中有多个默认参数，则形参分布中，默认参数应从右至左逐渐定义。当调用函数时，只能向左匹配参。
+
+~~~c++
+　void func(int a=1,int b，int c=3, int d=4)； //error
+　void func(int a， int b=2，int c=3，int d=4)； //ok
+　func(2,15,20)； //error：只能从右到左顺序匹配默认
+~~~
+
+而 Swift 则可以灵活地选择给哪个参数赋值：
+
+~~~c++
+func test(a :Int = 1, b:Int, c:Int = 3, d:Int = 4 ) {}
+test(b:3, d: 5);
+~~~
+
+C++ 的函数初看没有什么可以挖掘的地方，但是当涉及面向对象，模板（泛型编程）时，就会有更多强大的语法特性显现出来。让我们继续耐心阅读下去。
 
 
 #### 参考链接
@@ -58,141 +116,23 @@ Swift 和 C++ 初看起来是两种差异比较大的语言，但是随着逐步
 
 ## 面向对象 (Object Oriented Programming)
 
-- 封装
+### 封装
 
-	定义class:
+- 定义class:
 	
 	~~~c++
 	class Person {
 	  public:
 	    int x;
 	    void foo();
-	
+		
 	  private:
 	    float z;
 	    void bar();
 	}
 	~~~
 
-- 继承
-
-	~~~swift
-	//Swift
-	class Person {}
-	class Employee: Person {}
-	~~~
-	
-	~~~c++
-	//C++
-	class Person {
-	};
-	
-	class Employee : public Person {
-	};
-	~~~
-	注意到C++多了一个public关键词，这代表了Person类的public members在Employee中还是public的。如果将public替换成private,则外界调用Employee时,父类Person的public members是不可见的。
-	
-	C++支持多继承。Swift则可以通过Protocol和Protocol Extension来实现类多继承。
-
-- 多态（Polymorphism）
-
-	~~~c++
-	class Foo {
-	  public:
-	    int value() { return 5; }
-	};
-	
-	class Bar : public Foo {
-	  public:
-	    int value() { return 10; }
-	};
-	
-	Bar *b = new Bar();
-	Foo *f = (Foo*)b;
-	printf(“%i”, f->value());
-	// Output = 5
-	~~~
-	
-	我们惊奇地发现，返回值是5,这和Swift的行为是不同的。这在C++叫做Static Binding。方法的调用在编译期就确定了。我们需要利用C++的语法特性`virtual function`来实现类似Swift的行为。让方法的调用在Runtime确定（dynamic binding）。
-	
-	~~~c++
-	class Foo {
-	  public:
-	    virtual int value() { return 5; }
-	};
-	
-	class Bar : public Foo {
-	  public:
-	    virtual int value() { return 10; }
-	};
-	
-	Bar *b = new Bar();
-	Foo *f = (Foo*)b;
-	printf(“%i”, f->value());
-	// Output = 10
-	~~~
-	
-	类似于Swift的Protocol。在C++中，我们是通过 pure virtual function (or abstract function)来定义接口的。
-	
-	~~~c++
-	class Base
-	{
-	   int x;
-	public:
-		//pure virtual function
-	    virtual void fun() = 0;
-	    int getX() { return x; }
-	};
-	 
-	// This class ingerits from Base and implements fun()
-	class Derived: public Base
-	{
-	    int y;
-	public:
-		//c++11 用override显式表示重载虚函数
-	    virtual void fun() override { cout << "fun() called"; }
-	};
-	~~~
-
-- 	访问控制(Access Control)：
-	
-	c++也有访问控制，分为`public`,`private`,`protected`。
-	
-	区别在于Swift是没有`protected`的,`protected`指子类也能访问和修改。
-	
-	值得注意的是：
-	
-	1. 在C++中，class的默认访问控制是`private`,而struct或union则是`public`。
-	
-	2. 继承也需要指定访问控制。
-
-		~~~c++
-		class Derived : Base  
-		//上下是等价的。
-		class Derived : private Base  
-		~~~
-		
-		如果不指定public, 我们是无法在子类中使用父类的方法的。
-
-		
-	
-	参考链接：
-	
-	[苹果对于为什么不支持protected的看法](https://developer.apple.com/swift/blog/?id=11)
-	
-
-- Method Dispatch/Message passing 消息传递机制
-
-	Swift有static dispatch和dynamic dispatch两种消息传递机制。
-	对于前者，Swift和C++都是编译时（compilation time）就确定了调用地址。
-	对于后者，Swift的dynamic dispatch有两种形式，一种是通过Objective-C的runtime进行分发。一种是通过和C++类似的`vtable`进行分发。
-	
-	除了标记为final,private,dynamic(@objc)的方法或继承了NSObject的类的方法（Pure Swift，没利用Objective-C的Runtime）。Swift的方法都类似C++标记了`vitrual`的方法。
-
-
-	[How does iOS Swift Runtime work](https://stackoverflow.com/questions/37315295/how-does-ios-swift-runtime-work)
-
-- Constructors and Destructors
+-  构造函数和析构函数（Constructors and Destructors）
 	
 	相当于Swift的Initialization和Deinitialization。
 	
@@ -216,7 +156,7 @@ Swift 和 C++ 初看起来是两种差异比较大的语言，但是随着逐步
 	注意到C++有个特殊构造方法语法叫`Initialization Lists`,用于初始化成员变量。
 	
 	
-	初始化语法：
+-	变量初始化语法：
 	
 	~~~c++
 	//小括号初始化
@@ -231,39 +171,137 @@ Swift 和 C++ 初看起来是两种差异比较大的语言，但是随着逐步
 	
 	[uniform initialization](https://mbevin.wordpress.com/2012/11/16/uniform-initialization/)
 	
+
 ​
-​	C++和Swift有个很大的区别，那就c++如果定义变量时没有指定初值，则变量被默认初始化（default initialized），也就是会被自动赋值。个人觉得这不是一个好的语言特性。
+​	C++和Swift有个很大的区别，那就 C++ 如果定义变量时没有指定初值，则变量被默认初始化（default initialized），也就是会被自动赋值。个人觉得这不是一个好的语言特性, 最好还是像 Swift 一样强制需要显式初始化，这样代码不隐晦，一看就知道真正的初始化值。
 
-### 函数
+### 继承
 
-c++和Swift一样，也支持指定参数的默认值(Default Parameter Values)：
+~~~swift
+//Swift
+class Person {}
+class Employee: Person {}
+~~~
+	
+~~~c++
+//C++
+class Person {
+};
+	
+class Employee : public Person {
+};
+~~~
+注意到 C++ 多了一个`public`关键词，这代表了 Person 类的 public members 在Employee 中还是 public 的。如果将`public`替换成`private`,则外界调用 Employee 时,父类 Person 的 public members 是不可见的。
+	
+C++ 支持多继承。而 Swift 则可以通过 Protocol 和 Protocol Extension 来实现类似多继承的功能。
+
+### 多态（Polymorphism）
 
 ~~~c++
-int sum(int a, int b=20)
+class Foo {
+  public:
+    int value() { return 5; }
+};
+	
+class Bar : public Foo {
+  public:
+    int value() { return 10; }
+};
+	
+Bar *b = new Bar();
+Foo *f = (Foo*)b;
+printf(“%i”, f->value());
+// Output = 5
+~~~
+	
+我们惊奇地发现，返回值是5,这和 Swift 的行为是不同的。这在 C++ 叫做 Static Binding。方法的调用在编译期就确定了。我们需要利用 C++ 的语法特性`virtual function`来实现多态。让方法的调用在 Runtime 确定（dynamic binding）。
+	
+~~~c++
+class Foo {
+  public:
+    virtual int value() { return 5; }
+};
+	
+class Bar : public Foo {
+  public:
+    virtual int value() override { return 10; }
+};
+	
+Bar *b = new Bar();
+Foo *f = (Foo*)b;
+printf(“%i”, f->value());
+// Output = 10
+~~~
+	
+类似于 Swift 的 Protocol。在C++中，我们是通过 pure virtual function (or abstract function)来定义接口的。
+	
+~~~c++
+class Base
 {
-  int result;
+   int x;
+public:
+	//pure virtual function
+    virtual void fun() = 0;
+    int getX() { return x; }
+};
  
-  result = a + b;
+// This class ingerits from Base and implements fun()
+class Derived: public Base
+{
+    int y;
+public:
+	//c++11 用override显式表示重载虚函数
+    virtual void fun() override { cout << "fun() called"; }
+};
+~~~
+
+### 访问控制(Access Control)：
+
+  c++也有访问控制，分为`public`,`private`,`protected`,`friend`。
+
+  区别在于Swift是没有`protected`的,`protected`指子类也能访问和修改。
   
-  return result;
-}
-~~~
+  `friend`是一个比较特别的控制语法，大多数编程语言都没有这个特性，C++中的友元机制允许类的非公有成员被一个类或者函数访问。
 
-在 C++11 中，如果你愿意，你可以将返回值放在函数声明的最后，将auto放在返回值的位置：
+  值得注意的是：
 
-~~~c++
-auto sum(int a, int b) -> int;
-~~~
+  1. 在C++中，class 的默认访问控制是`private`,而 struct 或 union 则是`public`。
 
-为什么要怎么做呢？主要用于泛型编程。目前我们先了解有这个语法，避免看到代码时一脸懵逼。
+  2. 继承也需要指定访问控制。
+
+    ~~~c++
+    class Derived : Base  
+    //上下是等价的。
+    class Derived : private Base  
+    ~~~
+
+    如果不指定 public, 我们是无法在子类中使用父类的方法的。
+    
+参考链接：
+
+  [苹果对于为什么不支持protected的看法](https://developer.apple.com/swift/blog/?id=11)
+
+### 消息传递机制 (Method Dispatch/Message passing)
+
+C++ 和 Swift 都有 static dispatch 和 dynamic dispatch 两种消息传递机制。
+	
+对于前者，Swift 和 C++ 都是编译时（compilation time）就确定了调用地址。
+	
+对于后者，Swift 的 dynamic dispatch 有两种形式，一种是通过Objective-C的runtime进行分发。一种是通过和C++类似的`vtable`进行分发。
+	
+除了标记为`final`,`private`,`@objc dynamic`的方法。Swift的方法都类似C++标记了`vitrual`的方法。
 
 
-### Standard Template Library (STL)
+[How does iOS Swift Runtime work](https://stackoverflow.com/questions/37315295/how-does-ios-swift-runtime-work)
 
-类似Swift的Foundation框架。C++也有它的基础框架，叫STL。在里面有许多完备的容器类型，基础类型供使用。
+[Dynamic Dispatch in Object Oriented Languages](http://condor.depaul.edu/ichu/csc447/notes/wk10/Dynamic2.htm)
+
+
 
 
 ## 类型系统（Type System）
+
+### 强类型，静态类型
 
 和Swift一样，C++也是一个强类型（strongly typed），静态类型（statically typed）的编程语言。
 
@@ -275,43 +313,45 @@ auto sum(int a, int b) -> int;
 ​	
 静态类型又可以细分为：`manifest type`和`type-inferred`语言。`manifest type`需要我们显式指定变量的类型，如：int a。 而`type-inferred`则可以由编译器来帮我们推导确定类型，如Swift中 let a = 1, C++中 auto a = 1;
 
+### 类型推导 （Type Inference）
 
-- value semantics and reference semantics:
 
-	C++不像Swift将类型明确分为 Reference Type 和 Value Type 。而是通过指针和引用来实现引用语义。**在C++中，classes 默认是 value types.**
-	
-	~~~c++
-	class Foo {
-	  public:
-	    int x;
-	};
-	
-	void changeValue(Foo foo) {
-	    foo.x = 5;
-	}
-	
-	Foo foo;
-	foo.x = 1;
-	changeValue(foo);
-	// foo.x still equals 1
-	~~~
-	
-	需要指定pass a variable “by reference”.
-	
-	~~~c++
-	void changeValue(Foo &foo) {
-	    foo.x = 5;
-	}
-	
-	Foo foo;
-	foo.x = 1;
-	changeValue(foo);
-	// foo.x equals 5
-	~~~
-	
-	[C++值语义](http://www.cnblogs.com/Solstice/archive/2011/08/16/2141515.html)
 
--  类型转换 ( Type Conversions ) 
+
+### 值语义 引用语义 （value semantics and reference semantics）
+
+C++不像Swift将类型明确分为 Reference Type 和 Value Type 。而是通过指针和引用来实现引用语义。**在C++中，classes 默认是 value types.**
+	
+~~~c++
+class Foo {
+  public:
+    int x;
+};
+	
+void changeValue(Foo foo) {
+    foo.x = 5;
+}
+	
+Foo foo;
+foo.x = 1;
+changeValue(foo);
+// foo.x still equals 1
+~~~
+	
+需要指定pass a variable “by reference”.
+	
+~~~c++
+void changeValue(Foo &foo) {
+    foo.x = 5;
+}
+	
+Foo foo;
+foo.x = 1;
+changeValue(foo);
+// foo.x equals 5
+~~~
+	
+###  类型转换 ( Type Conversions ) 
 
 1. 隐式类型转换 ( Implicit type conversions )
 
@@ -342,6 +382,10 @@ auto sum(int a, int b) -> int;
 		d3->DoSomethingMore();
 	}  
 	~~~
+
+参考链接：
+
+[C++值语义](http://www.cnblogs.com/Solstice/archive/2011/08/16/2141515.html)
 
 
 ## 内存管理
@@ -418,8 +462,6 @@ if (o) {                                 // does optional contain a value?
 ~~~
 
 c++的判断不是编译期强制的。没有像Swift一样的unwrap语法。还是需要自己手写，C++中和指针判空的好处在于，能够表达一个非指针的对象是否为空。
-
-## 错误处理机制
 
 
 ## 泛型编程
@@ -567,9 +609,6 @@ closure();
 [C++函数指针、函数对象与C++11 function对象对比分析](https://blog.csdn.net/skillart/article/details/52336303)
 
 
-### DSL 
-
-User-defined literals
 
 
 

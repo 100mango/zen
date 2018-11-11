@@ -29,7 +29,12 @@ Swift 和 C++ 初看起来是两种差异较大的语言。但是随着逐步深
 	- 智能指针
 	- Optional
 - [泛型编程](#5)
-- [并发编程](#6)
+	- 实现模型
+	- 泛型函数
+	- 泛型类型
+	- 类型约束
+- [函数式编程](#6)
+- [并发编程](#7)
 
 
 <h2 id="1">面向过程（Procedure Oriented Programming）</h2>
@@ -113,8 +118,8 @@ C++ 的函数初看没有什么可以挖掘的地方，但是当涉及面向对�
 
 
 
+<h2 id="2">面向对象 (Object Oriented Programming)</h2>
 
-## 面向对象 (Object Oriented Programming)
 
 ### 封装
 
@@ -193,7 +198,7 @@ class Employee : public Person {
 ~~~
 注意到 C++ 多了一个`public`关键词，这代表了 Person 类的 public members 在Employee 中还是 public 的。如果将`public`替换成`private`,则外界调用 Employee 时,父类 Person 的 public members 是不可见的。
 	
-C++ 支持多继承。而 Swift 则可以通过 Protocol 和 Protocol Extension 来实现类似多继承的功能。
+C++ 支持多继承。而 Swift 则可以通过 Protocol 和 Protocol Extension 来实现类似多继承的特性。
 
 ### 多态（Polymorphism）
 
@@ -298,8 +303,8 @@ C++ 和 Swift 都有 static dispatch 和 dynamic dispatch 两种消息传递机�
 
 
 
+<h2 id="3">类型系统（Type System）</h2>
 
-## 类型系统（Type System）
 
 ### 强类型，静态类型
 
@@ -311,16 +316,35 @@ C++ 和 Swift 都有 static dispatch 和 dynamic dispatch 两种消息传递机�
 
 静态类型：变量类型在编译时就确定.
 ​	
-静态类型又可以细分为：`manifest type`和`type-inferred`语言。`manifest type`需要我们显式指定变量的类型，如：int a。 而`type-inferred`则可以由编译器来帮我们推导确定类型，如Swift中 let a = 1, C++中 auto a = 1;
+静态类型又可以细分为：`manifest type`和`type-inferred`语言。`manifest type`需要我们显式指定变量的类型，如：int a。 而`type-inferred`则可以由编译器来帮我们推导类型。
 
 ### 类型推导 （Type Inference）
 
+C++ 和 Swift 都具备类型推导的能力。
+
+~~~c++
+//c++
+auto a = 1;
+~~~
+
+~~~swift
+//swift
+let a = 1 
+~~~
+
+C++ 的类型推导能力还能用在模板编程中：
+
+~~~c++
+template<class T, class U>
+auto add(T t, U u) { return t + u; } 
+//the return type is the type of operator+(T, U)
+~~~
 
 
 
 ### 值语义 引用语义 （value semantics and reference semantics）
 
-C++不像Swift将类型明确分为 Reference Type 和 Value Type 。而是通过指针和引用来实现引用语义。**在C++中，classes 默认是 value types.**
+C++ 不像 Swift 将类型明确分为 Reference Type 和 Value Type 。而是通过指针和引用来实现引用语义。**在C++中，classes 默认是 value types.**
 	
 ~~~c++
 class Foo {
@@ -387,8 +411,10 @@ changeValue(foo);
 
 [C++值语义](http://www.cnblogs.com/Solstice/archive/2011/08/16/2141515.html)
 
+[类型系统](https://www.jianshu.com/p/336f19772046)
 
-## 内存管理
+
+<h2 id="4">内存管理</h2>
 
 
 ### 智能指针
@@ -430,7 +456,7 @@ if (auto unwrap = delegate->lock()) {
 ~~~
 
 
-有四句原则可以记住:
+C++ 开发者在使用智能指针的过程中总结出四句原则:
 
 - 用`shared_ptr`，不用`new`
 
@@ -440,7 +466,10 @@ if (auto unwrap = delegate->lock()) {
 
 - 继承`enable_shared_from_this`来使一个类能获取自身的`shared_ptr`
 
-在自己实际开发的过程中，还总结出：如果一个对象在整个生命周期中会需要被智能指针所管理，那么一开始就要用智能指针管理。
+在自己实际开发的过程中，还总结出一个：如果一个对象在整个生命周期中会需要被智能指针所管理，那么一开始就要用智能指针管理。
+
+
+参考链接：
 
 [cpp-dynamic-memory](http://notes.maxwi.com/2016/03/25/cpp-dynamic-memory/)
 
@@ -450,25 +479,75 @@ if (auto unwrap = delegate->lock()) {
 
 ### Optional:
 
-https://www.boost.org/doc/libs/1_66_0/libs/optional/doc/html/index.html
-
-https://stackoverflow.com/questions/35296505/why-use-boostoptional-when-i-can-return-a-pointer
 
 ~~~c++
-boost::optional<int> o = str2int(s); // 'o' may or may not contain an int
-if (o) {                                 // does optional contain a value?
-  return *o;                             // use the value
+optional<int> o = str2int(s); // 'o' may or may not contain an int
+if (o) {                      // does optional contain a value?
+  return *o;                  // use the value
 }
 ~~~
 
-c++的判断不是编译期强制的。没有像Swift一样的unwrap语法。还是需要自己手写，C++中和指针判空的好处在于，能够表达一个非指针的对象是否为空。
+c++的判断不是编译期强制的。没有像Swift一样的 unwrap 语法。还是需要自己判空，和指针判空类似，但是 Optional 的优点是能够表达一个非指针的对象是否为空。
 
 
-## 泛型编程
+<h2 id="5">泛型编程</h2>
 
-C++和Swift一样有着强大的泛型编程能力。
 
-- 泛型函数
+C++ 有着比 Swift 更强大的泛型编程能力，但是代价就是语法和代码会更加晦涩。
+
+### 实现模型（Implementation Model）
+
+实际上 Swift 的泛型和 C++ 的泛型的实现模型有着本质区别。C++ 的泛型（模板）是在编译期生成每个类型具体的实现。而 Swift 则是利用类型信息和 Swift runtime来实现。 这个话题非常宏大艰深，涉及到编译器的底层细节，有兴趣的读者可以加以研究并分享。
+ 
+在这里我们简单通过一个泛型函数来简单感受一下：
+ 
+~~~c++
+template <typename T>
+T f(T t) {
+    T copy = t;
+    return copy;
+}
+
+f(1);
+f(1.2);
+~~~
+
+c++ 的编译时会生成两份代码：
+
+~~~c++
+int f(int t) {
+    int copy = t;
+    return copy;
+}
+
+float f(float t) {
+	float copy = t;
+	return copy;
+}
+~~~
+
+而 Swift：
+
+~~~swift
+func f<T>(_ t: T) ->T {
+	let copy = t
+	return copy
+}
+~~~
+
+编译器实现则类似以下，不会为每个类型生成单独一份实现。
+
+~~~c
+void f(opaque *result,opaque *result,type *T) {
+	//vwt: value witness table
+	//利用类型信息来实现
+	T->vwt->XXX(X);
+}
+~~~
+
+
+
+### 泛型函数
 
 Swift：
 
@@ -492,7 +571,7 @@ void swap(T a, T b) {
 }
 ~~~
 
-- 泛型类型
+### 泛型类型
 
 ~~~c++
 template <typename T>
@@ -526,7 +605,7 @@ public:
 ~~~
 
 
-- 类型约束
+### 类型约束
 
 Swift有类型约束（`Type Constraints`）来约束类型参数继承某个类或遵循某个协议。
 
@@ -542,22 +621,63 @@ class YourClass {
 }
 ~~~
 
+在编写 C++ 模板代码的过程中，其实我觉得类型约束这个的重要性并不大。这归结于我们上面提到的语言对泛型的实现模式的不同。
+
+考虑到如下的模板函数：
+
+~~~c++
+template <typename T>
+T test(T a, T b) {
+    return a + b;
+}
+
+test(1,2); //编译的时候，会为 int 生成实现
+
+int test(int a, int b) {
+    return a + b;
+}
+
+//而这个实例化（instantiation）后的函数是正确的，所以编译成功
+~~~
+
+而在 Swift 中：
+
+~~~swift
+//编译报错：Binary operator '+' cannot be applied to two 'T' operands
+func test<T>(a:T, b:T) -> T {
+    return a + b
+}
+~~~
+
+Swift 因为需要靠类型信息和 runtime 来实现泛型。因此它需要知道 T 这个类型能够进行 `+` 操作。
+
+~~~swift
+//编译成功
+func test<T:Numeric>(a:T, b:T) -> T {
+    return a + b
+}
+~~~
+
+C++ 编译成功与否决定于模板实例化的时候。这一特性非常强大，我们不需要一开始就提供所有信息给编译器。直到实例化时，编译器才会检查实现是否正确，是否该类型能够支持`+`操作。
+
+C++ 还有一个Swift没有的强大特性，那就是`SFINEA`。 同时也引入了一个新的编程范式。那就是`Compile-time Programming`，这里暂不展开。
+
+
+参考链接：
+
+[Metaprogramming as a non-goal](https://forums.swift.org/t/design-question-metaprogramming-as-a-non-goal/1175)
+
+[Implementing Swift Generics](https://www.youtube.com/watch?v=ctS8FzqcRug)
+
+[c++20类型约束有望得到提升](http://en.cppreference.com/w/cpp/language/constraints)
+
 [](https://stackoverflow.com/questions/16976819/sfinae-static-assert-vs-stdenable-if)
-[未来的c++类型约束有望得到提升](http://en.cppreference.com/w/cpp/language/constraints)
 
 
-c++有一个Swift没有的强大特性，那就是`SFINEA`。 同时也引入了一个新的编程范式。那就是`Compile-time Programming`.
 
 
-- 类型推导
+<h2 id="6">函数式编程</h2>
 
-
-[c++类型推导](https://github.com/racaljk/EffectiveModernCppChinese/blob/master/1.DeducingTypes/item1.md)
-
-[模板类型推导](http://blog.leanote.com/post/gaunthan/C-%E6%A8%A1%E6%9D%BF%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC)
-
-
-## 函数式编程
 
 ### 闭包（Closures）
 
@@ -604,21 +724,15 @@ closure();
 //编译成功
 ~~~
 
+
+参考链接：
+
 [C/C++语言中闭包的探究及比较](https://coolshell.cn/articles/8309.html)
 
 [C++函数指针、函数对象与C++11 function对象对比分析](https://blog.csdn.net/skillart/article/details/52336303)
 
 
+<h2 id="7">并发编程</h2>
 
+待完成
 
-
-## 并发编程
-
-
-
-#### 参考资料
-
-https://docs.microsoft.com/en-us/cpp/cpp/cpp-type-system-modern-cpp
-
-
-类型系统：https://www.jianshu.com/p/336f19772046

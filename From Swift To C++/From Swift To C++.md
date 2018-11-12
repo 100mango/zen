@@ -282,12 +282,11 @@ public:
     class Derived : private Base  
     ```
 
-    如果不指定 public, 我们是无法在子类中使用父类的方法的。
+	如果不指定 public, 我们是无法在子类中使用父类的方法的。
     
-
 参考链接：
 
-  [苹果对于为什么不支持protected的看法](https://developer.apple.com/swift/blog/?id=11)
+[苹果对于为什么不支持protected的看法](https://developer.apple.com/swift/blog/?id=11)
 
 ### 消息传递机制 (Method Dispatch/Message passing)
 
@@ -414,6 +413,8 @@ changeValue(foo);
 
 [C++值语义](http://www.cnblogs.com/Solstice/archive/2011/08/16/2141515.html)
 
+[面向对象编程中引用和const的结合](https://blog.csdn.net/lcj1105/article/details/50838441)
+
 [类型系统](https://www.jianshu.com/p/336f19772046)
 
 
@@ -423,7 +424,7 @@ changeValue(foo);
 ### 智能指针
 
 ```c++
-myPerson = NULL;
+myPerson = nullptr;
 myPerson->doSomething(); // crash!
 ```
 
@@ -567,7 +568,7 @@ C++:
 
 ```c++
 template <typename T>
-void swap(T a, T b) {
+void swap(T &a, T &b) {
     T temp = a;
     a = b;
     b = temp;
@@ -585,9 +586,9 @@ class Triplet {
   public:
     Triplet(T a, T b, T c) : a(a), b(b), c(c) {}
 
-    T getA() { return a; }
-    T getB() { return b; }
-    T getC() { return c; }
+    const T& getA() { return a; }
+    const T& getB() { return b; }
+    const T& getC() { return c; }
 };
 Triplet<int> intTriplet(1, 2, 3);
 Triplet<float> floatTriplet(3.141, 2.901, 10.5);
@@ -595,7 +596,7 @@ Triplet<float> floatTriplet(3.141, 2.901, 10.5);
 
 c++通过在方法或类型前面定义`template <typename T>`，来定义类型参数（`type parameter`）
 
-在Swift中泛型类型我们需要通过typealias 暴露类型参数给外面。
+在Swift中泛型类型我们需要通过 typealias 暴露类型参数给外面。
 在C++中，需要用typedef暴露给外面使用。
 
 ```c++

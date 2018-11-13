@@ -93,12 +93,15 @@ int sum(int a, int b=20)
 }
 ```
 
-不过 C++ 因为缺少像 Swift 的 `Function Argument Labels`, 因此调用方法需要遵循：如果一个函数中有多个默认参数，则形参分布中，默认参数应从右至左逐渐定义。当调用函数时，只能向左匹配参。
+不过 C++ 因为缺少像 Swift 的 `Function Argument Labels`, 因此定义方法需要遵循：若给某一参数设置了默认值，那么在参数表中其后所有的参数都必须也设置默认值
+
+调用时需要：若给已经设置默认值的参数传递实际值，则在参数表中被取代参数的左边所定义的所有参数，无论是否有默认值，都必须传递实际参数。
 
 ```c++
 　void func(int a=1,int b，int c=3, int d=4)； //error
 　void func(int a， int b=2，int c=3，int d=4)； //ok
-　func(2,15,20)； //error：只能从右到左顺序匹配默认
+　//不能直接选择给 a 和 c 赋值
+　func(2,15,20)； 
 ```
 
 而 Swift 则可以灵活地选择给哪个参数赋值：

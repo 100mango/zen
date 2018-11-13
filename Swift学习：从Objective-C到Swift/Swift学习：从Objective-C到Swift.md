@@ -244,7 +244,7 @@ if number < 10 {
 	 	NSLog("The number is small")
 ~~~
 
-但是如果有时要在后面添加新的语句,忘记添加`{}`,灾难就很可能发送。
+但是如果有时要在后面添加新的语句,忘记添加`{}`,灾难就很可能发生。
 
 ：） 像苹果公司自己就犯过这样的错误。下面这段代码就是著名的goto fail错误,导致了严重的安全性问题。
 
@@ -335,7 +335,7 @@ for (key,value) in dictionary{
 ***
 ### 关于Switch
 
-Swich在Swift中也得到了功能的增强与安全性的提高。
+Switch在Swift中也得到了功能的增强与安全性的提高。
 
 **不需要Break来终止往下一个Case执行**
 
@@ -379,7 +379,7 @@ case value 1,value 2:
 
 **Switch支持的类型**
 
-在OC中,Swtich只支持int类型,char类型作为匹配。
+在OC中,Switch只支持int类型,char类型作为匹配。
 
 而在Swift中,Switch支持的类型大大的拓宽了。实际上,苹果是这么说的。
 >  A switch statement supports any kind of data 
@@ -704,9 +704,9 @@ if let thisSementTitle = dataSource?.titleFroSegmentAtIndex?(index){
 	
 	~~~swift
 	extension myProtocol{
-		func hello() -> String {
-   	     return "hello world!"
-   	 	}
+        func hello() -> String {
+            return "hello world!"
+        }
 	}
 	~~~
 	
@@ -810,7 +810,7 @@ private extension ViewController {
 	}
 	~~~
 
-4. KVO。
+4. KVO
 
 	Swift支持KVO。但是KVO在Swift,个人觉得是不够优雅的,KVO在Swift只限支持继承NSObject的类,有其局限性,在这里就不介绍如何使用了。
 	

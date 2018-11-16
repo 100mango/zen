@@ -337,9 +337,10 @@ auto a = 1;
 let a = 1 
 ```
 
-C++ 的类型推导能力还能用在模板编程中：
+C++ 的类型推导能力还能用在函数的返回类型中：
 
 ```c++
+//c++14起支持
 template<class T, class U>
 auto add(T t, U u) { return t + u; } 
 //the return type is the type of operator+(T, U)

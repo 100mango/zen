@@ -226,6 +226,7 @@ printf(“%i”, f->value());
 
 我们惊奇地发现，返回值是5,这和 Swift 的行为是不同的。这在 C++ 叫做 Static Binding。方法的调用在编译期就确定了。我们需要利用 C++ 的语法特性`virtual function`来实现多态。让方法的调用在运行时确定（dynamic binding）。
 ​	
+
 ```c++
 class Foo {
   public:
@@ -243,8 +244,11 @@ printf(“%i”, f->value());
 // Output = 10
 ```
 
+
+
 类似于 Swift 的 Protocol。在C++中，我们是通过 pure virtual function (or abstract function)来定义接口的。
 ​	
+
 ```c++
 class Base
 {
@@ -287,6 +291,7 @@ public:
 
 	如果不指定 public, 我们是无法在子类中使用父类的方法的。
     
+
 参考链接：
 
 [苹果对于为什么不支持protected的看法](https://developer.apple.com/swift/blog/?id=11)
@@ -352,6 +357,7 @@ auto add(T t, U u) { return t + u; }
 
 C++ 不像 Swift 将类型明确分为 Reference Type 和 Value Type 。而是通过指针和引用来实现引用语义。**在C++中，classes 默认是 value types.**
 ​	
+
 ```c++
 class Foo {
   public:
@@ -381,37 +387,62 @@ changeValue(foo);
 // foo.x equals 5
 ```
 
-###  类型转换 ( Type Conversions ) 
+###  类型转换 ( Type Conversions , Type Casting) 
 
 1. 隐式类型转换 ( Implicit type conversions )
 
-	Swift是没有隐式类型转换的，而C++有。
-	
-	```c++
-	//成立
-	float a = 1, double b = a; 
-	//精度损失，会有warning
-	double a = 1, float b = a;
-	```
-	
-	个人不是很赞同隐式类型转换，我认为一个强类型语言的所有类型转换都应该是显式的。这样更统一和规范，也许隐式类型转换能够带来一点编写代码的便利性，但也隐藏了问题，特别是有精度损失的隐式转换。也许最好的做法是保留隐式类型转换，但是只允许`Widening conversions`，也即提高精度的转换。
-	
+  Swift是没有隐式类型转换的，而C++有。
+
+  ```c++
+  //成立
+  float a = 1, double b = a; 
+  //精度损失，会有warning
+  double a = 1, float b = a;
+  ```
+
+  个人不是很赞同隐式类型转换，我认为一个强类型语言的所有类型转换都应该是显式的。这样更统一和规范，也许隐式类型转换能够带来一点编写代码的便利性，但也隐藏了问题，特别是有精度损失的隐式转换。也许最好的做法是保留隐式类型转换，但是只允许`Widening conversions`，也即提高精度的转换。
+
 2. 显示类型转换 ( Explicit conversions )
 
-	现代C++通过`static_cast`，`dynamic_cast`, `const_cast`来进行显式类型转换。
-	
-	`dynamic_cast` 就类似Swift的 `as?`, 是安全的类型转换操作。
-	
-	```c++
-	Base* b = new Base();  
-	// Run-time check to determine whether b is actually a Derived*  
-	Derived* d3 = dynamic_cast<Derived*>(b);  
-	// If b was originally a Derived*, then d3 is a valid pointer.  
-	if(d3)  
-	{  
-		d3->DoSomethingMore();
-	}  
-	```
+  现代C++通过`static_cast`，`dynamic_cast`, `const_cast`来进行显式类型转换。
+
+  `dynamic_cast` 就类似Swift的 `as?`, 是安全的类型转换操作。但是 `dynamic_cast` 需要转换的类型是`polymorphic class`。即声明或继承至少一个虚函数的类。
+
+  ```c++
+  Base* b = new Base();  
+  // Run-time check to determine whether b is actually a Derived*  
+  Derived* d3 = dynamic_cast<Derived*>(b);  
+  // If b was originally a Derived*, then d3 is a valid pointer.  
+  if(d3)  
+  {  
+  	d3->DoSomethingMore();
+  }  
+  ```
+
+3.  检测类型 (Checking Type)
+
+   在 Swift 中，我们通过 `is` 来检测类型。 而在 C++ 我们通过 `RTTI`（Run-Time Type Identification) 提供的`typeid` 来检测类型。和`dynamic_cast`一样。我们检测的类型需要是多态的才能准确获取真正的类型信息。
+
+   ~~~c++
+   int a;
+   typeid(a) == typeid(int)// true	
+       
+   class Base {};
+   class Derived : public Base {};
+   
+   class Base2 { virtual void dummy() {}; };
+   class Derived2 : public Base {};
+   
+   Base *test1 = new Derived();
+   Base2 test2 = Derived2();
+   Base2 *test3 = new Derived2();
+   
+   typeid(*test1) == typeid(Derived);   //false   Base 不是 polymorphic class
+   typeid(test2) == typeid(Derived);   //false   注意值类型和引用类型的区别 (通过指针或引用才能具备多态)
+   typeid(*test3) == typeid(Derived2);   //true
+   
+   ~~~
+
 
 参考链接：
 
@@ -420,6 +451,10 @@ changeValue(foo);
 [面向对象编程中引用和const的结合](https://blog.csdn.net/lcj1105/article/details/50838441)
 
 [类型系统](https://www.jianshu.com/p/336f19772046)
+
+[Value Types (Modern C++)](https://docs.microsoft.com/en-us/cpp/cpp/value-types-modern-cpp?view=vs-2017)
+
+[实现多态必须满足什么条件](https://www.jianshu.com/p/cd468e8b2d77)
 
 
 <h2 id="4">内存管理</h2>

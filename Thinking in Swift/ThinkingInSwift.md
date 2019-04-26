@@ -596,6 +596,8 @@ public func map<T>(@noescape transform: (Self.Generator.Element) throws -> T) re
 
 [Practical Protocol-Oriented-Programming](https://realm.io/news/appbuilders-natasha-muraschev-practical-protocol-oriented-programming/)
 
+[Protocols I: "Start With a Protocol," He Said](http://robnapier.net/start-with-a-protocol)
+
 <h2 id="4">4.函数式编程（Functional Programming）</h2>
 
 什么是函数式编程？

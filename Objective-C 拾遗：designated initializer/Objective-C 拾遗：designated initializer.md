@@ -1,5 +1,6 @@
 # Objective-C 拾遗：designated initializer
---
+
+
 ### designated initializer是什么
 
 > The initializer of a class that takes the full complement of initialization parameters is usually the designated initializer. [^1]
@@ -97,7 +98,7 @@ A convenience initializer must ultimately call a designated initialize[^2]
 
 规则可以用这样一幅图显示:
 
-![](Designated Initializers and Convenience Initializers.png)
+![](https://github.com/100mango/zen/blob/master/Objective-C%20%E6%8B%BE%E9%81%97%EF%BC%9Adesignated%20initializer/Designated%20Initializers%20and%20Convenience%20Initializers.png)
 
 ### 个人心得
 

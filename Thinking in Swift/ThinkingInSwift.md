@@ -606,11 +606,25 @@ public func map<T>(@noescape transform: (Self.Generator.Element) throws -> T) re
 
 - 
 
-事实上，个人觉得很难给函数式编程下一个明确的定义。
+事实上，个人觉得很难给函数式编程下一个非常准确清晰的定义。
 
-但是我们可以从另外一个角度出发，就是函数式编程通过什么样的语法特性体现出来，怎么样的编程范式和代码是函数式的来体会和学习函数式编程。避免空谈概念, Let's get our hands dirty.
+但是我们可以从另外一个角度出发，那就是函数式编程需要一门编程语言具备什么样的语法特性。
+怎么样的代码是函数式的风格的来体会和学习函数式编程。避免空谈概念, Let's get our hands dirty.
 
-高阶函数
+
+从语法上，函数式编程往往需要这样的语法特性：
+
+
+1. `first class functions`
+
+	直译过来就是函数作为一等公民。也就是说，函数能够和普通的类型，比如`Int`一样：
+	- 被存储
+	- 作为函数参数
+	- 作为函数返回值
+	
+
+2. 高阶函数
+
 
 reduce,filter,map,flapmap,forEach,zip
 
@@ -687,3 +701,16 @@ zip: 同时对两个sequnece进行操作
 Swift源代码：
 [map](https://github.com/apple/swift/blob/master/stdlib/public/core/Collection.swift)
 [reduce,flatmap](https://github.com/apple/swift/blob/master/stdlib/public/core/SequenceAlgorithms.swift.gyb)
+
+
+<h2 id="5"> 5.子编程范式</h2>
+
+### 元编程，DSL, 声明式（declarative programming）
+
+### 响应式编程 (Reactive Programming )
+
+
+[漫谈响应式编程](http://codebay.cn/post/2811.html)
+
+
+

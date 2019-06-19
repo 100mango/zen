@@ -69,9 +69,7 @@ class Shape {
 
 	关于 `Access Control`（在本文 [类与初始化(Initializers)](#4) 会提到）
 
-- `copy`：通过 `@NSCopying` 指令声明。
-
-	** 值得注意的是 String,Array 和 Dictionary 在 Swift 是以值类型 (value type) 而不是引用类型 (reference type) 出现, 因此它们在赋值, 初始化, 参数传递中都是以拷贝的方式进行（简单来说, String,Array,Dictionary 在 Swift 中是通过 `struct` 实现的）**
+- `copy`: 不同于 `Objective-C` 中对象都是引用类型。在 Swift 中，许多基础类型都是值类型。比如 String,Array 和 Dictionary 在 Swift 是以值类型 (value type) 而不是引用类型( reference type ) 出现, 因此它们在赋值, 初始化, 参数传递中都是以拷贝的方式进行（简单来说, String,Array,Dictionary 在 Swift 中是通过 `struct` 实现的）
 
 	[延伸阅读：Value and Reference Types](https://developer.apple.com/swift/blog/?id=10)
 
@@ -95,13 +93,12 @@ class Shape {
 
 ### 小结
 
-- 因此之前使用 OC 导致的像巧哥指出的 [开发争议](http://blog.devtang.com/blog/2015/03/15/ios-dev-controversy-1/) 就不再需要争执了, 在 Swift 的世界里, 我们只与 property 打交道。
+- 因此之前使用 OC 导致争议：[类的成员变量应该如何定义](http://blog.devtang.com/blog/2015/03/15/ios-dev-controversy-1/)  就不再需要争执了, 在 Swift 的世界里, 我们只与 property 打交道。
 
 - 并且我们在 OC 中 `init` 和 `dealloc` 不能使用属性 `self.property = XXX` 来进行设置的情况得以解决和统一。
 
-(不知道这一条规定, 在 init 直接用 self.property = value 的同学请自觉阅读 [iOS 夯实：内存管理](https://github.com/100mango/zen/blob/master/iOS%E5%A4%AF%E5%AE%9E%EF%BC%9A%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/iOS%E5%A4%AF%E5%AE%9E%EF%BC%9A%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86.md))
+> 不知道这一条规定, 在 init 直接用 self.property = value 的同学请自觉阅读 [iOS 夯实：内存管理](https://github.com/100mango/zen/blob/master/iOS%E5%A4%AF%E5%AE%9E%EF%BC%9A%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/iOS%E5%A4%AF%E5%AE%9E%EF%BC%9A%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86.md)
 
-：）
 
 个人觉得这看似小小一点变动使 Swift 开发变得更加安全以及在代码的风格更为统一与稳定。
 

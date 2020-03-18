@@ -608,49 +608,56 @@ public func map<T>(@noescape transform: (Self.Generator.Element) throws -> T) re
 
 事实上，个人觉得很难给函数式编程下一个非常准确清晰的定义。
 
-但是我们可以从另外一个角度出发，那就是函数式编程需要一门编程语言具备什么样的语法特性。
-怎么样的代码是函数式的风格的来体会和学习函数式编程。避免空谈概念, Let's get our hands dirty.
+但是我们可以从另外的角度出发，那就是函数式编程需要一门编程语言具备什么样的语法特性。怎么样的代码是函数式的风格的来体会和学习函数式编程。避免空谈概念, Let's get our hands dirty.
 
+
+### 语法特性
 
 从语法上，函数式编程往往需要这样的语法特性：
 
+`first class functions`
 
-1. `first class functions`
+直译过来就是函数作为一等公民。也就是说，函数能够和普通的类型，比如`Int`一样：
 
-	直译过来就是函数作为一等公民。也就是说，函数能够和普通的类型，比如`Int`一样：
-	- 被存储
-	- 作为函数参数
-	- 作为函数返回值
-	
-
-2. 高阶函数
+- 被存储
+- 作为函数参数
+- 作为函数返回值
 
 
-reduce,filter,map,flapmap,forEach,zip
+### 函数式风格的代码
 
-Map:
+### 声明式的代码
+
+当我们有了这个语法特性之后，之前我们一些命令式编程（`Imperative Programming`）风格的代码，能够写成更清晰的声明式(`Declarative`)代码。	
+
+#### 减少使用循环
+
+更清晰的代码，意味着更少直接的循环（`raw loop`），也即尽可能地少用 `for`,`while` 来组织代码。而是抽成一个方法来实现。我们可以借助 `reduce`, `filter`, `map`, `flapmap`, `forEach`这些高阶函数来编写更清晰的代码。
+
+##### Map:
 
 ~~~swift
 //循环版本：
-  var bubbleModels = [BubbleModel]()
-   for bubble in bubbles {
-   		bubbleModels.append(bubble.bubbleModel)
-   }
-   return bubbleModels
+var bubbleModels = [BubbleModel]()
+for bubble in bubbles {
+	bubbleModels.append(bubble.bubbleModel)
+}
+return bubbleModels
+   
 //高阶函数：        
 bubbleModels = bubbles.map({ $0.bubbleModel })
 ~~~
 
-FlatMap:
+##### FlatMap:
 
 ~~~swift
 //循环版本：
-  var bubbles = [BubbleView]()
-   for view in self.subviews {
-	   	if let bubbleView = view as? BubbleView {
-	   		bubbles.append(bubbleView)
-	   	}
+var bubbles = [BubbleView]()
+for view in self.subviews {
+   	if let bubbleView = view as? BubbleView {
+   		bubbles.append(bubbleView)
    	}
+}
 
 //高阶函数：
 bubbles = self.subviews.flatMap({ $0 as? BubbleView })
@@ -696,11 +703,46 @@ zip: 同时对两个sequnece进行操作
 ~~~
 
 
+### 无副作用
+
+函数式编程的另外一个代码风格，就是希望写没有副作用的代码。一个没有副作用的函数，我们称它为纯函数 （`Pure Function`)       
+
+纯函数具备这样的特点：
+
+1. 同样的输入，永远是同样的输出。
+2. 不会对在函数以外的任何作用域产生影响。 
+
+具体到代码和语法角度：
+
+1. 不使用外部变量，函数内的Static 变量，只依赖输入的参数 和临时变量。
+2. 不对输入参数做任何修改。
+3. 不使用任何 非 Pure function的方法。比如系统 I/O 的API, 打 log， Date.now() 或者 Math.random()
+
+~~~swift
+//非纯函数
+
+
+//纯函数
+
+~~~
+
+
+这样做的好处，机
+
+
+
+### 流水线处理（Pipeling）
+
+
 参考：
 
 Swift源代码：
 [map](https://github.com/apple/swift/blob/master/stdlib/public/core/Collection.swift)
 [reduce,flatmap](https://github.com/apple/swift/blob/master/stdlib/public/core/SequenceAlgorithms.swift.gyb)
+
+[a practical introduction to functional programming](http://harlankellaway.com/blog/2015/08/10/swift-functional-programming-intro)
+
+[函数式编程](https://coolshell.cn/articles/10822.html)
 
 
 <h2 id="5"> 5.子编程范式</h2>

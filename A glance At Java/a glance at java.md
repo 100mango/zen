@@ -1,6 +1,27 @@
 # a glance at java
 
 
+## 面向过程
+
+### loop
+
+类似 C++ 的 `range-based for`, Swift 的 `for in`
+
+~~~java
+int[] numbers = 
+     {1,2,3,4,5,6,7,8,9,10};
+for (int item : numbers) {
+ System.out.println("Count is: " + item);
+}
+~~~
+
+
+### 函数
+
+- Variadic Parameters
+
+
+
 
 ## 面向对象
 
@@ -55,6 +76,95 @@ class Student extends Person {
 }
 ~~~
 
+covariant return type
+
+
+#### Java 的 interface
+
+类似于 Swift 的 Protocol, Java 对应的Interface.
+
+`anonymous class`
+
+
+[](https://sylvanassun.github.io/2017/07/30/2017-07-30-JavaClosure/)
+
+
+### Java 的 Nested Class
+
+Java 关于 `Nested Classes` 有自己的一套规则。
+
+Java 的 `Nested Classes` 分为两类：
+
+- static Nested Classes.
+
+
+Static Nested Classes 就类似 Swift 定义的嵌套类：
+
+~~~swift
+//Swift
+class outer{
+  var test = 2;
+
+  class inner {
+     init(){
+       let example = test; //编译不通过
+     }
+   }
+ }
+~~~
+
+~~~java
+//java
+class OuterClass {
+    static class inner {
+        //,,,,
+    }
+}
+~~~
+
+
+static nested classes 和 outer class 是独立的关系。outer class 在这里相当于提供一个命名空间。
+
+- nonstatic Nested Classes (inner classes)
+
+Java 比较独特的是他的 nonstatic nested class
+
+~~~java
+class OuterClass {
+    int test = 2;
+    class InnerClass {
+    	void hello() {
+    		print(test); //OK
+    	}
+    }
+}
+~~~
+
+nonstatic Nested Classes 的生命周期是和 outer class 保持一致的。并且有outer class 成员变量的访问权限。
+
+我们创建 nonstatic Nested Classes 实例，需要先创建出 outer class 实例、
+
+~~~java
+OuterClass.InnerClass innerObject = outerObject.new InnerClass();
+~~~
+
+### local classes,anonymous classes. 
+
+local classes,anonymous classes 是两类特殊的 inner class
+
+
+Java 的anonymous class 类似 C++ 中只能 capture by value 的lambda. 
+
+
+
+为什么匿名类捕获需要是Final: [郭晋宇的回答比较清晰](https://www.zhihu.com/question/21395848)
+
+[为什么必须是final的呢？ 里面给了Scala，C#是可以捕获的原因](https://cuipengfei.me/blog/2013/06/22/why-does-it-have-to-be-final/)
+
+
+在 Java8 后，Java 支持了 `Lambda Expression`， 捕获机制和匿名类仍然一致。
+
+
 
 ## 命名空间
 
@@ -70,5 +180,37 @@ Java定义了一种名字空间，称之为包：package。一个类总是属于
 
 ### 值语义 引用语义 （value semantics and reference semantics）
 
+在Java中， 类型分为两种。
 
+-  基本数据类型 （Primitive Data Types)
+
+包括 `byte`、`short`、`int`、`long`、`float`、`double`、`boolean`、`char`。八种类型。
+
+基本数据类型具备值语义。
+
+
+- 引用类型  (Reference Data Types)
+
+除基本类型外，所有类型都是引用类型，并且都是 `java.lang.Object` 的子类。
+
+值得注意的是
+
+不可变对象 ()       
+
+
+
+
+
+
+## Java 的 Annotations
+
+和其他语言比，算是一个比较新鲜的特性：
+
+~~~
+The predefined annotation types defined in java.lang are @Deprecated, @Override, and @SuppressWarnings.
+~~~
+
+
+
+#### 参考资料：
 

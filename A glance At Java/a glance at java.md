@@ -59,6 +59,31 @@ class Student extends Person {
 java 是单继承的。
 
 
+另外一个特别的地方，就是 Java 的构造方法是不支持继承的。
+
+~~~java
+
+class A {
+    
+    public int a;
+    A(int a) {
+        this.a = a;
+    }
+    
+}
+
+class B extends A {
+/*不写就会报错 */
+    B(int a) {
+        super(a);
+    }
+}
+~~~
+
+> If a constructor does not explicitly invoke a superclass constructor, the Java compiler automatically inserts a call to the no-argument constructor of the superclass. If the super class does not have a no-argument constructor, you will get a compile-time error. Object does have such a constructor, so if Object is the only superclass, there is no problem.
+
+
+
 ### 多态
 
 ~~~java
@@ -82,6 +107,9 @@ covariant return type
 #### Java 的 interface
 
 类似于 Swift 的 Protocol, Java 对应的Interface.
+
+Java8  后， Java的Interface 能够提供默认实现。
+
 
 `anonymous class`
 
@@ -193,9 +221,18 @@ Java定义了一种名字空间，称之为包：package。一个类总是属于
 
 除基本类型外，所有类型都是引用类型，并且都是 `java.lang.Object` 的子类。
 
-值得注意的是
 
-不可变对象 ()       
+#### 不可变对象 
+
+这个其实就类似 OC 的 NSString, 理解很简单，就是不能对这个对象做任何的修改。
+
+~~~
+String s1 = "ab";
+String s2 = s1;
+s1 = s1 + "c";  // 实际上这里， s1 已经指向了一个新的字符串对象了
+System.out.println(s1 + " " + s2);     
+//  abc ab    
+~~~
 
 
 
@@ -212,5 +249,18 @@ The predefined annotation types defined in java.lang are @Deprecated, @Override,
 
 
 
+## 泛型 Generics
+
+In a nutshell, generics enable types (classes and interfaces) to be parameters when defining classes, interfaces and methods. Much like the more familiar formal parameters used in method declarations, type parameters provide a way for you to re-use the same code with different inputs. The difference is that the inputs to formal parameters are values, while the inputs to type parameters are types.
+
+
+这段解释还不错。
+
+Java 的泛型是 invariant 的
+
+
+
+
 #### 参考资料：
+
 

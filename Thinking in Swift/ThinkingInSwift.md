@@ -598,6 +598,20 @@ public func map<T>(@noescape transform: (Self.Generator.Element) throws -> T) re
 
 [Protocols I: "Start With a Protocol," He Said](http://robnapier.net/start-with-a-protocol)
 
+>   So fundamentally for me, protocol oriented programming is basically generic programming  POP 本质上也是是泛型编程。 [Dave Abrahams 在一个Podcast 谈到。 23分开始](https://www.swiftbysundell.com/podcast/71/)
+
+> But we meant something very specific by this. It was protocols that had the capabilities that come with associated types
+
+> The other aspect, I guess, of protocol oriented programming that I left out was how it enables polymorphism with value semantics
+
+>  for me, a protocol is something that you discover. It's not something you invent. In other words, you have a bunch of concrete code. And you find the commonality in that code. And that defines the protocol 
+
+>  statical, polymorphic, and dynamically polymorphic. It's only when you really need dynamic polymorphism that you need type erasure.
+> 
+>  you really want to avoid type erasure if you can
+> 
+> o instead of forbidding mutation, what if we forbid sharing? That was the inside I got from sean? And Alex, what happens if instead of getting rid of mutation, let's get rid of sharing
+
 <h2 id="4">4.函数式编程（Functional Programming）</h2>
 
 什么是函数式编程？

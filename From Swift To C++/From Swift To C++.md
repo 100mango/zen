@@ -511,6 +511,20 @@ C++ 开发者在使用智能指针的过程中总结出四句原则:
 
 在自己实际开发的过程中，还总结出一个：如果一个对象在整个生命周期中会需要被智能指针所管理，那么一开始就要用智能指针管理。
 
+Swift ARC 和 C++ shared_ptr 还有一个需要注意的区别点：
+
+~~~swift
+
+func test() {
+let a = SomeClass()
+
+//do something
+
+}
+
+~~~
+
+在Swift 中， a有可能立刻因为编译器插入的 release 指令而销毁 (Xcode15 可以手动打开这个能力:Optimize Object Lifetimes )， 而不是等到 test 方法结束后再销毁。 而 C++ 则是等到test方法解决后再销毁。 Swift 需要我们去显式使用: `withExtendedLifetime` 来延迟对象的生命周期。
 
 参考链接：
 

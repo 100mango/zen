@@ -138,8 +138,8 @@ let package = Package(
 我们看到 package.swift  里面实际上就是创建了一个 Package 对象。
 这里我们声明了两个 target, 一个的名字是 script. 我们可以看到 Sources 文件夹 下面也有一个同名文件夹 script.  Swift Package Manager 知道这个和 target 同名的文件夹下面存放的是 target 的源代码。
 
-![](目录结构1.png)
 
+<img src="目录结构1.png" width="500">
 
 
 当然我们也可以显式声明 target 源代码的位置。
@@ -187,7 +187,7 @@ let package = Package(
 
 操作非常简单，我们只需要在 Sources 文件夹下面创建一个文件夹，这里我们把我们的核心逻辑代码库叫做 core.
 
-![](目录结构2.png)
+<img src="目录结构2.png" width="500">
 
 然后我们在 package.swift 文件里面声明多一个 target，同时让我们的可执行 target 依赖于我们的核心逻辑库 target.
 
@@ -325,7 +325,7 @@ OPTIONS:
 
 以微信支付跨平台代码生成器为例：
 
-![](测试.png)
+<img src="测试.png" width="500">
 
 我们对核心代码生成器逻辑进行单元测试， 这一部分完全不需要涉及命令行相关的测试。
 

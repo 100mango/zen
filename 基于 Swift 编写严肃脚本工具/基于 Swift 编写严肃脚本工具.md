@@ -383,7 +383,7 @@ swift build --configuration release
         print ( response )
         //退出
         exit ( EXIT_SUCCESS )
- }) .resume ( )
+	 }) .resume ( )
 
     //启动 RunLoop
     RunLoop.main.run ( )
@@ -463,7 +463,7 @@ swift build --configuration release
 Swift 是一门优雅的编程语言，下次在遇到一些小工具需要编写， 大家就可以尝试用 Swift 愉快地编写了。
 
 
-文章代码的demo，可以在这里下载把玩：[]()
+文章中呈现的代码 ，可以在这里下载 demo 把玩：[链接](https://github.com/100mango/zen/tree/master/%E5%9F%BA%E4%BA%8E%20Swift%20%E7%BC%96%E5%86%99%E4%B8%A5%E8%82%83%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7/script)
 
 
 ### 参考链接：

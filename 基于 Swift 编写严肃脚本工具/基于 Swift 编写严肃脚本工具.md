@@ -6,13 +6,15 @@ WWDC 2021 刚举办完毕， 可以看到 Swift 已经成为苹果平台事实�
 
 不过拉回到大家使用最频繁的应用， 我们通过分析国外免费榜，和国内免费榜前一百名应用的 Swift 混编占比。
 
+![](占比.png)
+
 会发现国外的占比达到了 91%， 国内的只有 59%。  并且国内的 59% 的 Swift 混编， 可能只是简单引入了 Swift 做了一些最简单的桌面小部件 , 应用场景非常有限。
 
 ### Swift in WeChat
 
 以 微信为例， Swift 在微信目前的应用场景是四个。
 
-1.  微信 Apple watch 端
+1.  微信 Apple Watch 端
 
 2.  订阅号助手 ，这是个独立应用，提供给公众号运营者使用的。
 
@@ -467,6 +469,10 @@ Swift 是一门优雅的编程语言，下次无论遇到一些小工具，还�
 
 ### 参考链接：
 
+[Swift 2021 生态调研报告](https://mp.weixin.qq.com/s/5SXAozM2c6Ivyzl7B9IfQQ#at)
+ 
  [官方教程](https://developer.apple.com/documentation/xcode/creating_a_standalone_swift_package_with_xcode)
 
  [社区教程集合](https://github.com/artemnovichkov/Swift-For-Scripting)
+ 
+

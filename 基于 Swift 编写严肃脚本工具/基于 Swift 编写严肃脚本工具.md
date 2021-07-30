@@ -12,7 +12,7 @@ WWDC 2021 刚举办完毕， 可以看到 Swift 已经成为苹果平台事实�
 
 ### Swift in WeChat
 
-以 微信为例， Swift 在微信目前的应用场景是四个。
+以微信为例， Swift 在微信目前有四个应用场景。
 
 1.  微信 Apple Watch 端
 
@@ -22,7 +22,7 @@ WWDC 2021 刚举办完毕， 可以看到 Swift 已经成为苹果平台事实�
 
 4.  脚本工具
 
-其中前三项其实都是和业务有关， 不同公司的业务技术选型有自己的思考， 我们比较难在短时间内就能推动业务向 Swift 迁移。    但是作为有品味的开发者， 我们还是希望能在日常生活中，更多地使用 Swift， 通过 Swift 强大的类型系统， 安全性，表达性写出更优质的代码。
+其中前三项都是和业务有关， 不同公司的业务技术选型有自己的思考， 我们比较难在短时间内就能推动业务向 Swift 迁移。    但是作为有品味的开发者， 我们还是希望能在日常生活中，更多地使用 Swift， 通过 Swift 强大的类型系统， 安全性，表达性写出更优质的代码。
 
 那么我们就有一个选择， 就是通过 Swift 来编写脚本工具，自动化工具。
 
@@ -30,13 +30,13 @@ WWDC 2021 刚举办完毕， 可以看到 Swift 已经成为苹果平台事实�
 
 微信支付跨平台代码生成器就是通过 Swift 编写的。 首先简单介绍一下微信支付跨平台的框架。
 
-首先我们来看一下微信支付跨平台的整体框架图。
+我们来看一下微信支付跨平台的整体框架图：
 
 ![](框架.png)
 
 支付跨平台整体框架的分层是这样的：
 
-- 最下层是 Native 层，我们日常开发，往往都是用 C++提供能力给 Native 层。 但是在基于 C++ 跨平台框架中，是原生提供能力给 C++ 层。
+- 最下层是 Native 层，我们日常开发，往往都是用 C++ 提供能力给 Native 层。 但是在基于 C++ 跨平台框架中，是原生提供能力给 C++ 层。
 
 - 中间则是桥阶层，这里包括了 C++ 和 Java, OC 桥接相关的机制。
 
@@ -59,9 +59,9 @@ WWDC 2021 刚举办完毕， 可以看到 Swift 已经成为苹果平台事实�
 
 那么我们平时写一些简单的代码生成器，脚本工具，一般追求简单方便，会去使用像 Python 这样的语言. 但是从可维护性，健壮性来说， 使用 Swift 编写会是更好的一个选择。
 
-大家可能会觉得 Swift 拿来编写命令行工具会很麻烦， 很繁琐，没有像 Python 那么方便。
+大家可能会猜想像 Swift 这样的 type safe, 编译型编程语言拿来编写命令行工具会很麻烦， 很繁琐，没有像 Python，JS 那么方便。
 
-实际上，用 Swift 编写脚本代码是一种愉快享受的体验。 今天就和大家分享一下， 怎么使用 Swift 编写脚本工具。
+实际上，用 Swift 编写脚本代码是一种愉快享受的体验。 今天和大家分享一下， 怎么使用 Swift 编写脚本工具。
 
 ## 大纲
 
@@ -73,7 +73,7 @@ WWDC 2021 刚举办完毕， 可以看到 Swift 已经成为苹果平台事实�
 
 ### 1. 创建工程
 
-我们通过 Swift Package Manager 来直接建立工程。 Swift Package Mangaer 除了是一个包管理系统，也能帮助我们很好地创建命令行工具。
+我们通过 Swift Package Manager 来建立工程。 Swift Package Mangaer 除了是一个包管理系统，也能帮助我们很好地创建命令行工具。
 
 ~~~shell
 $ mkdir script
@@ -113,7 +113,7 @@ $ swift package init --type executable
 
 #### 工程结构与依赖管理
 
-不过为了更方便地进行职责分离，还有更好地做后续的代码复用。 我们来对工程架构和依赖管理做一个调整。
+不过为了更方便地进行职责分离，还有更好地做后续的代码复用，单元测试。 我们来对工程架构和依赖管理做一个调整。
 
 首先我们来看一下 package.swift 的内容。
 
@@ -311,7 +311,7 @@ OPTIONS:
   -h, --help              Show help information
 ~~~
 
-由于时间关系，这里只用一个简单的小 demo 说明 Argument Parser 能简化我们用 Swift 编写脚本工具的很多工作，也使得我们的脚本工具更加健壮和完善, Argument Parser 库还有很多功能能够增强我们脚本的可读性，减少我们的重复工作。
+篇幅限制，这里只用一个简单的小 demo 说明 Argument Parser 能简化我们用 Swift 编写脚本工具的很多工作，也使得我们的脚本工具更加健壮和完善, Argument Parser 库还有很多功能能够增强我们脚本的可读性，减少我们的重复工作，大家后续可以进一步查看官方文档了解。
 
 #### 小结
 
@@ -323,11 +323,10 @@ OPTIONS:
 
 这个时候，我们前面把我们命令行工具划分为  命令行模块和核心逻辑模块 的好处就可以凸显出来的。
 
-以微信支付跨平台代码生成器为例：
+以微信支付跨平台代码生成器为例： 单元测试被拆分为 CoreTests 和 ScriptTest, CoreTests 对代码生成器模块进行测试， ScriptTests 对命令行工具进行测试。
 
 <img src="测试.png" width="500">
 
-我们对核心代码生成器逻辑进行单元测试， 这一部分完全不需要涉及命令行相关的测试。
 
 在完成核心逻辑测试后， 我们可以编写模拟用户直接使用命令行工具的测试。
 
@@ -368,7 +367,7 @@ let data = pipe.fileHandleForReading.readDataToEndOfFile() let output = String(d
 swift build --configuration release
 ~~~
 
-文件的位置位于 .build/release/ 目录。 我们就可以将它进行分发拉。
+文件的位置位于 .build/release/ 目录。 我们就可以将它进行分发，非常的便捷。
 
 ![](生成文件.png)
 
@@ -380,22 +379,41 @@ swift build --configuration release
 
     ~~~swift
 
-    URLSession.shared.dataTask ( with: url, completionHandler: { _, response, _ in
-        print ( response )
+    URLSession.shared.dataTask(with: url, completionHandler: { _, response, _ in
+        print (response)
         //退出
-        exit ( EXIT_SUCCESS )
-	 }) .resume ( )
+        exit (EXIT_SUCCESS)
+	 }).resume()
 
     //启动 RunLoop
-    RunLoop.main.run ( )
+    RunLoop.main.run()
     ~~~
 
     有的时候，如果我们的命令行逻辑需要执行像网络请求， 如果直接跑的话，我们的命令行执行完毕，网络数据还没回来。
 
     这个时候，我们只需要启动 Runloop 即可。 当执行完毕后，调用 Exit 即可退出。
+    
+    
+2. 在我们脚本工具代码里面执行别的命令行工具 
+
+	我们在编写脚本工具的时候经常需要调用其他命令行工具，这个时候我们可以通过下面这个工具方法来执行：
+	
+ 	~~~swift
+ 	 @discardableResult
+    func shell(_ args: String...) -> Int32 {
+        let task = Process()
+        task.launchPath = "/usr/bin/env"
+        task.arguments = args
+        task.launch()
+        task.waitUntilExit()
+        return task.terminationStatus
+    }
+    //用法示例
+    shell("xcodebuild", "-workspace", "myApp.xcworkspace")
+ 	~~~
 
 
-2.  Appkit in 命令行
+3.  Appkit in 命令行
 
 	基于 Swift 编写脚本工具，我们除了能够处理逻辑代码，还能够直接和 GUI 框架进行交互。
 	比如说，我们在代码里面经常需要用户指定文件路径， 那么我们基于 Swift 能够直接调用 Appkit, 弹起 Mac 系统选择文件的控件。
@@ -415,7 +433,7 @@ swift build --configuration release
 	print (selectFile()?.absoluteString ?? "")
 	~~~
 
-3.  SwiftUI in 命令行
+4.  SwiftUI in 命令行
 
 	不仅如此，有了 SwiftUI 之后，我们还能够直接在脚本工具里面写  Mac 应用， 这个的可玩性很高，直接绕过了 AppStroe 的鉴权机制，应该是目前最方便能直接在 Mac 系统分发应用的途径了。 我们编好可执行文件之后，就能分享给其他用户，无需签名鉴权等机制。
 	
@@ -452,11 +470,11 @@ swift build --configuration release
 
 最后我们来回顾一下文章的内容。
 
-1. 创建工程：我们通过 Swift Package Manger 创建了工程， 并调整了工程结构，依赖管理。
-2. 编写代码：我们通过编写一个简单生成随机数的工具感受 Swift 编写脚本工具， 并给我们的工程引入了苹果开源的 Argument Parser 库。用于简化命令行参数解析，优化工具说明。
-3. 测试：我们分别对逻辑代码和命令行 API 进行了测试。
-4. 发布：我们通过一行简单的代码，就能生成可执行文件进行分发。
-5. 进阶操作：最后我们发现通过 Swift 编写脚本工具，还能直接和 AppKit, SwiftUI 进行交互，非常的具备扩展性。
+1. 创建工程：通过 Swift Package Manger 创建了工程， 并调整了工程结构，依赖管理。
+2. 编写代码：通过编写一个简单生成随机数的工具感受 Swift 编写脚本工具， 并给我们的工程引入了苹果开源的 Argument Parser 库。用于简化命令行参数解析，优化工具说明。
+3. 测试：分别对逻辑代码和命令行 API 进行了测试。
+4. 发布：通过一行简单的代码，就能生成可执行文件进行分发。
+5. 进阶操作：最后介绍了几个进阶操作，我们还发现通过 Swift 编写脚本工具，还能直接和 AppKit, SwiftUI 进行交互，非常的具备扩展性。
 
 这篇文章并没有展示特别复杂的脚本代码， 但是上面展示的步骤，原则，就能支撑像微信支付跨平台代码生成器这样的命令行工具。   
 

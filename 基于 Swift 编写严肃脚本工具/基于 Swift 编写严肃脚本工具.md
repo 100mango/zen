@@ -75,15 +75,15 @@ WWDC 2021 刚举办完毕， 可以看到 Swift 已经成为苹果平台事实�
 
 我们通过 Swift Package Manager 来建立工程。 Swift Package Mangaer 除了是一个包管理系统，也能帮助我们很好地创建命令行工具。
 
-~~~shell
+```shell
 $ mkdir script
 $ cd script
 $ swift package init --type executable
-~~~
+```
 
 我们来看一下创建后的文件结构：
 
-~~~
+```
 ├── Package.swift
 ├── README.md
 ├── Sources
@@ -93,7 +93,7 @@ $ swift package init --type executable
     └── scriptTests
           └── scriptTests.swift
 
-~~~
+```
 
 可以看到 Swift Package Manager 为我们创建了三个组成部分。
 
@@ -117,7 +117,7 @@ $ swift package init --type executable
 
 首先我们来看一下 package.swift 的内容。
 
-~~~swift
+```swift
 let package = Package(
     name: "script",
     dependencies: [
@@ -131,7 +131,7 @@ let package = Package(
             dependencies: ["script"]),
     ]
 )
-~~~
+```
 
 通过 Swift Package Manager 来管理工程结构有个优势就是它的工程结构是和文件夹结构相呼应的。
 
@@ -144,7 +144,7 @@ let package = Package(
 
 当然我们也可以显式声明 target 源代码的位置。
 
-~~~swift
+```swift
 let package = Package(
     name: "script",
     dependencies: [
@@ -159,13 +159,13 @@ let package = Package(
             dependencies: ["script"]),
     ]
 )
-~~~
+```
 
 另外大家可能有疑问，这个 target 只是写了一个名字， Swift Package Manger 怎么知道我是要去创建一个可执行的脚本工具呢？
 
 答案就是因为我们 script 文件夹里面有个 main.swift 文件。 不过我觉得我们应该尽量减少这种隐式的定义，因此我们进一步显式声明这个 target 为 可执行 target。 这样后续的维护者就会更清晰我们的工程架构。
 
-~~~swift
+```swift
 let package = Package(
     name: "script",
     dependencies: [
@@ -179,7 +179,7 @@ let package = Package(
             dependencies: ["script"]),
     ]
 )
-~~~
+```
 
 好了，目前我们的工程结构已经比较清晰了。 但是我们追求的是写更严谨，可复用的代码。 因此我们还要进一步把核心的逻辑代码和命令行工具代码分离开来。
 
@@ -191,7 +191,7 @@ let package = Package(
 
 然后我们在 package.swift 文件里面声明多一个 target，同时让我们的可执行 target 依赖于我们的核心逻辑库 target.
 
-~~~swift
+```swift
 let package = Package(
     name: "script",
     dependencies: [
@@ -208,7 +208,7 @@ let package = Package(
             dependencies: ["script"]),
     ]
 )
-~~~
+```
 
 #### 小结
 
@@ -222,7 +222,7 @@ let package = Package(
 
 那么假设说我们需要写一个生成随机数的命令行工具， 我们大概需要写出这样的代码：
 
-~~~swift
+```swift
 import Darwin
 
 let arguments: [String] = Array(CommandLine.arguments.dropFirst())
@@ -239,7 +239,7 @@ guard let number = Int(numberString) else {
 
 print(Int.random(in: Int.min...number))
 exit(0)
-~~~
+```
 
 首先，我们要获取命令行参数数组， 然后解析数组里面的内容， 如果发现参数不符合，则报错。 最后生成并打印随机数。
 
@@ -251,7 +251,7 @@ exit(0)
 
 我们还是打开 package.swift 文件， 给 dependencies 加上仓库的声明，然后在我们的 脚本 target 里面声明好依赖。
 
-~~~swift
+```swift
 let package = Package(
     name: "script",
     dependencies: [
@@ -270,11 +270,11 @@ let package = Package(
             dependencies: ["script"]),
     ]
 )
-~~~
+```
 
 那么刚才的代码就可以简化为这样：
 
-~~~swift
+```swift
 import ArgumentParser
 
 struct Random: ParsableCommand {
@@ -287,21 +287,21 @@ struct Random: ParsableCommand {
 }
 
 Random.main()
-~~~
+```
 
 可以看到，我们只需要声明一个遵循 ParsableCommand 协议的结构体， 然后声明好参数，接下来在 run 方法里面处理逻辑即可。 Argument Parser 会帮我们处理好参数解析。
 
 假如用户不提供参数，直接调用，我们可以看到清晰的报错信息。
 
-~~~
+```
 Error: Missing expected argument '<high-value>'
 Usage: random <high-value>
   See 'random --help' for more information.
-~~~
+```
 
 用户输入 --help 后， 也可以看到清晰的用法。
 
-~~~
+```
 USAGE: random <high-value>
 
 ARGUMENTS:
@@ -309,7 +309,7 @@ ARGUMENTS:
 
 OPTIONS:
   -h, --help              Show help information
-~~~
+```
 
 篇幅限制，这里只用一个简单的小 demo 说明 Argument Parser 能简化我们用 Swift 编写脚本工具的很多工作，也使得我们的脚本工具更加健壮和完善, Argument Parser 库还有很多功能能够增强我们脚本的可读性，减少我们的重复工作，大家后续可以进一步查看官方文档了解。
 
@@ -330,7 +330,7 @@ OPTIONS:
 
 在完成核心逻辑测试后， 我们可以编写模拟用户直接使用命令行工具的测试。
 
-~~~swift
+```swift
 func testRosseta() throws {
 //1. 创建进程
 let process = Process()
@@ -347,7 +347,7 @@ process.waitUntilExit()
 //6. 读取命令行工具输出内容，判断是否符合预期
 let data = pipe.fileHandleForReading.readDataToEndOfFile() let output = String(data: data, encoding: .utf8) XCTAssertEqual(output, "success")
 }
-~~~
+```
 
 我们可以通过创建一个进程， 然后指定我们可执行文件的位置。 然后设置好参数。 启动线程即可。
 
@@ -363,11 +363,11 @@ let data = pipe.fileHandleForReading.readDataToEndOfFile() let output = String(d
 
 非常简单， 我们只需要执行一行代码来生成可分发的可执行文件
 
-~~~
+```
 swift build --configuration release
-~~~
+```
 
-文件的位置位于 .build/release/ 目录。 我们就可以将它进行分发，非常的便捷。
+文件的位置位于 .build/release/ 目录。 我们就可以将它进行分发，非常的便捷。 
 
 ![](生成文件.png)
 
@@ -377,7 +377,7 @@ swift build --configuration release
 
 1.  异步操作
 
-    ~~~swift
+    ```swift
 
     URLSession.shared.dataTask(with: url, completionHandler: { _, response, _ in
         print (response)
@@ -387,7 +387,7 @@ swift build --configuration release
 
     //启动 RunLoop
     RunLoop.main.run()
-    ~~~
+    ```
 
     有的时候，如果我们的命令行逻辑需要执行像网络请求， 如果直接跑的话，我们的命令行执行完毕，网络数据还没回来。
 
@@ -398,7 +398,7 @@ swift build --configuration release
 
 	我们在编写脚本工具的时候经常需要调用其他命令行工具，这个时候我们可以通过下面这个工具方法来执行：
 	
- 	~~~swift
+ 	```swift
  	 @discardableResult
     func shell(_ args: String...) -> Int32 {
         let task = Process()
@@ -410,7 +410,7 @@ swift build --configuration release
     }
     //用法示例
     shell("xcodebuild", "-workspace", "myApp.xcworkspace")
- 	~~~
+ 	```
 
 
 3.  Appkit in 命令行
@@ -418,7 +418,7 @@ swift build --configuration release
 	基于 Swift 编写脚本工具，我们除了能够处理逻辑代码，还能够直接和 GUI 框架进行交互。
 	比如说，我们在代码里面经常需要用户指定文件路径， 那么我们基于 Swift 能够直接调用 Appkit, 弹起 Mac 系统选择文件的控件。
 	
-	~~~swift
+	```swift
 	import AppKit
 	
 	NSApplication.shared.setActivationPolicy(.accessory)
@@ -431,13 +431,13 @@ swift build --configuration release
 	}
 	
 	print (selectFile()?.absoluteString ?? "")
-	~~~
+	```
 
 4.  SwiftUI in 命令行
 
 	不仅如此，有了 SwiftUI 之后，我们还能够直接在脚本工具里面写  Mac 应用， 这个的可玩性很高，直接绕过了 AppStroe 的鉴权机制，应该是目前最方便能直接在 Mac 系统分发应用的途径了。 我们编好可执行文件之后，就能分享给其他用户，无需签名鉴权等机制。
 	
-	~~~swift
+	```swift
 	struct App: SwiftUI.App {
 	    @State var filename = "Filename"
 	    @State var showFileChooser = false
@@ -462,7 +462,7 @@ swift build --configuration release
 	  }
 	}
 	App.main()
-	~~~
+	```
 	
 
 

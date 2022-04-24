@@ -3,6 +3,7 @@
 iOS 禅
 
 - [基于 Swift 编写严肃脚本工具](https://github.com/100mango/zen/blob/master/%E5%9F%BA%E4%BA%8E%20Swift%20%E7%BC%96%E5%86%99%E4%B8%A5%E8%82%83%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7/%E5%9F%BA%E4%BA%8E%20Swift%20%E7%BC%96%E5%86%99%E4%B8%A5%E8%82%83%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7.md)
+- [微信支付跨平台软件架构](https://github.com/100mango/zen/blob/master/%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E8%B7%A8%E5%B9%B3%E5%8F%B0%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%84/%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E8%B7%A8%E5%B9%B3%E5%8F%B0%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%84.md)
 - [From Swift To C++](https://github.com/100mango/zen/blob/master/From%20Swift%20To%20C%2B%2B/From%20Swift%20To%20C%2B%2B.md)
 - [WWDC2018: 图像最佳实践](https://github.com/100mango/zen/blob/master/Image%20and%20Graphics%20Best%20Practices/Image%20and%20Graphics%20Best%20Practices.md)
 - [单元测试入门指南](https://github.com/100mango/zen/blob/master/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/UnitTest.markdown)

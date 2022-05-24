@@ -1,8 +1,6 @@
 # 从 Objective-C 到 Swift
 
 
-这篇文章是自己初学 Swift 时的笔记与深化。希望这篇文章能够帮助已经有 Objective-C 经验的开发者更快地学习 Swift。同时也品味到 Swift 的精妙之处。
-
 结论放在开头:
 
 我认为 Swift 比 Objective-C 更优雅, 更安全同时也更现代, 更性感。
@@ -32,17 +30,17 @@
 
 典型的声明为:
 
-~~~objective-c
+```objective-c
 @property (strong,nonatomic) NSString *string;
-~~~
+```
 
 而在 Swift 当中, 摆脱了 C 的包袱后, 变得更为精炼, 我们只需直接在类中声明即可
 
-~~~swift
+```swift
 class Shape {
     var name = "shape"
 }
-~~~
+```
 
 注意到这里, 我们不再需要 `@property` 指令, 而在 Objective-C 中, 我们可以指定 property 的 attribute, 例如 strong,weak,readonly 等。
 
@@ -53,9 +51,9 @@ class Shape {
 - `strong`: 在 Swift 中是默认的
 - `weak`: 通过 weak 关键词申明
 
-	~~~swift
+	```swift
 	weak var delegate: UITextFieldDelegate?
-	~~~
+	```
 
 - `readonly`,`readwrite`：
 
@@ -63,9 +61,9 @@ class Shape {
 
 	如果想实现类似 Objective-C 中, 对外在头文件. h 声明 property 为 `readonly`，对内在. m 声明 property 为 `readwrite`, 这种情况在 Swift 通过 `Access Control` 来实现:
 
-	~~~swift
+	```swift
 	private(set) var property: Int
-	~~~
+	```
 
 	关于 `Access Control`（在本文 [类与初始化(Initializers)](#4) 会提到）
 
@@ -80,12 +78,12 @@ class Shape {
 
 例如：我们可以不需要将 someString 声明为 property, 直接使用即可。即使我们将 otherString 声明为 property, 我们也可以直接用_otherString 来使用 property 背后的实例变量。
 
-~~~objective-c
+```objective-c
 @interface SomeClass : NSObject {
   NSString *someString;
 }
 @property(nonatomic, copy) NSString* otherString;
-~~~
+```
 
 而在 Swift 中, 我们不能直接与 instance variable 打交道。也就是我们声明的方式简化为简单的一种, 简单来说在 Swift 中, 我们只与 property 打交道。
 
@@ -120,7 +118,7 @@ Swift 提供了语言级别定义类变量的方法。
 
 在 Objective-C 中, 我们只能通过单例, 或者 static 变量加类方法来自己构造类变量：
 
-~~~objective-c
+```objective-c
 @interface Model
 + (int) value;
 + (void) setValue:(int)val;
@@ -133,9 +131,9 @@ static int value;
 + (void) setValue:(int)val
 {@synchronized(self) { value = val; } }
 @end
-~~~
+```
 
-~~~objective-c
+```objective-c
 // Foo.h
 @interface Foo {
 }
@@ -155,7 +153,7 @@ static int value;
 
   return fooDict;
 }
-~~~
+```
 
 > 更新：Xcode8 Release Note : Objective-C now supports class properties, which interoperate with Swift type properties. They are
 declared as: @property (class) NSString *someStringProperty;. They are never synthesized.  也就是从 Xcode8 之后, Objective-C 也有了类变量的定义, 不过 getter 和 setter 都需要我们自己编写。这是一个典型的 Swift 反推 Objective-C 发展的例子。
@@ -164,7 +162,7 @@ declared as: @property (class) NSString *someStringProperty;. They are never syn
 
 通过 static 定义的类变量无法在子类重写, 通过 class 定义的类变量则可在子类重写。
 
-~~~swift
+```swift
 class Aclass {
     static var storedTypeProperty = "Some value."
     static var computedTypeProperty: Int {
@@ -174,17 +172,17 @@ class Aclass {
         return 107
     }
 }
-~~~
+```
 
 同时利用类变量我们也有了更优雅的单例模式实现：
 
-~~~swift
+```swift
 class singletonClass {
     static let sharedInstance = singletonClass()
     private init() {} // 这就阻止其他对象使用这个类的默认的'()'初始化方法
 }
 
-~~~
+```
 
 Swift 单例模式探索：[The Right Way to Write a Singleton](http://krakendev.io/blog/the-right-way-to-write-a-singleton?utm_campaign=This%2BWeek%2Bin%2BSwift&utm_medium=web&utm_source=This_Week_in_Swift_45)
 
@@ -195,16 +193,16 @@ Swift 单例模式探索：[The Right Way to Write a Singleton](http://krakendev
 
 延伸阅读： [Class variables not yet supported](http://stackoverflow.com/questions/24015207/class-variables-not-yet-supported)
 
-~~~
+```
 class SomeStructure {
     class var storedTypeProperty = "Some value."
 }
 
 //Swift 2.0
 Error: Class stored properties not yet supported in classes
-~~~
+```
 
-通过编译器抛出的错误信息, 相信在未来的版本中会完善 `Type properties`。
+通过编译器抛出的错误信息, 相信在未来的版本中会完善 `Type properties`。(截止至Swift5,还是不支持，基本可以认为这个 feature 已被废弃)
 
 
 <h2 id="2">2. 控制流 </h2>
@@ -224,28 +222,28 @@ Swift 与 Objective-C 在控制流的语法上关键词基本是一致的, 但�
 
 ** 语句里的条件不再需要使用 `()` 包裹了。**
 
-~~~swift
+```swift
 let number = 23
 if number < 10 {
     print("The number is small")
 }
-~~~
+```
 
 ** 但是后面判断执行的的代码必须使用 `{}` 包裹住。**
 
 为什么呢, 在 C,C++ 等语言中, 如果后面执行的语句只有语句, 我们可以写成:
 
-~~~objective-c
+```objective-c
   int number = 23
 	if (number < 10)
 	 	NSLog("The number is small")
-~~~
+```
 
 但是如果有时要在后面添加新的语句, 忘记添加 `{}`, 灾难就很可能发生。
 
 ：） 像苹果公司自己就犯过这样的错误。下面这段代码就是著名的 goto fail 错误, 导致了严重的安全性问题。
 
-~~~C
+```C
   if ((err = SSLHashSHA1.update(&hashCtx, &signedParams)) != 0)
     goto fail;
     goto fail;  // :) 注意 这不是 Python 的缩减
@@ -253,7 +251,7 @@ if number < 10 {
   fail:
     ... buffer frees (cleanups) ...
     return err;
-~~~
+```
 
 ：）
 最终在 Swift, 苹果终于在根源上消除了可能导致这种错误的可能性。
@@ -262,11 +260,11 @@ if number < 10 {
 
 也就是不会隐式地与 0 进行比较, 下面这种写法是错误的, 因为 number 并不是一个 boolean 表达式, number != 0 才是。
 
-~~~objective-c
+```objective-c
 int number = 0
 if number{
 }
-~~~
+```
 
 ***
 ### 关于 for
@@ -277,57 +275,57 @@ for 循环在 Swift 中变得更方便, 更强大。
 
 我们能够将之前繁琐的 for 循环：
 
-~~~
+```
 for (int i = 1; i <= 5; i++)
 {
     NSLog(@"%d", i);
 }
-~~~
+```
 
 改写为：
 
-~~~swift
+```swift
 for index in 1...5 {
     print(index)
 }
-~~~
+```
 
 当然, 熟悉 Python 的亲们知道 Python 的 range 函数很方便, 我们还能自由选择步长。
 像这样：
 
-~~~python
+```python
 
 >>> range(1,5) #代表从 1 到 5(不包含 5)
 [1, 2, 3, 4]
 >>> range(1,5,2) #代表从 1 到 5，间隔 2(不包含 5)
 [1, 3]
-~~~
+```
 
 虽然在《The Swift Programming Language》里面没有提到类似的用法, 但是在 Swift 中我们也有优雅的方法办到。
 
-~~~swift
+```swift
 for index in  0.stride(through: 10, by: 2) {
     print(index) // 0 2 4 6 8 10
 }
-~~~
+```
 
 然后对字典的遍历也增强了. 在 Objective-c 的快速枚举中我们只能对字典的键进行枚举。
 
-~~~objective-c
+```objective-c
 NSString *key;
 for (key in someDictionary){
      NSLog(@"Key: %@, Value %@", key, [someDictionary objectForKey: key]);
 }
-~~~
+```
 
 而在 Swift 中, 通过 tuple 我们可以同时枚举 key 与 value:
 
-~~~swift
+```swift
 let dictionary = ["firstName":"Mango","lastName":"Fang"]
 for (key,value) in dictionary{
     print(key+" "+value)
 }
-~~~
+```
 
 ***
 ### 关于 Switch
@@ -338,7 +336,7 @@ Switch 在 Swift 中也得到了功能的增强与安全性的提高。
 
 也就是下面这两种写法是等价的。
 
-~~~swift
+```swift
 let character = "a"
 
 switch character{
@@ -349,10 +347,10 @@ switch character{
         print("B")
     break
 default: print("character")
-~~~
+```
 
 
-~~~swift
+```swift
 let character = "a"
 
 switch character{
@@ -361,18 +359,18 @@ switch character{
     case "b":
         print("B")
 default: print("character")
-~~~
+```
 
 这种改进避免了忘记写 break 造成的错误, 自己深有体会, 曾经就是因为漏写了 break 而花了一段时间去 debug。
 
 如果我们想不同值统一处理, 使用逗号将值隔开即可。
 
-~~~swift
+```swift
 switch some value to consider {
 case value 1,value 2:
     statements
 }
-~~~
+```
 
 **Switch 支持的类型 **
 
@@ -385,7 +383,7 @@ case value 1,value 2:
 
 之前在 OC 繁琐的写法就可以进行改进了:
 
-~~~objective-c
+```objective-c
 if ([cardName isEqualToString:@"Six"]) {
     [self setValue:6];
 } else if ([cardName isEqualToString:@"Seven"]) {
@@ -395,9 +393,9 @@ if ([cardName isEqualToString:@"Six"]) {
 } else if ([cardName isEqualToString:@"Nine"]) {
     [self setValue:9];
 }
-~~~
+```
 
-~~~swift
+```swift
 switch carName{
     case "Six":
         self.vaule = 6
@@ -408,7 +406,7 @@ switch carName{
     case "Night":
         self.vaule = 9
 }
-~~~
+```
 
 <h2 id="3">3. 函数 </h2>
 
@@ -423,17 +421,17 @@ switch carName{
 
 各举一个类方法与实例方法例子。
 
-~~~objevtive-c
+```objevtive-c
 + (UIColor*)blackColor
 - (void)addSubview:(UIView *)view
-~~~
+```
 
 对应的 swift 版本
 
-~~~swift
+```swift
    	class func blackColor() -> UIColor // 类方法, 通过 class func 关键词声明
 	func addSubview(view: UIView) // 实例方法
-~~~
+```
 
 ### 改进：
 
@@ -447,7 +445,7 @@ switch carName{
 
 在 OC 中我们可能会用快速枚举来进行筛选。
 
-~~~objective-c
+```objective-c
    NSArray *oldArray = @[@1,@2,@3,@4,@5,@6,@7,@8,@9,@10];
     NSMutableArray *newArray;
     for (NSNumber* number in oldArray) {
@@ -455,14 +453,14 @@ switch carName{
             [newArray addObject:number];
         }
     }
-~~~
+```
 
 而在 Swift 中, 我们用两行代码解决这个问题：
 
-~~~swift
+```swift
 let oldArray = [1,2,3,4,5,6,7,8,9,10]
 let newArray = oldArray.filter({$0> 4})
-~~~
+```
 
 进一步了解 Swift 的函数式编程可以通过这篇优秀的博客 [Functional Reactive Programming in Swift](http://blog.callmewhy.com/2015/05/11/functional-reactive-programming-1/#)
 
@@ -470,15 +468,15 @@ let newArray = oldArray.filter({$0> 4})
 
 	在我们的项目中, 经常会不断进行功能的增添。为了新增特性, 许多方法在开发的过程中不断变动。举一个例子：我们开始有一个 tableViewCell, 它的设置方法一开始简单地需要一个 Model 参数：
 
-	~~~swift
+	```swift
 	func configureCellWithModel(Model: model)
-	~~~
+	```
 
 	不久之后, 我们想对部分 Cell 增添一个设置背景颜色的功能。方法需要再接收多一个参数：
 
-	~~~swift
+	```swift
 	func configureCellWithModel(Model: model,color:UIColor)
-	~~~
+	```
 
 	这个时候方法改变, 所以涉及到这些方法的地方都需要修改。给我们造成的困扰
 	一是：需要做许多重复修改的工作。
@@ -486,9 +484,9 @@ let newArray = oldArray.filter({$0> 4})
 
 	而在 Swift 中,`default parameter values` 的引入让我们能够这样修改我们的代码：
 
-	~~~swift
+	```swift
 	func configureCellWithModel(Model: model,color:UIColor = UIColor.whiteColor())
-	~~~
+	```
 
 	这样的改进能让我们写出的代码更具向后兼容性, 减少了我们的重复工作量, 减少了犯错误的可能性。
 
@@ -513,21 +511,21 @@ let newArray = oldArray.filter({$0> 4})
 
 一个小技巧, 如果我们有一系列的私有方法, 我们可以把它们组织起来, 放进一个 extension 里, 这样就不需要每个方法都标记 private, 同时也便于管理组织代码：
 
-~~~swift
+```swift
 // MARK: Private
 private extension ViewController {
     func privateFunction() {
     }
 }
-~~~
+```
 
 - 创建对象与 `alloc` 和 `init`
 
 关于初始化, 在 Swift 中创建一个对象的语法很简洁：只需在类名后加一对圆括号即可。
 
-~~~swift
+```swift
 var shape = Shape()
-~~~
+```
 
 而在 Swift 中,`initializer` 也与 OC 有所区别, Swift 的初始化方法不返回数据。而在 OC 中我们通常返回一个 self 指针。
 
@@ -546,7 +544,7 @@ Swift 的初始化方法让我们只关注对象的初始化。之前在 OC 世�
 
 	而在 Objective-C 中没有明确语法标记哪个初始化方式是 convenience 方法。关于 `Designated Initializer` 可参阅之前的:[Objective-C 拾遗：designated initializer](https://github.com/100mango/zen/blob/master/Objective-C%20%E6%8B%BE%E9%81%97%EF%BC%9Adesignated%20initializer/Objective-C%20%E6%8B%BE%E9%81%97%EF%BC%9Adesignated%20initializer.md)
 
-	~~~swift
+	```swift
 	init(parameters) {
 		statements
 	}
@@ -554,7 +552,7 @@ Swift 的初始化方法让我们只关注对象的初始化。之前在 OC 世�
 	convenience init(parameters) {
 	 	statements
 	}
-	~~~
+	```
 
 
 
@@ -566,7 +564,7 @@ Swift 的初始化方法让我们只关注对象的初始化。之前在 OC 世�
 
 	在 C 中, 枚举为每个成员指定一个整型值。而在 Swift 中, 枚举更强大和灵活。我们不必给枚举成员提供一个值。如果我们想要为枚举成员提供一个值 (raw value), 我们可以用字符串, 字符, 整型或浮点数类型。
 
-	~~~swift
+	```swift
 	enum CompassPoint {
   case North
   case South
@@ -575,7 +573,7 @@ Swift 的初始化方法让我们只关注对象的初始化。之前在 OC 世�
 	}
 
 	var directionToHead = CompassPoint.West
-	~~~
+	```
 
 - 结构体
 
@@ -600,41 +598,41 @@ Swift 的初始化方法让我们只关注对象的初始化。之前在 OC 世�
 
 在 Objective-C 中我们这么声明 Protocol:
 
-~~~objective-c
+```objective-c
 @protocol SampleProtocol <NSObject>
 - (void)someMethod;
 @end
-~~~
+```
 
 而在 Swift 中：
 
-~~~swift
+```swift
 protocol SampleProtocol
 {
     func someMethod()
 }
-~~~
+```
 
 在 Swift 遵循协议:
 
-~~~swift
+```swift
 class AnotherClass: SomeSuperClass, SampleProtocol
 {
     func someMethod() {}
 }
-~~~
+```
 
 
 `protocol` 和 `delegate` 是紧密联系的。那么我们在 Swift 中如何定义 Delegate 呢？
 
-~~~swift
+```swift
 protocol MyDelegate : class {
 }
 
 class MyClass {
     weak var delegate : MyDelegate?
 }
-~~~
+```
 
 注意到上面的 protocol 定义后面跟着的 class。这意味着该 protocol 只能被 class 类型所遵守。
 
@@ -644,18 +642,18 @@ class MyClass {
 
 以前我们要在 Objective-C 这样检查：
 
-~~~objective-c
+```objective-c
  if (self.dataSource && [self.dataSource respondsToSelector:@selector(titleForSegmentAtIndex:)]) {
         thisSegmentTitle = [self.dataSource titleForSegmentAtIndex:index];
     }
-~~~
+```
 
 在 Swift 中, 非常的优雅简洁。
 
-~~~swift
+```swift
 if let thisSementTitle = dataSource?.titleFroSegmentAtIndex?(index){
 }
-~~~
+```
 
 
 新特性:
@@ -668,7 +666,7 @@ if let thisSementTitle = dataSource?.titleFroSegmentAtIndex?(index){
 
 	例如：
 
-	~~~swift
+	```swift
 	protocol myProtocol {
    	 func hello() -> String
 	}
@@ -678,16 +676,16 @@ if let thisSementTitle = dataSource?.titleFroSegmentAtIndex?(index){
    	     return "hello world!"
    	 }
 	}
-	~~~
+	```
 
 	我们还能够用这个特性来组织我们的代码结构, 如下面的代码所示, 将 UITableViewDataSource 的实现移到了 Extension。使代码更清晰。
 
-	~~~swift
+	```swift
 	// MARK: - UITableViewDataSource
 	extension MyViewcontroller: UITableViewDataSource {
   	// table view data source methods
 	}
-	~~~
+	```
 
 3. `Protocol Oriented Programming`
 
@@ -699,13 +697,13 @@ if let thisSementTitle = dataSource?.titleFroSegmentAtIndex?(index){
 
 	用前面的 myProtocol 为例子, 我们在 Swift 里这样为它提供默认实现。
 
-	~~~swift
+	```swift
 	extension myProtocol{
         func hello() -> String {
             return "hello world!"
         }
 	}
-	~~~
+	```
 
 	我们还能对系统原有的 protocol 进行扩展, 大大增强了我们的想象空间。Swift2.0 的实现也有很多地方用 extension protocol 的形式进行了重构。
 
@@ -723,31 +721,31 @@ if let thisSementTitle = dataSource?.titleFroSegmentAtIndex?(index){
 
 Objective-C：
 
-~~~objective-c
+```objective-c
 #import "MyClass.h"
 
 @interface MyClass (MyClassAddition)
 - (void)hello;
 @end
-~~~
+```
 
 Swift：
 
-~~~swift
+```swift
 extension SomeType {
 	func hello(){}
 }
-~~~
+```
 
 与 Objective-C 的 Category 不同的是, Swift 的 `Extension` 没有名字。
 
 我们还可以利用该特性来整理代码: 比如将私有方法集合在一起
 
-~~~swift
+```swift
 private extension ViewController {
 //... 私有方法
 }
-~~~
+```
 
 <h2 id="7">7.Swift 与 Cocoa</h2>
 
@@ -757,21 +755,21 @@ private extension ViewController {
 
 	在 Swift 中, 没有 `id` 类型, Swift 用一个名字叫 `AnyObject` 的 protocol 来代表任意类型的对象。
 
-	~~~objective-c
+	```objective-c
 	 id myObject = [[UITableViewCell alloc]init];
-	~~~
+	```
 
-	~~~swift
+	```swift
 	 var myObject: AnyObject = UITableViewCell()
-	~~~
+	```
 
 	我们知道 id 的类型直到运行时才能被确定, 如果我们向一个对象发送一条不能响应的消息, 就会导致 crash。
 
 	我们可以利用 Swift 的语法特性来防止这样的错误:
 
-	~~~swift
+	```swift
 	myObject.method?()
-	~~~
+	```
 
 	如果 myObject 没有这个方法, 就不会执行, 类似检查 delegate 是否有实现代理方法。
 
@@ -785,7 +783,7 @@ private extension ViewController {
 
 	之前 OC 典型的错误处理步骤:
 
-	~~~objective-c
+	```objective-c
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSURL *URL = [NSURL fileURLWithPath:@"/path/to/file"];
 	NSError *error = nil;
@@ -793,11 +791,11 @@ private extension ViewController {
 	if (!success) {
    	 NSLog(@"Error: %@", error.domain);
 	}
-	~~~
+	```
 
 	在 Swift 中：
 
-	~~~swift
+	```swift
 	let fileManager = NSFileManager.defaultManager()
 	let URL = NSURL.fileURLWithPath("/path/to/file")
 	do {
@@ -805,7 +803,7 @@ private extension ViewController {
 	} catch let error as NSError {
    	 print("Error: \(error.domain)")
 	}
-	~~~
+	```
 
 4. KVO
 

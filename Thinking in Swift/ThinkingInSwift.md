@@ -770,3 +770,6 @@ Swift源代码：
 
 
 
+
+[Swift pro](https://forums.swift.org/t/poll-which-features-of-swift-stand-out-most-to-you/57309/9)
+[Swift cons](https://forums.swift.org/t/poll-what-do-you-hate-about-swift/57323)
